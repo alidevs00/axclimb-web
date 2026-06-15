@@ -552,8 +552,12 @@
     <div style="display:flex; gap:10px;">
       <div id="passCard" style="flex:1.5; background: var(--accent); border-radius:22px; padding:16px; position:relative; overflow:hidden;">
         <p style="font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; opacity:0.75; margin:0 0 10px;" class="sg">Acceso rápido</p>
-        <div style="background:white; border-radius:12px; padding:10px; width:70px;">
-          <div style="width:50px; height:50px; background: repeating-linear-gradient(45deg, #111 0 4px, #fff 4px 8px), repeating-linear-gradient(135deg, #111 0 4px, transparent 4px 8px); background-blend-mode: multiply;"></div>
+        <div style="background:white; border-radius:12px; padding:10px; width:70px; height:70px; display:flex; align-items:center; justify-content:center;">
+          <img
+            src="images/qr-demo.png"
+            alt="QR acceso"
+            style="width:60px; height:60px;"
+          >
         </div>
         <div class="blob" style="position:absolute; width:90px; height:90px; background:rgba(255,255,255,0.12); top:-30px; right:-30px;"></div>
       </div>
@@ -812,10 +816,10 @@
       <h3>Solicita tu demo</h3>
       <p>Vas a recibir una versión de prueba con datos simulados para ver cómo funcionaría en tu rocódromo.</p>
       <form class="trial-form" id="trialForm">
-      
       <input type="text" name="name" placeholder="Tu nombre" required />
       <input type="text" name="gym" placeholder="Nombre de tu rocódromo" required />
-
+      <input type="text" name="name" placeholder="Correo de contacto" required />
+      <input type="text" name="name" placeholder="Teléfono de contacto" required />
       <textarea name="message" rows="5" placeholder="Cuéntanos qué necesitas o qué te gustaría mejorar" required></textarea>
 
       <button class="trial-cta-btn" type="submit">
