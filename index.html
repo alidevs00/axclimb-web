@@ -142,9 +142,24 @@
   .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
   .tab { font-size: 12px; padding: 6px 12px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); cursor: pointer; background: var(--color-background-primary); }
   .tab.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
-  .bottomnav { display: flex; justify-content: space-around; align-items: center; padding: 14px 16px 18px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.06); }
-  .navitem { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; color: rgba(255,255,255,0.3); font-weight: 500; }
-  .navitem.active { color: #fff; }
+  .bottomnav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 8px 14px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .navitem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 500;
+}
+.navitem.active { color: #fff; }.navitem.active { color: #fff; }
   .blob { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
 
   /* SECTIONS */
@@ -400,34 +415,6 @@
 
     .sg{
       font-family:'Space Grotesk',sans-serif;
-    }
-
-    .bottomnav{
-      display:flex;
-      justify-content:space-around;
-      align-items:center;
-      padding:14px 16px 18px;
-      margin-top:auto;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-
-    .navitem{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:4px;
-      font-size:9px;
-      color:rgba(255,255,255,.3);
-    }
-
-    .navitem.active{
-      color:white;
-    }
-
-    .blob{
-      border-radius:
-        60% 40% 55% 45% /
-        50% 60% 40% 50%;
     }
 
     /* SECTIONS */
