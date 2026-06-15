@@ -945,6 +945,22 @@
   <span>© 2026 AX Climb · Hecho en Madrid 🧗</span>
 </footer>
 
+
+<div id="toast" style="
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+"></div>
+
 <script>
   const items = document.querySelectorAll('.module-pick-item');
   const unsureCheck = document.getElementById('unsureCheck');
@@ -1042,6 +1058,66 @@ for (var i = 0; i < brandTabs.length; i++) {
 }
 
 applyBrand('sputnik');
+
+const form = document.getElementById('trialForm');
+const btn = document.querySelector('.trial-cta-btn');
+const inputs = form.querySelectorAll('input, textarea');
+const toast = document.getElementById('toast');
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 2500);
+}
+
+function checkForm() {
+  let filled = true;
+  inputs.forEach(i => {
+    if (!i.value.trim()) filled = false;
+  });
+
+  btn.classList.toggle('active', filled);
+  btn.disabled = !filled;
+
+  if (filled) {
+    btn.textContent = "Enviar mensaje";
+  } else {
+    btn.textContent = "Rellena los campos";
+  }
+}
+
+inputs.forEach(i => i.addEventListener('input', checkForm));
+checkForm();
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    name: form.name.value,
+    gym: form.gym.value,
+    message: form.message.value
+  };
+
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+
+  const res = await fetch('/api/sendEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  if (res.ok) {
+    showToast("Correo enviado correctamente");
+    form.reset();
+  } else {
+    showToast("Error al enviar");
+  }
+
+  checkForm();
+});
 </script>
 </body>
 </html>
