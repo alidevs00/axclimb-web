@@ -159,7 +159,7 @@
     color: rgba(255,255,255,0.3);
     font-weight: 500;
 }
-.navitem.active { color: #fff; }.navitem.active { color: #fff; }
+.navitem.active { color: #fff; }
   .blob { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
 
   /* SECTIONS */
@@ -195,7 +195,56 @@
   .addon-note { margin-top: 20px; padding: 20px 24px; background: var(--hold-orange-light); border-radius: var(--radius); font-size: 14px; color: var(--slate); border-left: 3px solid var(--hold-orange); }
   .addon-note strong { color: var(--hold-orange); }
 
-  /* FREE TRIAL */
+  /* PRODUCT BLOCKS (Comunidad / Gestión y pagos) */
+  .blocks-wrap { display: flex; flex-direction: column; gap: 56px; }
+  .product-block { border-radius: 24px; padding: 40px; border: 1px solid var(--stone); background: var(--white); }
+  .product-block.gestion { background: var(--black); border-color: var(--black); }
+  .block-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
+  .block-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: 40px; margin-bottom: 14px; }
+  .block-tag.community { background: var(--hold-orange-light); color: var(--hold-orange); }
+  .block-tag.gestion { background: rgba(255,255,255,0.1); color: white; }
+  .block-head h3 { font-size: 26px; margin-bottom: 8px; }
+  .product-block.gestion .block-head h3 { color: white; }
+  .block-head p { font-size: 14px; color: var(--mid); max-width: 480px; line-height: 1.6; }
+  .product-block.gestion .block-head p { color: rgba(255,255,255,0.55); }
+  .block-status { flex-shrink: 0; text-align: right; }
+  .status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 40px; font-family: 'Space Grotesk', sans-serif; }
+  .status-pill.ready { background: #F0FDF4; color: #16A34A; }
+  .status-pill.custom { background: rgba(255,255,255,0.1); color: white; }
+  .status-pill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .block-status .status-note { display: block; font-size: 11px; color: var(--mid); margin-top: 6px; }
+  .product-block.gestion .block-status .status-note { color: rgba(255,255,255,0.4); }
+
+  .block-modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .bm-card { border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); }
+  .product-block.gestion .bm-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+  .bm-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; background: var(--white); }
+  .product-block.gestion .bm-icon { background: rgba(255,255,255,0.08); }
+  .bm-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; letter-spacing: -0.01em; }
+  .product-block.gestion .bm-card h4 { color: white; }
+  .bm-card p { font-size: 12.5px; color: var(--mid); line-height: 1.55; }
+  .product-block.gestion .bm-card p { color: rgba(255,255,255,0.45); }
+
+  /* PROCESS PHASES */
+  .phase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+  .phase-card { border-radius: 20px; padding: 28px 24px; border: 1px solid var(--stone); background: var(--white); position: relative; }
+  .phase-card.active { border-color: var(--hold-orange); background: var(--hold-orange-light); }
+  .phase-num { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--mid); margin-bottom: 14px; }
+  .phase-card.active .phase-num { color: var(--hold-orange); }
+  .phase-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .phase-card p { font-size: 13px; color: var(--mid); line-height: 1.6; margin-bottom: 14px; }
+  .phase-includes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .phase-chip { font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--chalk); color: var(--slate); }
+  .phase-card.active .phase-chip { background: rgba(232,93,38,0.15); color: var(--hold-orange); }
+  .phase-arrow { display: none; }
+
+  @media (min-width: 861px) {
+    .phase-arrow {
+      display: flex; align-items: center; justify-content: center;
+      position: absolute; right: -30px; top: 50%; transform: translateY(-50%);
+      width: 24px; height: 24px; color: var(--stone); font-size: 18px; z-index: 2;
+    }
+  }
   .trial-section { background: var(--white); border-top: 1px solid var(--stone); border-bottom: 1px solid var(--stone); padding: 90px 8%; }
   .trial-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
   .trial-steps { display: flex; flex-direction: column; gap: 0; margin-top: 36px; }
@@ -426,6 +475,19 @@
     .dual-card { padding: 28px 24px; }
     .dual-card h3 { font-size: 22px; }
 
+    /* PRODUCT BLOCKS */
+    .blocks-wrap { gap: 32px; }
+    .product-block { padding: 28px 22px; border-radius: 20px; }
+    .block-head { flex-direction: column; gap: 14px; margin-bottom: 22px; }
+    .block-status { text-align: left; }
+    .block-head h3 { font-size: 21px; }
+    .block-modules-grid { grid-template-columns: 1fr; gap: 10px; }
+    .bm-card { padding: 16px; }
+
+    /* PHASES */
+    .phase-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    .phase-card { padding: 22px 20px; }
+
     /* MODULES */
     .modules-grid { grid-template-columns: 1fr; gap: 12px; }
     .module-card { padding: 20px; }
@@ -500,7 +562,7 @@
     <div class="hero-copy">
       <div class="hero-eyebrow">Diseñado para rocódromos</div>
       <h1>Tu rocódromo,<em>en el bolsillo</em></h1>
-      <p class="hero-sub">AX Climb conecta a tu equipo con tus escaladores. Reservas, pagos, rutas, estadísticas y comunidad — todo en una sola app modular que se adapta a lo que necesitas.</p>
+      <p class="hero-sub">AX Climb conecta a tu equipo con tus escaladores. Mapa, bloques, comunidad y estadísticas listos para usar desde el día uno — y reservas, abonos y pagos integrados con vuestro sistema cuando deis el paso.</p>
       <div class="hero-buttons">
         <a href="#trial" class="btn-primary">Solicita tu demo</a>
         <a href="#modulos" class="btn-ghost">Ver módulos</a>
@@ -592,32 +654,32 @@
 
   <div class="bottomnav">
     <div class="navitem active">
-      <div style="width:42px; height:30px; border-radius:14px; background: var(--accent); display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-home" aria-hidden="true" style="font-size:17px; color:white;"></i>
+      <div style="width:36px; height:26px; border-radius:12px; background: var(--accent); display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-home" aria-hidden="true" style="font-size:16px; color:white;"></i>
       </div>
       Inicio
     </div>
     <div class="navitem">
-      <div style="width:42px; height:30px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-calendar" aria-hidden="true" style="font-size:18px;"></i>
+      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-calendar" aria-hidden="true" style="font-size:16px;"></i>
       </div>
       Reservas
     </div>
     <div class="navitem">
-      <div style="width:42px; height:30px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-map-2" aria-hidden="true" style="font-size:18px;"></i>
+      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-map-2" aria-hidden="true" style="font-size:16px;"></i>
       </div>
       Mapa
     </div>
     <div class="navitem">
-      <div style="width:42px; height:30px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-users" aria-hidden="true" style="font-size:18px;"></i>
+      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-users" aria-hidden="true" style="font-size:16px;"></i>
       </div>
       Comunidad
     </div>
     <div class="navitem">
-      <div style="width:42px; height:30px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-user" aria-hidden="true" style="font-size:18px;"></i>
+      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-user" aria-hidden="true" style="font-size:16px;"></i>
       </div>
       Perfil
     </div>
@@ -633,129 +695,170 @@
 <section style="padding:60px 8% 40px;text-align:center;">
   <div class="section-label">¿Por qué AX Climb?</div>
   <h2 class="section-title">Menos gestión. Más escalada.</h2>
-  <p class="section-sub" style="margin:0 auto;">Los rocódromos utilizan múltiples herramientas para reservas, pagos, comunicación y seguimiento de usuarios. AX Climb reúne todo en una sola aplicación.</p>
+  <p class="section-sub" style="margin:0 auto;">Los rocódromos utilizan múltiples herramientas para reservas, pagos, comunicación y seguimiento de usuarios. AX Climb las reúne en una sola app, construida en dos fases para que veas resultados desde el primer momento.</p>
 </section>
 
-<section style="padding-top:0;">
-  <div class="dual-grid">
-    <div class="dual-card gym">
-      <div class="role-label">Hoy</div>
-      <h3>Los problemas habituales</h3>
-      <ul>
-        <li>Reservas repartidas entre varias herramientas</li>
-        <li>Clientes preguntando horarios y eventos</li>
-        <li>Dificultad para comunicar nuevos bloques</li>
-        <li>Poco conocimiento sobre hábitos de los usuarios</li>
-        <li>Procesos manuales que consumen tiempo</li>
-      </ul>
-    </div>
-    <div class="dual-card user">
-      <div class="role-label">Con AX Climb</div>
-      <h3>Todo en un mismo lugar</h3>
-      <ul>
-        <li>Reservas y pagos desde la app</li>
-        <li>Información siempre actualizada</li>
-        <li>Comunicación directa con los escaladores</li>
-        <li>Estadísticas y seguimiento de actividad</li>
-        <li>Mayor fidelización de la comunidad</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
-<!-- MODULES -->
 <section id="modulos">
-  <div class="section-label">Módulos</div>
-  <h2 class="section-title">Solo pagas lo que usas</h2>
-  <p class="section-sub">Cada rocódromo es diferente. Elige los módulos que encajan con tu negocio y combínalos a tu medida.</p>
-  <div class="modules-grid">
-    <div class="module-card">
-      <div class="module-icon" style="background:#FFF0E9;">📅</div>
-      <h3>Gestión de reservas</h3>
-      <p>Tus clientes reservan su plaza desde la app. Tú controlas aforo, horarios y cancelaciones en tiempo real.</p>
-      <span class="module-badge badge-both">Rocódromo + Usuario</span>
+  <div class="section-label">Cómo está construida la app</div>
+  <h2 class="section-title">Dos bloques, un solo producto</h2>
+  <p class="section-sub">AX Climb se organiza en dos grandes bloques. Uno ya está listo para usar desde el primer día. El otro se conecta con vuestros sistemas actuales y lo construimos juntos.</p>
+
+  <div class="blocks-wrap">
+
+    <!-- BLOQUE 1: COMUNIDAD -->
+    <div class="product-block comunidad">
+      <div class="block-head">
+        <div>
+          <div class="block-tag community">🧗 Comunidad</div>
+          <h3>La experiencia del escalador</h3>
+          <p>Todo lo que tus usuarios ven y usan cada día en sala: el mapa, los bloques, sus estadísticas y la comunidad. No depende de ningún sistema externo, así que está listo para activarse de inmediato.</p>
+        </div>
+        <div class="block-status">
+          <span class="status-pill ready">Listo para activar</span>
+          <span class="status-note">Disponible en la prueba gratuita</span>
+        </div>
+      </div>
+
+      <div class="block-modules-grid">
+        <div class="bm-card">
+          <div class="bm-icon">🔑</div>
+          <h4>Registro y login</h4>
+          <p>Cada escalador crea su cuenta y accede con su perfil personal.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🗺️</div>
+          <h4>Plano y mapa de zonas</h4>
+          <p>Vista del rocódromo con zonas por color y bloques ubicados.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🧗‍♀️</div>
+          <h4>Bloques y detalle</h4>
+          <p>Ficha de cada bloque: grado, zona, foto y estado.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">⭐</div>
+          <h4>Comentarios y valoración</h4>
+          <p>Los usuarios puntúan y comentan los bloques tras intentarlos.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">📊</div>
+          <h4>Perfil y estadísticas</h4>
+          <p>Bloques hechos por día, semana o mes, y nivel habitual de cada usuario.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">📱</div>
+          <h4>Compartir sesión</h4>
+          <p>Stories para Instagram al estilo Strava con cada sesión.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🔥</div>
+          <h4>Setting del día</h4>
+          <p>Comunica qué bloques nuevos hay, su nivel y su zona.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🤝</div>
+          <h4>Compartir rutas</h4>
+          <p>Comunidad activa compartiendo líneas dentro del propio rocódromo.</p>
+        </div>
+      </div>
     </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#EEF4FF;">💳</div>
-      <h3>Pagos integrados</h3>
-      <p>Abono, sesión puntual o bono de entradas — todo desde la app. Sin colas, sin efectivo, sin fricción.</p>
-      <span class="module-badge badge-gym">Para el rocódromo</span>
+
+    <!-- BLOQUE 2: GESTIÓN Y PAGOS -->
+    <div class="product-block gestion">
+      <div class="block-head">
+        <div>
+          <div class="block-tag gestion">💳 Gestión y pagos</div>
+          <h3>Conectada a vuestro sistema</h3>
+          <p>Reservas, abonos, pagos y datos de cuenta de cada usuario. Requiere integrar AX Climb con vuestro sistema actual de gestión, por eso lo construimos a medida una vez decidís seguir adelante.</p>
+        </div>
+        <div class="block-status">
+          <span class="status-pill custom">A medida</span>
+          <span class="status-note">Se desarrolla mientras disfrutáis de la prueba gratuita</span>
+        </div>
+      </div>
+
+      <div class="block-modules-grid">
+        <div class="bm-card">
+          <div class="bm-icon">📅</div>
+          <h4>Gestión de reservas</h4>
+          <p>Reserva de plaza, control de aforo y cancelaciones en tiempo real.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">💳</div>
+          <h4>Pagos integrados</h4>
+          <p>Sesión puntual, bono o abono pagado desde la app.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🎟️</div>
+          <h4>Mi abono y saldo</h4>
+          <p>Cada usuario ve su tipo de abono y las sesiones que le quedan.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🏦</div>
+          <h4>Datos personales y de pago</h4>
+          <p>Número de cuenta, método de pago y facturación sincronizados con vuestro sistema.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🗺️</div>
+          <h4>Información del centro</h4>
+          <p>Horarios, precios y eventos actualizados desde vuestra gestión.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">📣</div>
+          <h4>Notificaciones del centro</h4>
+          <p>Talleres, mantenimientos o cambios de horario al instante.</p>
+        </div>
+      </div>
     </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#F0FDF4;">🗺️</div>
-      <h3>Información del centro</h3>
-      <p>Horarios, precios, eventos y novedades actualizados al instante. Tu escaparate digital siempre al día.</p>
-      <span class="module-badge badge-user">Para el usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#FFF0E9;">📊</div>
-      <h3>Registro de entrenamientos</h3>
-      <p>Los escaladores registran sus sesiones, bloques completados y progresión. Datos propios, visualización clara.</p>
-      <span class="module-badge badge-user">Para el usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#EEF4FF;">🔥</div>
-      <h3>Setting del día</h3>
-      <p>Comunica qué bloques nuevos hay, su nivel y zona. Los escaladores llegan sabiendo qué les espera.</p>
-      <span class="module-badge badge-both">Rocódromo + Usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#F0FDF4;">📣</div>
-      <h3>Novedades y notis</h3>
-      <p>Talleres, competiciones, mantenimientos — notificaciones push a toda tu comunidad en segundos.</p>
-      <span class="module-badge badge-gym">Para el rocódromo</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#FFF0E9;">🤝</div>
-      <h3>Compartir rutas</h3>
-      <p>Los usuarios comparten sus líneas con la comunidad del rocódromo. Más engagement, más visitas.</p>
-      <span class="module-badge badge-both">Rocódromo + Usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#EEF4FF;">⭐</div>
-      <h3>Feedback de bloques</h3>
-      <p>Valoraciones de los usuarios sobre los bloques. El rocódromo recibe datos reales para mejorar el setting.</p>
-      <span class="module-badge badge-both">Rocódromo + Usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#FFF7ED;">📱</div>
-      <h3>Compartir sesión</h3>
-      <p>Stories automáticas para Instagram al estilo Strava. Tus clientes convierten cada sesión en contenido.</p>
-      <span class="module-badge badge-user">Para el usuario</span>
-    </div>
-    <div class="module-card">
-      <div class="module-icon" style="background:#F0FDF4;">👤</div>
-      <h3>Perfil de usuario</h3>
-      <p>Suscripción, historial de pagos, estadísticas personales y configuración de cuenta en un solo lugar.</p>
-      <span class="module-badge badge-user">Para el usuario</span>
-    </div>
+
+  </div>
+
+  <div class="addon-note">
+    <strong>¿Por qué dos bloques?</strong> El bloque de Comunidad no depende de ningún sistema externo, así que podemos activarlo desde el primer día. El de Gestión y pagos sí requiere estudiar e integrar vuestro sistema actual — por eso lo desarrollamos a medida una vez decidís seguir adelante.
   </div>
 </section>
 
-<!-- DUAL BENEFIT -->
+<!-- PROCESO -->
 <section style="padding-top:0;">
-  <div class="dual-grid">
-    <div class="dual-card gym">
-      <div class="role-label">Para el rocódromo</div>
-      <h3>Gestiona más, trabaja menos</h3>
-      <ul>
-        <li>Control de aforo automatizado</li>
-        <li>Cobros sin fricciones ni efectivo</li>
-        <li>Datos de uso para tomar decisiones</li>
-        <li>Comunica novedades al instante</li>
-        <li>Feedback real sobre el setting</li>
-      </ul>
+  <div class="section-label">El camino hasta tener AX Climb</div>
+  <h2 class="section-title">De ver la demo a tenerla funcionando</h2>
+  <p class="section-sub">No empezamos pidiéndote que te comprometas con todo. Vas viendo el valor paso a paso, y solo avanzamos a la siguiente fase si te encaja.</p>
+
+  <div class="phase-grid">
+    <div class="phase-card active">
+      <div class="phase-num">FASE 1 · AHORA</div>
+      <h4>Ves la demo completa</h4>
+      <p>Te enseñamos AX Climb funcionando con datos de ejemplo, con los dos bloques activos: Comunidad y Gestión y pagos. Así ves la app entera, no solo una parte.</p>
+      <div class="phase-includes">
+        <span class="phase-chip">Datos de prueba</span>
+        <span class="phase-chip">Ambos bloques</span>
+        <span class="phase-chip">Sin compromiso</span>
+      </div>
+      <div class="phase-arrow">→</div>
     </div>
-    <div class="dual-card user">
-      <div class="role-label">Para el escalador</div>
-      <h3>Escala más, organízate mejor</h3>
-      <ul>
-        <li>Reserva y paga desde el móvil</li>
-        <li>Ve qué bloques hay antes de llegar</li>
-        <li>Registra tu progresión semana a semana</li>
-        <li>Comparte sesiones en Instagram</li>
-        <li>Conecta con la comunidad del rocódromo</li>
-      </ul>
+
+    <div class="phase-card">
+      <div class="phase-num">FASE 2 · SI TE CONVENCE</div>
+      <h4>Pruebas el bloque Comunidad gratis</h4>
+      <p>Activamos el bloque de Comunidad en tu rocódromo de verdad, con tus escaladores, durante 3 a 6 meses sin coste. Sin integración previa, porque no la necesita.</p>
+      <div class="phase-includes">
+        <span class="phase-chip">3-6 meses gratis</span>
+        <span class="phase-chip">Usuarios reales</span>
+        <span class="phase-chip">Sin tarjeta</span>
+      </div>
+      <div class="phase-arrow">→</div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">FASE 3 · SI QUERÉIS SEGUIR</div>
+      <h4>Integramos Gestión y pagos</h4>
+      <p>Estudiamos vuestro sistema actual y construimos juntos la integración: reservas, abonos, pagos y datos de cuenta sincronizados con vuestra gestión.</p>
+      <div class="phase-includes">
+        <span class="phase-chip">A medida</span>
+        <span class="phase-chip">Con vuestro equipo</span>
+        <span class="phase-chip">Sincronizado</span>
+      </div>
     </div>
   </div>
 </section>
@@ -764,35 +867,36 @@
 <div class="trial-section" id="trial">
   <div class="trial-inner">
     <div>
-      <div class="section-label">Prueba gratuita</div>
-      <h2 class="section-title"> ¿Quieres ver cómo funciona?</h2>
-      <p class="section-sub" style="margin-bottom:0;">Te enviamos una demo con datos de prueba para que la veas en tu móvil como si ya estuviera funcionando en tu rocódromo.</p>      <div class="trial-steps" style="margin-top:32px;">
+      <div class="section-label">Empieza por la demo</div>
+      <h2 class="section-title">¿Quieres ver cómo funciona?</h2>
+      <p class="section-sub" style="margin-bottom:0;">Te enviamos una demo con datos de prueba que incluye los dos bloques — Comunidad y Gestión y pagos — para que veas la app completa en tu móvil, sin que tengamos que integrar nada todavía.</p>
+      <div class="trial-steps" style="margin-top:32px;">
         <div class="trial-step">
           <div class="step-num">1</div>
           <div class="step-content">
-            <h4>Te enviamos una demo lista para probar</h4>
-            <p>Accedes desde el móvil con datos de ejemplo para ver cómo funcionaría en tu día a día.</p>
+            <h4>Te enviamos la demo completa</h4>
+            <p>Con datos de ejemplo y los dos bloques activos, para que veas el producto entero desde el móvil.</p>
           </div>
         </div>
         <div class="trial-step">
           <div class="step-num">2</div>
           <div class="step-content">
             <h4>La pruebas como si ya estuviera activa</h4>
-            <p>Reservas, setting, escaladores… todo simulado para que veas el flujo real.</p>
+            <p>Reservas, setting, pagos, comunidad… todo simulado para que veas el flujo real de un usuario.</p>
           </div>
         </div>
         <div class="trial-step">
           <div class="step-num">3</div>
           <div class="step-content">
-            <h4>Si te encaja, la activamos en tu rocódromo</h4>
-            <p>Ahí sí: configuramos contigo, adaptamos todo y activas los 6 meses gratis reales.</p>
+            <h4>Si te encaja, activamos el bloque Comunidad gratis</h4>
+            <p>Con usuarios reales de tu rocódromo, durante 3 a 6 meses, sin coste y sin necesitar ninguna integración.</p>
           </div>
         </div>
         <div class="trial-step">
           <div class="step-num">4</div>
           <div class="step-content">
-            <h4>Onboarding contigo en directo</h4>
-            <p>Lo dejamos funcionando en tu centro y tu equipo lo aprende en una sesión corta.</p>
+            <h4>Y si queréis seguir, integramos Gestión y pagos</h4>
+            <p>Estudiamos vuestro sistema actual y lo conectamos con AX Climb, con onboarding presencial incluido.</p>
           </div>
         </div>
       </div>
@@ -801,7 +905,7 @@
     <div class="trial-card">
       <div class="trial-eyebrow">Empieza aquí</div>
       <h3>Solicita tu demo</h3>
-      <p style="margin-bottom:20px;"> Recibirás una demo personalizada con datos de ejemplo para que puedas explorar la app en tu móvil y ver cómo encajaría en tu rocódromo.</p>
+      <p style="margin-bottom:20px;">Recibirás una demo con datos de ejemplo que incluye ambos bloques completos. Es solo para que la veas — la prueba gratuita real del bloque Comunidad llega en una segunda fase, si te convence.</p>
       <form class="trial-form" id="trialForm">
       <input type="text" name="name" placeholder="Tu nombre" required />
       <input type="text" name="gym" placeholder="Nombre de tu rocódromo" required />
@@ -810,13 +914,13 @@
       <textarea name="message" rows="5" placeholder="Cuéntanos qué necesitas o qué te gustaría mejorar" required></textarea>
 
       <button class="trial-cta-btn" type="submit">
-        Enviar mensaje
+        Solicitar demo
       </button>
 
       </form>
       <div class="trial-guarantee">
         <span class="guarantee-icon">🔒</span>
-        <span>Sin tarjeta de crédito · Sin permanencia · Sin letra pequeña</span>
+        <span>Demo con datos de ejemplo · Sin coste · Sin compromiso</span>
       </div>
     </div>
   </div>
@@ -841,8 +945,8 @@
     </div>
     <div class="diff-card">
       <div class="diff-num">⚡</div>
-      <h4>Modular desde el día uno</h4>
-      <p>No pagas por funciones que no usas. Empiezas con lo que necesitas y amplías cuando quieras.</p>
+      <h4>Empiezas sin riesgo</h4>
+      <p>Pruebas el bloque Comunidad gratis antes de comprometerte con la integración de Gestión y pagos.</p>
     </div>
     <div class="diff-card">
       <div class="diff-num">🧗</div>
