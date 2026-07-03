@@ -32,6 +32,7 @@
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4 {
@@ -528,87 +529,46 @@
     nav ul { display: none; }
     .nav-hamburger { display: flex; }
 
-    /* HERO */
+    /* HERO completo — columna única, ancho controlado */
     .hero {
       grid-template-columns: 1fr;
-      padding: 32px 6% 20px;
-      gap: 16px;
+      padding: 28px 6% 0;
+      gap: 20px;
       text-align: center;
+      max-width: 100vw;
+      overflow: hidden;
     }
-    .hero-eyebrow { margin: 0 auto 16px; }
-    .hero h1 { font-size: 34px; }
-    .hero-sub { font-size: 15px; margin-bottom: 20px; max-width: 100%; margin-left: auto; margin-right: auto; }
+    .hero-copy {
+      padding: 0 4%;
+    }
+    .hero-eyebrow { margin: 0 auto 12px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 14px; margin-bottom: 20px; max-width: 100%; margin-left: auto; margin-right: auto; }
     .hero-buttons {
-      display: flex; flex-direction: column;
-      gap: 12px; align-items: center;
+      display: flex; flex-direction: row;
+      gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
     }
     .btn-primary, .btn-ghost {
-      display: block; width: 100%;
+      display: inline-block; width: auto;
       text-align: center; margin-left: 0;
-      padding: 15px 20px;
-      font-size: 16px;
+      padding: 11px 22px;
+      font-size: 14px;
     }
-    /* PHONES en móvil — slider con scroll snap */
+    /* PHONES en móvil */
     .phone-wrapper {
       order: -1;
       width: 100%;
       overflow: hidden;
-      height: auto;
       padding: 0;
-      display: block;
+      display: flex;
+      justify-content: center;
     }
     .phone-showcase {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: flex-start !important;
-      justify-content: flex-start !important;
-      overflow-x: scroll !important;
-      scroll-snap-type: x mandatory !important;
-      -webkit-overflow-scrolling: touch !important;
-      scrollbar-width: none !important;
-      gap: 16px !important;
-      padding: 20px 40px 12px !important;
-      transform: none !important;
-      margin-bottom: 0 !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
+      /* scale aplicado por JS */
     }
-    .phone-showcase::-webkit-scrollbar { display: none !important; }
-    .phone-slot.slot-side-left {
-      transform: none !important;
-      margin-right: 0 !important;
-      margin-left: 0 !important;
-      opacity: 1 !important;
-      z-index: 1 !important;
-      flex-shrink: 0 !important;
-      scroll-snap-align: center !important;
-    }
-    .phone-slot.slot-side-right {
-      transform: none !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      opacity: 1 !important;
-      z-index: 1 !important;
-      flex-shrink: 0 !important;
-      scroll-snap-align: center !important;
-    }
-    .phone-slot.slot-main {
-      transform: none !important;
-      z-index: 1 !important;
-      flex-shrink: 0 !important;
-      scroll-snap-align: center !important;
-    }
-    .phone-slot .phone-frame {
-      width: 220px !important;
-      opacity: 1 !important;
-    }
-    .phone-slot .phone-screen { height: 440px !important; }
-    .phone-slot.slot-main .phone-frame { box-shadow: 0 32px 64px rgba(0,0,0,0.3) !important; }
-    .phone-slot.slot-side-left .phone-frame { opacity: 1 !important; }
-    .phone-slot.slot-side-right .phone-frame { opacity: 1 !important; }
     .phone-bg-ring { display: none; }
     .phone-bg-ring-2 { display: none; }
-    .phone-caption { font-size: 9px; margin-top: 10px; }
+    .phone-caption { font-size: 9px; }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
@@ -701,7 +661,7 @@
 </div>
 
 <!-- HERO -->
-<div style="max-width:1280px;margin:0 auto;">
+<div style="max-width:1280px;margin:0 auto;overflow:visible;">
   <div class="hero">
     <div class="hero-copy">
       <div class="hero-eyebrow">Diseñado para rocódromos</div>
@@ -1517,6 +1477,26 @@ form.addEventListener('submit', async (e) => {
 
   checkForm();
 });
+  // MOBILE PHONE SHOWCASE SCALE
+  function scalePhones() {
+    if (window.innerWidth > 860) return;
+    const showcase = document.querySelector('.phone-showcase');
+    if (!showcase) return;
+    // reset first
+    showcase.style.transform = 'none';
+    showcase.style.marginBottom = '0';
+    const naturalWidth = showcase.scrollWidth;
+    const available = window.innerWidth;
+    const scale = (available / naturalWidth) * 0.92;
+    const naturalHeight = showcase.scrollHeight;
+    const newHeight = naturalHeight * scale;
+    const diff = naturalHeight - newHeight;
+    showcase.style.transform = `scale(${scale})`;
+    showcase.style.transformOrigin = 'top center';
+    showcase.style.marginBottom = `-${diff}px`;
+  }
+  scalePhones();
+  window.addEventListener('resize', scalePhones);
 </script>
 </body>
 </html>
