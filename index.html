@@ -71,9 +71,10 @@
   .hero {
     display: grid; grid-template-columns: 1fr 1fr;
     align-items: center; gap: 60px;
-    padding: 80px 8% 100px;
+    padding: 120px 8% 40px;
     max-width: 1280px; margin: 0 auto;
   }
+  .phone-wrapper { position: relative; height: 500px; display: flex; align-items: flex-end; justify-content: center; overflow: visible; }
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--hold-orange-light); color: var(--hold-orange);
@@ -101,8 +102,122 @@
   }
   .btn-ghost:hover { border-color: var(--black); color: var(--black); }
 
-  /* PHONE */
-  .phone-wrapper { display: flex; justify-content: center; align-items: center; position: relative; }
+
+  /* PHONE SHOWCASE */
+  .phone-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    padding-top: 0;
+  }
+  .phone-showcase {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+  }
+  .phone-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .phone-slot .phone-frame {
+    margin: 0;
+    width: 200px;
+    background: #111;
+    border-radius: 32px;
+    padding: 8px;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.25), 0 6px 16px rgba(0,0,0,0.12);
+  }
+  .phone-slot .phone-screen {
+    width: 184px;
+    height: 398px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: #fff;
+    background: #0B0B0D;
+    flex-shrink: 0;
+  }
+  .phone-slot.slot-main {
+    z-index: 3;
+  }
+  .phone-slot.slot-main .phone-frame {
+    box-shadow: 0 48px 96px rgba(0,0,0,0.32), 0 8px 24px rgba(0,0,0,0.16);
+  }
+  .phone-slot.slot-side-left {
+    z-index: 2;
+    transform: rotate(-6deg) translateY(28px);
+    transform-origin: bottom center;
+    margin-right: -24px;
+  }
+  .phone-slot.slot-side-left .phone-frame {
+    opacity: 0.82;
+  }
+  .phone-slot.slot-side-right {
+    z-index: 2;
+    transform: rotate(6deg) translateY(28px);
+    transform-origin: bottom center;
+    margin-left: -24px;
+  }
+  .phone-slot.slot-side-right .phone-frame {
+    opacity: 0.82;
+  }
+  .phone-caption {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--mid);
+    margin-top: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* MINI MAP SCREEN (side phone) */
+  .mm-seg { display: flex; background: rgba(255,255,255,0.06); border-radius: 30px; padding: 3px; margin: 14px 16px 10px; }
+  .mm-seg-btn { flex: 1; text-align: center; padding: 6px 0; font-size: 10px; font-weight: 700; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; }
+  .mm-seg-btn.active { background: var(--accent); color: white; }
+  .mm-seg-btn:not(.active) { color: rgba(255,255,255,0.4); }
+  .mm-zone-grid { margin: 0 16px 10px; background: rgba(255,255,255,0.04); border-radius: 14px; padding: 10px; position: relative; height: 110px; overflow: hidden; }
+  .mm-zone { position: absolute; background: rgba(255,255,255,0.06); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+  .mm-zone .zn { font-size: 6px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-weight: 700; }
+  .mm-zone .zc { font-size: 13px; font-weight: 800; color: white; font-family: 'Space Grotesk', sans-serif; }
+  .mm-colors { display: flex; gap: 5px; margin: 0 16px 10px; overflow: hidden; }
+  .mm-chip { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.06); border-radius: 14px; padding: 4px 8px; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.7); flex-shrink: 0; }
+  .mm-dot { width: 8px; height: 8px; border-radius: 3px; flex-shrink: 0; }
+  .mm-list { margin: 0 16px; display: flex; flex-direction: column; gap: 6px; }
+  .mm-row { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 8px 10px; }
+  .mm-grade { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; flex-shrink: 0; }
+  .mm-row-text .nm { font-size: 10px; font-weight: 700; color: white; margin: 0; }
+  .mm-row-text .sb { font-size: 8px; color: rgba(255,255,255,0.4); margin: 1px 0 0; }
+
+  /* MINI PROFILE SCREEN (side phone) */
+  .mp-logo { text-align: center; padding: 16px 0 10px; }
+  .mp-logo span { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; color: rgba(255,255,255,0.85); }
+  .mp-pay { margin: 0 16px 12px; background: rgba(255,255,255,0.06); border-radius: 14px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; }
+  .mp-pay-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .mp-pay-label { font-size: 11px; font-weight: 700; color: white; flex: 1; }
+  .mp-section-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.35); margin: 0 16px 8px; }
+  .mp-blocks-row { display: flex; gap: 6px; margin: 0 16px 14px; overflow: hidden; }
+  .mp-block-card { flex-shrink: 0; width: 92px; background: rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; }
+  .mp-block-grade { width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; margin-bottom: 8px; }
+  .mp-block-card .bn { font-size: 9px; font-weight: 700; color: white; margin: 0 0 1px; line-height: 1.2; }
+  .mp-block-card .bs { font-size: 7px; color: rgba(255,255,255,0.4); margin: 0; }
+  .mp-tabs { display: flex; gap: 5px; margin: 0 16px 12px; }
+  .mp-tab { font-size: 9px; font-weight: 700; padding: 5px 9px; border-radius: 14px; }
+  .mp-tab.active { background: var(--accent); color: white; }
+  .mp-tab:not(.active) { color: rgba(255,255,255,0.35); }
+  .mp-bars { display: flex; align-items: flex-end; gap: 6px; margin: 0 16px; height: 70px; }
+  .mp-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .mp-bar-val { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.6); }
+  .mp-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--accent); }
+  .mp-bar-lbl { font-size: 6.5px; color: rgba(255,255,255,0.35); margin-top: 2px; }
   .phone-outer {
     width: 270px; height: 560px; background: var(--black); border-radius: 44px; padding: 12px;
     box-shadow: 0 40px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10);
@@ -132,8 +247,8 @@
   .app-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 7.5px; color: rgba(255,255,255,0.35); }
   .app-nav-item.active { color: var(--hold-orange); }
   .app-nav-item svg { width: 18px; height: 18px; }
-  .phone-bg-ring { position: absolute; width: 400px; height: 400px; border: 60px solid rgba(232,93,38,0.07); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
-  .phone-bg-ring-2 { position: absolute; width: 560px; height: 560px; border: 30px solid rgba(232,93,38,0.035); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
+  .phone-bg-ring { position: absolute; width: 620px; height: 620px; border: 70px solid rgba(232,93,38,0.09); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
+  .phone-bg-ring-2 { position: absolute; width: 820px; height: 820px; border: 40px solid rgba(232,93,38,0.05); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
 
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
   .phone-frame { width: 320px; background: #111; border-radius: 32px; padding: 10px; margin: 0 auto 1rem; }
@@ -433,7 +548,12 @@
       padding: 15px 20px;
       font-size: 16px;
     }
-    .phone-wrapper { order: -1; }
+    .phone-wrapper { order: -1; padding-top: 20px; }
+    .phone-slot .phone-frame { width: 150px; border-radius: 24px; padding: 6px; }
+    .phone-slot .phone-screen { height: 300px; border-radius: 20px; }
+    .phone-slot.slot-side-left { transform: rotate(-6deg) translateY(20px); margin-right: -20px; }
+    .phone-slot.slot-side-right { transform: rotate(6deg) translateY(20px); margin-left: -20px; }
+    .phone-caption { font-size: 8px; margin-top: 10px; }
     .phone-frame{ width:240px;}
     .phone-screen{min-height:500px; }
     .phone-inner { border-radius: 28px; }
@@ -571,125 +691,287 @@
     <div class="phone-wrapper">
       <div class="phone-bg-ring"></div>
       <div class="phone-bg-ring-2"></div>
-      <div class="phone-frame">
-        <div class="phone-screen" id="phoneScreen">
+      <div style="display:flex;align-items:flex-end;justify-content:center;gap:0;">
 
-  <svg style="position:absolute; top:0; left:0; width:100%; height:240px; opacity:0.25; pointer-events:none;" viewBox="0 0 320 240" preserveAspectRatio="none">
-    <path d="M-20,40 C60,10 120,70 200,30 C260,5 300,50 340,20" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
-    <path d="M-20,80 C70,50 140,110 210,70 C270,45 300,90 340,60" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="none"/>
-    <path d="M-20,120 C80,90 150,150 220,110 C280,85 310,130 340,100" stroke="rgba(255,255,255,0.07)" stroke-width="1.5" fill="none"/>
-  </svg>
+        <!-- PERFIL: izquierda, girado -6deg -->
+        <div style="display:flex;flex-direction:column;align-items:center;z-index:1;transform:rotate(-6deg) translateY(30px);transform-origin:bottom center;margin-right:-28px;">
+          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 24px 48px rgba(0,0,0,0.2),0 6px 16px rgba(0,0,0,0.1);opacity:0.88;flex-shrink:0;">
+            <div style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;position:relative;">
 
-  <div style="padding: 22px 20px 0; position:relative; z-index:1;">
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:22px;">
-      <div style="display:flex; align-items:center; gap:9px;">
-        <div id="logoMark" class="sg" style="width:34px; height:34px; border-radius:11px; background: var(--accent); display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:14px;">S</div>
-        <p class="sg" style="font-size:13px; font-weight:600; margin:0; display:flex; align-items:center; gap:4px; color:rgba(255,255,255,0.6);" id="brandName">Tu rocódromo <i class="ti ti-chevron-down" style="font-size:13px;" aria-hidden="true"></i></p>
-      </div>
-      <div style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-bell" style="color:rgba(255,255,255,0.5); font-size:16px;" aria-hidden="true"></i>
-      </div>
-    </div>
+              <!-- HEADER -->
+              <div style="padding:18px 16px 12px;display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.02em;">Alicia</div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px;">Madrid · escaladora desde 2021</div>
+                </div>
+                <div style="width:38px;height:38px;border-radius:50%;background:#E85D26;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:16px;">A</div>
+              </div>
 
-    <h1 class="sg" style="font-size:34px; font-weight:800; margin:0 0 4px; letter-spacing:-0.03em; line-height:1.02;">Hola,<br>Alicia.</h1>
-    <p style="font-size:13px; color:rgba(255,255,255,0.35); margin:0 0 20px;">Madrid · sesión nº 48</p>
-  </div>
+              <!-- STATS ROW -->
+              <div style="display:flex;gap:6px;padding:0 16px;margin-bottom:12px;">
+                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">284</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">bloques totales</div>
+                </div>
+                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">48</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">sesiones</div>
+                </div>
+                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">6B</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">nivel máx</div>
+                </div>
+              </div>
 
-  <div style="padding: 0 20px; position:relative; z-index:1; flex:1; display:flex; flex-direction:column; gap:10px;">
+              <!-- GRÁFICO MENSUAL -->
+              <div style="padding:0 16px;margin-bottom:8px;">
+                <div style="margin-bottom:6px;">
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">Bloques por mes</span>
+                </div>
+                <div style="display:flex;align-items:flex-end;gap:4px;height:36px;">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Feb</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:24px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mar</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:20px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Abr</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:28px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">May</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:36px;background:#E85D26;border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Jun</span></div>
+                </div>
+              </div>
 
-    <!-- ROW 1: pass + days -->
-    <div style="display:flex; gap:10px;">
-      <div id="passCard" style="flex:1.5; background: var(--accent); border-radius:22px; padding:16px; position:relative; overflow:hidden;">
-        <p style="font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; opacity:0.75; margin:0 0 10px;" class="sg">Acceso rápido</p>
-        <div style="background:white; border-radius:12px; padding:10px; width:70px; height:70px; display:flex; align-items:center; justify-content:center;">
-          <img
-            src="images/qr-demo.png"
-            alt="QR acceso"
-            style="width:60px; height:60px;"
-          >
+              <!-- CALENDARIO SEMANA -->
+              <div style="padding:0 16px;margin-bottom:8px;">
+                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Esta semana</div>
+                <div style="display:flex;gap:4px;">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">L</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">M</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">X</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">J</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">V</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">S</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">D</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
+                </div>
+              </div>
+
+              <!-- NIVEL MÁS HECHO -->
+              <div style="padding:0 16px;margin-bottom:8px;margin-top:4px;">
+                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Nivel más escalado</div>
+                <div style="display:flex;gap:4px;align-items:flex-end;height:36px;margin-top:2px;">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:10px;background:rgba(255,255,255,0.08);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">5A</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.12);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">5B</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:#E85D26;border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:white;font-weight:700;">5C</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.12);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">6A</span></div>
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">6B</span></div>
+                </div>
+              </div>
+
+              <!-- ÚLTIMOS BLOQUES -->
+              <div style="padding:0 16px;flex:1;margin-top:6px;">
+                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:5px;">Últimos bloques</div>
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
+                    <div style="width:24px;height:24px;border-radius:7px;background:#9B51E0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">6A</div>
+                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Cave Violeta 3</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Cave · hoy</div></div>
+                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
+                    <div style="width:24px;height:24px;border-radius:7px;background:#E85D26;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div>
+                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Organic Naranja 2</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · ayer</div></div>
+                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
+                    <div style="width:24px;height:24px;border-radius:7px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5B</div>
+                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Slab Verde 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Slab · vie</div></div>
+                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BOTTOM NAV -->
+              <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 8px 12px;border-top:1px solid rgba(255,255,255,0.06);background:rgba(11,11,13,0.92);backdrop-filter:blur(8px);">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Inicio</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Mapa</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-user" style="font-size:13px;color:white;"></i></div>
+                  <span style="font-size:7px;color:white;font-weight:600;">Perfil</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Perfil y estadísticas</p>
         </div>
-        <div class="blob" style="position:absolute; width:90px; height:90px; background:rgba(255,255,255,0.12); top:-30px; right:-30px;"></div>
-      </div>
 
-      <div style="flex:1; background: rgba(255,255,255,0.05); border-radius:22px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-        <p style="font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); margin:0;" class="sg">Bono</p>
-        <div>
-          <p class="sg" style="font-size:38px; font-weight:800; margin:0; letter-spacing:-0.03em; line-height:1;">7</p>
-          <p style="font-size:11px; color:rgba(255,255,255,0.4); margin:2px 0 0;">sesiones</p>
+        <!-- HOME: centro -->
+        <div style="display:flex;flex-direction:column;align-items:center;z-index:2;">
+          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,0.3),0 8px 24px rgba(0,0,0,0.15);">
+            <div id="phoneScreen" style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;position:relative;--accent:#E85D26;">
+
+              <svg style="position:absolute;top:0;left:0;width:100%;height:180px;opacity:0.2;pointer-events:none;" viewBox="0 0 236 180" preserveAspectRatio="none">
+                <path d="M-10,30 C40,8 90,52 150,22 C190,4 220,36 250,15" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
+                <path d="M-10,60 C50,38 100,82 160,52 C200,34 225,66 250,45" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none"/>
+              </svg>
+
+              <div style="padding:18px 16px 0;position:relative;z-index:1;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div id="logoMark" style="width:28px;height:28px;border-radius:8px;background:#E85D26;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;font-family:'Space Grotesk',sans-serif;">S</div>
+                    <span id="brandName" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;">Tu rocódromo</span>
+                  </div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;">
+                    <i class="ti ti-bell" style="font-size:13px;color:rgba(255,255,255,0.4);"></i>
+                  </div>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:3px;">Hola,<br>Alicia.</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:14px;">Madrid · sesión nº 48</div>
+              </div>
+
+              <div style="padding:0 12px;display:flex;flex-direction:column;gap:8px;flex:1;position:relative;z-index:1;">
+                <div style="display:flex;gap:8px;">
+                  <div id="passCard" style="flex:1.4;background:#E85D26;border-radius:16px;padding:12px;position:relative;overflow:hidden;">
+                    <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.75;margin-bottom:8px;font-family:'Space Grotesk',sans-serif;">Acceso rápido</div>
+                    <div style="background:white;border-radius:8px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+                      <img src="images/qr-demo.png" alt="QR" style="width:40px;height:40px;display:block;">
+                    </div>
+                    <div style="position:absolute;width:60px;height:60px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:rgba(255,255,255,0.15);top:-20px;right:-20px;"></div>
+                  </div>
+                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);font-family:'Space Grotesk',sans-serif;">Bono</div>
+                    <div>
+                      <div style="font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1;font-family:'Space Grotesk',sans-serif;">7</div>
+                      <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">sesiones</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:14px;position:relative;overflow:hidden;">
+                  <div style="position:absolute;width:16px;height:26px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#E85D26;top:10px;right:44px;transform:rotate(20deg);"></div>
+                  <div style="position:absolute;width:12px;height:18px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#F2C94C;top:30px;right:18px;transform:rotate(-15deg);"></div>
+                  <div style="position:absolute;width:14px;height:20px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#2D9CDB;top:8px;right:10px;transform:rotate(10deg);"></div>
+                  <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Setting de hoy</div>
+                  <div style="font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-family:'Space Grotesk',sans-serif;">8 bloques<br>nuevos</div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Zonas A y C · sube ahora</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
+                    <i class="ti ti-calendar-event" style="font-size:14px;color:rgba(255,255,255,0.35);"></i>
+                    <div style="font-size:16px;font-weight:800;margin:8px 0 2px;letter-spacing:-0.02em;font-family:'Space Grotesk',sans-serif;">18:00</div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.4);">tu reserva</div>
+                  </div>
+                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
+                    <div style="display:flex;align-items:flex-end;gap:3px;height:16px;margin-bottom:6px;">
+                      <div style="width:4px;height:6px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
+                      <div style="width:4px;height:10px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
+                      <div style="width:4px;height:8px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
+                      <div style="width:4px;height:13px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
+                      <div style="width:4px;height:16px;background:#E85D26;border-radius:2px;"></div>
+                    </div>
+                    <div style="font-size:16px;font-weight:800;letter-spacing:-0.02em;font-family:'Space Grotesk',sans-serif;">12 <span style="font-size:9px;font-weight:500;color:#E85D26;">+15%</span></div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">tops</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="position:absolute;bottom:-6px;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 8px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-home" style="font-size:13px;color:white;"></i></div>
+                  <span style="font-size:7px;color:white;font-weight:600;">Inicio</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Mapa</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Perfil</span></div>
+              </div>
+            </div>
+          </div>
+          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Inicio</p>
         </div>
-      </div>
-    </div>
 
-    <!-- ROW 2: setting destacado -->
-    <div style="background: rgba(255,255,255,0.05); border-radius:22px; padding:18px; position:relative; overflow:hidden;">
-      <div class="blob" style="position:absolute; width:22px; height:34px; background: var(--accent); top:14px; right:60px; transform:rotate(20deg);"></div>
-      <div class="blob" style="position:absolute; width:16px; height:24px; background:#F2C94C; top:40px; right:24px; transform:rotate(-15deg);"></div>
-      <div class="blob" style="position:absolute; width:20px; height:28px; background:#2D9CDB; top:10px; right:14px; transform:rotate(10deg);"></div>
-      <p style="font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.35); margin:0 0 8px;" class="sg">Setting de hoy</p>
-      <p class="sg" style="font-size:24px; font-weight:800; margin:0 0 4px; letter-spacing:-0.02em;">8 bloques<br>nuevos</p>
-      <p style="font-size:12px; color:rgba(255,255,255,0.4); margin:0;">Zonas A y C · sube ahora</p>
-    </div>
+        <!-- MAPA: derecha, girado +6deg -->
+        <div style="display:flex;flex-direction:column;align-items:center;z-index:1;transform:rotate(6deg) translateY(30px);transform-origin:bottom center;margin-left:-28px;">
+          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 24px 48px rgba(0,0,0,0.2),0 6px 16px rgba(0,0,0,0.1);opacity:0.88;">
+            <div style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;">
 
-    <!-- ROW 3: reserva + progreso -->
-    <div style="display:flex; gap:10px;">
-      <div style="flex:1; background: rgba(255,255,255,0.05); border-radius:22px; padding:16px;">
-        <i class="ti ti-calendar-event" style="font-size:18px; color:rgba(255,255,255,0.35);" aria-hidden="true"></i>
-        <p class="sg" style="font-size:20px; font-weight:800; margin:10px 0 2px; letter-spacing:-0.02em;">18:00</p>
-        <p style="font-size:11px; color:rgba(255,255,255,0.4); margin:0;">tu reserva de hoy</p>
-      </div>
-      <div style="flex:1; background: rgba(255,255,255,0.05); border-radius:22px; padding:16px;">
-        <div style="display:flex; align-items:flex-end; gap:4px; height:22px; margin-bottom:8px;">
-          <div style="width:5px; height:8px; background:rgba(255,255,255,0.15); border-radius:3px;"></div>
-          <div style="width:5px; height:14px; background:rgba(255,255,255,0.15); border-radius:3px;"></div>
-          <div style="width:5px; height:11px; background:rgba(255,255,255,0.15); border-radius:3px;"></div>
-          <div style="width:5px; height:18px; background:rgba(255,255,255,0.15); border-radius:3px;"></div>
-          <div style="width:5px; height:22px; background: var(--accent); border-radius:3px;"></div>
+              <div style="display:flex;background:rgba(255,255,255,0.07);border-radius:30px;padding:3px;margin:14px 14px 12px;">
+                <div style="flex:1;text-align:center;padding:7px 0;font-size:11px;font-weight:700;border-radius:20px;background:#E85D26;color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
+                <div style="flex:1;text-align:center;padding:7px 0;font-size:11px;font-weight:700;border-radius:20px;color:rgba(255,255,255,0.4);font-family:'Space Grotesk',sans-serif;">Vías</div>
+              </div>
+
+              <div style="margin:0 14px 10px;background:#1a1f2e;border-radius:16px;height:160px;position:relative;overflow:hidden;">
+                <svg viewBox="-20 0 208 132" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#252d3d" stroke="#2a3448" stroke-width="3"/>
+                  <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="none" stroke="#3d4d6a" stroke-width="1"/>
+                  <line x1="8" y1="88" x2="148" y2="88" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
+                  <line x1="58" y1="88" x2="58" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
+                  <line x1="108" y1="88" x2="108" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
+                  <rect x="68" y="117" width="30" height="6" fill="#1a1f2e"/>
+                  <line x1="68" y1="117" x2="68" y2="123" stroke="#3d4d6a" stroke-width="1"/>
+                  <line x1="98" y1="117" x2="98" y2="123" stroke="#3d4d6a" stroke-width="1"/>
+                  <text x="83" y="131" fill="rgba(255,255,255,0.4)" font-size="4" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ENTRADA</text>
+                  <text x="44" y="18" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ORGANIC</text>
+                  <circle cx="44" cy="32" r="11" fill="#1e2840"/><text x="44" y="36" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">12</text>
+                  <text x="100" y="14" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">CAVE</text>
+                  <circle cx="100" cy="28" r="11" fill="#1e2840"/><text x="100" y="32" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">7</text>
+                  <text x="152" y="22" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">WOODIE</text>
+                  <circle cx="152" cy="33" r="11" fill="#1e2840"/><text x="152" y="37" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
+                  <text x="34" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SLAB</text>
+                  <circle cx="34" cy="66" r="11" fill="#1e2840"/><text x="34" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">8</text>
+                  <text x="132" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">COMP</text>
+                  <circle cx="132" cy="66" r="11" fill="#1e2840"/><text x="132" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">9</text>
+                  <text x="30" y="93" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 1</text>
+                  <circle cx="30" cy="108" r="11" fill="#1e2840"/><text x="30" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">4</text>
+                  <text x="83" y="93" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">BOULDER</text>
+                  <circle cx="83" cy="108" r="11" fill="#1e2840"/><text x="83" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">5</text>
+                  <text x="128" y="93" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 2</text>
+                  <circle cx="128" cy="108" r="11" fill="#1e2840"/><text x="128" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
+                </svg>
+              </div>
+
+              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 14px 8px;">Filtrar por color</div>
+              <div style="display:flex;gap:5px;margin:0 14px 10px;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block;"></span>15</div>
+                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#27AE60;display:inline-block;"></span>19</div>
+                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>18</div>
+                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</div>
+                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#9B51E0;display:inline-block;"></span>9</div>
+              </div>
+
+              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 14px 8px;">Bloques · 84</div>
+              <div style="display:flex;flex-direction:column;gap:6px;margin:0 14px;flex:1;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
+                  <div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">4C</div>
+                  <div><div style="font-size:11px;font-weight:600;color:white;">Organic Blanco 1</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · fácil</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
+                  <div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5A</div>
+                  <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:white;">Organic Blanco 2</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · fácil</div></div>
+                  <i class="ti ti-check" style="font-size:14px;color:#E85D26;"></i>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
+                  <div style="width:32px;height:32px;border-radius:10px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div>
+                  <div><div style="font-size:11px;font-weight:600;color:white;">Organic Verde 1</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · 2 intentos</div></div>
+                </div>
+              </div>
+
+              <div style="display:flex;justify-content:space-around;align-items:center;padding:10px 8px 12px;border-top:1px solid rgba(255,255,255,0.06);margin-top:8px;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Inicio</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-map-2" style="font-size:13px;color:white;"></i></div>
+                  <span style="font-size:7px;color:white;font-weight:600;">Mapa</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Perfil</span></div>
+              </div>
+            </div>
+          </div>
+          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Mapa y bloques</p>
         </div>
-        <p class="sg" style="font-size:20px; font-weight:800; margin:0 0 2px; letter-spacing:-0.02em;">12 <span style="font-size:11px; font-weight:500; color: var(--accent);">+15%</span></p>
-        <p style="font-size:11px; color:rgba(255,255,255,0.4); margin:0;">tops esta semana</p>
-      </div>
-    </div>
 
-  </div>
-
-  <div class="bottomnav">
-    <div class="navitem active">
-      <div style="width:36px; height:26px; border-radius:12px; background: var(--accent); display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-home" aria-hidden="true" style="font-size:16px; color:white;"></i>
-      </div>
-      Inicio
-    </div>
-    <div class="navitem">
-      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-calendar" aria-hidden="true" style="font-size:16px;"></i>
-      </div>
-      Reservas
-    </div>
-    <div class="navitem">
-      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-map-2" aria-hidden="true" style="font-size:16px;"></i>
-      </div>
-      Mapa
-    </div>
-    <div class="navitem">
-      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-users" aria-hidden="true" style="font-size:16px;"></i>
-      </div>
-      Comunidad
-    </div>
-    <div class="navitem">
-      <div style="width:36px; height:26px; display:flex; align-items:center; justify-content:center;">
-        <i class="ti ti-user" aria-hidden="true" style="font-size:16px;"></i>
-      </div>
-      Perfil
+      </div><!-- end flex container -->
     </div>
   </div>
-
 </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- WHY -->
 <section style="padding:60px 8% 40px;text-align:center;">
@@ -774,7 +1056,7 @@
         </div>
         <div class="block-status">
           <span class="status-pill custom">A medida</span>
-          <span class="status-note">Se desarrolla mientras disfrutáis de la prueba gratuita</span>
+          <span class="status-note">Se desarrolla tras la prueba gratuita</span>
         </div>
       </div>
 
