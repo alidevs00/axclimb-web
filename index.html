@@ -548,12 +548,50 @@
       padding: 15px 20px;
       font-size: 16px;
     }
-    /* PHONES — escala toda la composición al ancho del móvil */
-    .phone-wrapper { order: -1; overflow: hidden; width: 100%; height: auto; }
-    .phone-showcase { transform: scale(0.6); transform-origin: top center; margin-bottom: -230px; }
+    /* PHONES en móvil — slider horizontal con scroll snap */
+    .phone-wrapper { order: -1; width: 100%; overflow: visible; height: auto; padding: 0; }
+    .phone-showcase {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 20px;
+      padding: 16px 24px 8px;
+      transform: none;
+      margin-bottom: 0;
+    }
+    .phone-showcase::-webkit-scrollbar { display: none; }
+    .phone-slot.slot-side-left,
+    .phone-slot.slot-side-right,
+    .phone-slot.slot-main {
+      transform: none !important;
+      margin: 0 !important;
+      flex-shrink: 0;
+      scroll-snap-align: center;
+      z-index: 1 !important;
+      opacity: 1 !important;
+    }
+    .phone-slot .phone-frame { width: 240px !important; opacity: 1 !important; }
+    .phone-slot .phone-screen { height: 480px !important; }
     .phone-bg-ring { display: none; }
     .phone-bg-ring-2 { display: none; }
-    .phone-caption { font-size: 8px; }
+    .phone-caption { font-size: 9px; margin-top: 10px; }
+    /* indicador de scroll */
+    .phone-wrapper::after {
+      content: '← desliza →';
+      display: block;
+      text-align: center;
+      font-size: 10px;
+      color: var(--mid);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      padding-bottom: 8px;
+    }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
