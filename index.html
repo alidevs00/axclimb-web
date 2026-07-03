@@ -529,17 +529,13 @@
     nav ul { display: none; }
     .nav-hamburger { display: flex; }
 
-    /* HERO completo — columna única, ancho controlado */
+    /* HERO móvil */
     .hero {
       grid-template-columns: 1fr;
-      padding: 28px 6% 0;
-      gap: 20px;
+      padding: 28px 6% 24px;
+      gap: 24px;
       text-align: center;
-      max-width: 100vw;
       overflow: hidden;
-    }
-    .hero-copy {
-      padding: 0 4%;
     }
     .hero-eyebrow { margin: 0 auto 12px; }
     .hero h1 { font-size: 30px; }
@@ -550,25 +546,82 @@
     }
     .btn-primary, .btn-ghost {
       display: inline-block; width: auto;
-      text-align: center; margin-left: 0;
-      padding: 11px 22px;
-      font-size: 14px;
+      margin-left: 0; padding: 11px 22px; font-size: 14px;
     }
-    /* PHONES en móvil */
+
+    /* PHONE SLIDER móvil */
     .phone-wrapper {
       order: -1;
       width: 100%;
       overflow: hidden;
-      padding: 0;
-      display: flex;
-      justify-content: center;
+      position: relative;
     }
-    .phone-showcase {
-      /* scale aplicado por JS */
-    }
+    .phone-showcase { display: none; }
     .phone-bg-ring { display: none; }
     .phone-bg-ring-2 { display: none; }
-    .phone-caption { font-size: 9px; }
+
+    .mobile-slider {
+      display: flex;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 0;
+      width: 100%;
+    }
+    .mobile-slider::-webkit-scrollbar { display: none; }
+    .mobile-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 0 16px;
+    }
+    .mobile-slide .slide-frame {
+      width: 220px;
+      background: #111;
+      border-radius: 36px;
+      padding: 9px;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.14);
+    }
+    .mobile-slide .slide-screen {
+      width: 202px;
+      height: 410px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #0B0B0D;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      color: white;
+    }
+    .mobile-slide .slide-caption {
+      margin-top: 12px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--mid);
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .slider-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--stone);
+      transition: background 0.2s, width 0.2s;
+    }
+    .slider-dot.active {
+      background: var(--hold-orange);
+      width: 18px;
+      border-radius: 3px;
+    }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
@@ -956,8 +1009,154 @@
   </div>
 </div>
 
+<!-- MOBILE SLIDER (solo visible en móvil) -->
+<div class="mobile-slider-wrap" style="display:none;">
+  <div class="mobile-slider" id="mobileSlider">
 
-<!-- WHY -->
+    <!-- SLIDE 1: PERFIL -->
+    <div class="mobile-slide">
+      <div class="slide-frame">
+        <div class="slide-screen" style="--accent:#E85D26;">
+          <div style="padding:14px 14px 10px;display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-0.02em;">Alicia</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Madrid · escaladora desde 2021</div></div>
+            <div style="width:32px;height:32px;border-radius:50%;background:#E85D26;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:13px;">A</div>
+          </div>
+          <div style="display:flex;gap:5px;padding:0 14px;margin-bottom:10px;">
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">284</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">bloques</div></div>
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">48</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">sesiones</div></div>
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">6B</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">nivel máx</div></div>
+          </div>
+          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Bloques por mes</div><div style="display:flex;align-items:flex-end;gap:3px;height:32px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Feb</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:22px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Mar</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Abr</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">May</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:32px;background:#E85D26;border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Jun</span></div></div></div>
+          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Esta semana</div><div style="display:flex;gap:3px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">L</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">M</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">X</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">J</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">V</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">S</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">D</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div></div></div>
+          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Nivel más escalado</div><div style="display:flex;gap:3px;align-items:flex-end;height:28px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">5A</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.12);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">5B</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:#E85D26;border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:white;font-weight:700;">5C</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:14px;background:rgba(255,255,255,0.12);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">6A</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">6B</span></div></div></div>
+          <div style="padding:0 14px;flex:1;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Últimos bloques</div><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.05);border-radius:8px;padding:6px 8px;"><div style="width:22px;height:22px;border-radius:6px;background:#9B51E0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">6A</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:white;">Cave Violeta 3</div><div style="font-size:7px;color:rgba(255,255,255,0.4);">Cave · hoy</div></div><i class="ti ti-check" style="font-size:10px;color:#E85D26;"></i></div><div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.05);border-radius:8px;padding:6px 8px;"><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:white;">Organic Naranja 2</div><div style="font-size:7px;color:rgba(255,255,255,0.4);">Organic · ayer</div></div><i class="ti ti-check" style="font-size:10px;color:#E85D26;"></i></div></div></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mapa</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-user" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-caption">Perfil y estadísticas</div>
+    </div>
+
+    <!-- SLIDE 2: INICIO -->
+    <div class="mobile-slide">
+      <div class="slide-frame">
+        <div class="slide-screen" style="--accent:#E85D26;">
+          <svg style="position:absolute;top:0;left:0;width:100%;height:160px;opacity:0.2;pointer-events:none;" viewBox="0 0 202 160" preserveAspectRatio="none"><path d="M-10,30 C40,8 90,52 150,22 C190,4 220,36 250,15" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/><path d="M-10,60 C50,38 100,82 160,52 C200,34 225,66 250,45" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none"/></svg>
+          <div style="padding:14px 14px 0;position:relative;z-index:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:7px;"><div style="width:26px;height:26px;border-radius:8px;background:#E85D26;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:11px;font-family:'Space Grotesk',sans-serif;">S</div><span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;">Tu rocódromo</span></div>
+              <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;"><i class="ti ti-bell" style="font-size:12px;color:rgba(255,255,255,0.4);"></i></div>
+            </div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:2px;">Hola,<br>Alicia.</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px;">Madrid · sesión nº 48</div>
+          </div>
+          <div style="padding:0 14px;display:flex;flex-direction:column;gap:7px;flex:1;position:relative;z-index:1;">
+            <div style="display:flex;gap:7px;">
+              <div style="flex:1.4;background:#E85D26;border-radius:16px;padding:12px;position:relative;overflow:hidden;">
+                <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.75;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Acceso rápido</div>
+                <div style="background:white;border-radius:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;"><img src="images/qr-demo.png" alt="QR" style="width:34px;height:34px;"></div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;">
+                <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);font-family:'Space Grotesk',sans-serif;">Bono</div>
+                <div><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;margin:0;letter-spacing:-0.02em;line-height:1;">7</div><div style="font-size:9px;color:rgba(255,255,255,0.4);">sesiones</div></div>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:14px;position:relative;overflow:hidden;">
+              <div style="position:absolute;width:14px;height:22px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#E85D26;top:10px;right:44px;transform:rotate(20deg);"></div>
+              <div style="position:absolute;width:10px;height:16px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#F2C94C;top:28px;right:18px;transform:rotate(-15deg);"></div>
+              <div style="position:absolute;width:12px;height:18px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#2D9CDB;top:8px;right:10px;transform:rotate(10deg);"></div>
+              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:4px;font-family:'Space Grotesk',sans-serif;">Setting de hoy</div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;">8 bloques<br>nuevos</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;">Zonas A y C · sube ahora</div>
+            </div>
+            <div style="display:flex;gap:7px;">
+              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
+                <i class="ti ti-calendar-event" style="font-size:13px;color:rgba(255,255,255,0.35);"></i>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;margin:6px 0 2px;letter-spacing:-0.02em;">18:00</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.4);">tu reserva</div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
+                <div style="display:flex;align-items:flex-end;gap:3px;height:16px;margin-bottom:5px;"><div style="width:4px;height:6px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:10px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:8px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:13px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:16px;background:#E85D26;border-radius:2px;"></div></div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.02em;">12 <span style="font-size:9px;font-weight:500;color:#E85D26;">+15%</span></div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.4);">tops</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-home" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mapa</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-caption">Inicio</div>
+    </div>
+
+    <!-- SLIDE 3: MAPA -->
+    <div class="mobile-slide">
+      <div class="slide-frame">
+        <div class="slide-screen" style="--accent:#E85D26;">
+          <div style="display:flex;background:rgba(255,255,255,0.07);border-radius:24px;padding:3px;margin:12px 12px 10px;">
+            <div style="flex:1;text-align:center;padding:6px 0;font-size:10px;font-weight:700;border-radius:18px;background:#E85D26;color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
+            <div style="flex:1;text-align:center;padding:6px 0;font-size:10px;font-weight:700;border-radius:18px;color:rgba(255,255,255,0.4);font-family:'Space Grotesk',sans-serif;">Vías</div>
+          </div>
+          <div style="margin:0 12px 8px;background:#1a1f2e;border-radius:12px;height:130px;overflow:hidden;">
+            <svg viewBox="-20 0 208 132" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#252d3d" stroke="#2a3448" stroke-width="3"/>
+              <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="none" stroke="#3d4d6a" stroke-width="1"/>
+              <rect x="2" y="117" width="30" height="6" fill="#1a1f2e"/><line x1="68" y1="117" x2="68" y2="123" stroke="#3d4d6a" stroke-width="1"/><line x1="98" y1="117" x2="98" y2="123" stroke="#3d4d6a" stroke-width="1"/>
+              <line x1="8" y1="88" x2="148" y2="88" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/><line x1="58" y1="88" x2="58" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/><line x1="108" y1="88" x2="108" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
+              <text x="44" y="18" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ORGANIC</text><circle cx="44" cy="32" r="11" fill="#1e2840"/><text x="44" y="36" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">12</text>
+              <text x="100" y="14" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">CAVE</text><circle cx="100" cy="28" r="11" fill="#1e2840"/><text x="100" y="32" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">7</text>
+              <text x="152" y="22" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">WOODIE</text><circle cx="152" cy="33" r="11" fill="#1e2840"/><text x="152" y="37" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
+              <text x="34" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SLAB</text><circle cx="34" cy="66" r="11" fill="#1e2840"/><text x="34" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">8</text>
+              <text x="132" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">COMP</text><circle cx="132" cy="66" r="11" fill="#1e2840"/><text x="132" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">9</text>
+              <text x="30" y="94" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 1</text><circle cx="30" cy="112" r="11" fill="#1e2840"/><text x="30" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">4</text>
+              <text x="83" y="94" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">BOULDER</text><circle cx="83" cy="112" r="11" fill="#1e2840"/><text x="83" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">5</text>
+              <text x="128" y="94" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 2</text><circle cx="128" cy="112" r="11" fill="#1e2840"/><text x="128" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
+              <text x="83" y="131" fill="rgba(255,255,255,0.4)" font-size="4" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ENTRADA</text>
+            </svg>
+          </div>
+          <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 12px 6px;">Filtrar por color</div>
+          <div style="display:flex;gap:4px;margin:0 12px 8px;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;"></span>15</div>
+            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#27AE60;display:inline-block;"></span>19</div>
+            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>18</div>
+            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</div>
+          </div>
+          <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 12px 6px;">Bloques · 84</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin:0 12px;flex:1;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">4C</div><div><div style="font-size:10px;font-weight:600;color:white;">Organic Blanco 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · fácil</div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5A</div><div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Organic Blanco 2</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · fácil</div></div><i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i></div>
+            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div><div><div style="font-size:10px;font-weight:600;color:white;">Organic Verde 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · 2 intentos</div></div></div>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-map-2" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Mapa</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-caption">Mapa y bloques</div>
+    </div>
+
+  </div>
+  <!-- DOTS -->
+  <div class="slider-dots" id="sliderDots">
+    <div class="slider-dot active"></div>
+    <div class="slider-dot"></div>
+    <div class="slider-dot"></div>
+  </div>
+</div>
 <section style="padding:60px 8% 40px;text-align:center;">
   <div class="section-label">¿Por qué AX Climb?</div>
   <h2 class="section-title">Menos gestión. Más escalada.</h2>
@@ -1477,26 +1676,33 @@ form.addEventListener('submit', async (e) => {
 
   checkForm();
 });
-  // MOBILE PHONE SHOWCASE SCALE
-  function scalePhones() {
-    if (window.innerWidth > 860) return;
-    const showcase = document.querySelector('.phone-showcase');
-    if (!showcase) return;
-    // reset first
-    showcase.style.transform = 'none';
-    showcase.style.marginBottom = '0';
-    const naturalWidth = showcase.scrollWidth;
-    const available = window.innerWidth;
-    const scale = (available / naturalWidth) * 0.92;
-    const naturalHeight = showcase.scrollHeight;
-    const newHeight = naturalHeight * scale;
-    const diff = naturalHeight - newHeight;
-    showcase.style.transform = `scale(${scale})`;
-    showcase.style.transformOrigin = 'top center';
-    showcase.style.marginBottom = `-${diff}px`;
+  // MOBILE SLIDER
+  function initMobileSlider() {
+    const isMobile = window.innerWidth <= 860;
+    const wrap = document.querySelector('.mobile-slider-wrap');
+    const phoneWrapper = document.querySelector('.phone-wrapper');
+    if (!wrap || !phoneWrapper) return;
+    if (isMobile) {
+      wrap.style.display = 'block';
+      phoneWrapper.style.display = 'none';
+    } else {
+      wrap.style.display = 'none';
+      phoneWrapper.style.display = '';
+    }
   }
-  scalePhones();
-  window.addEventListener('resize', scalePhones);
+
+  // Dots sync
+  const slider = document.getElementById('mobileSlider');
+  const dots = document.querySelectorAll('.slider-dot');
+  if (slider) {
+    slider.addEventListener('scroll', () => {
+      const idx = Math.round(slider.scrollLeft / slider.clientWidth);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    });
+  }
+
+  initMobileSlider();
+  window.addEventListener('resize', initMobileSlider);
 </script>
 </body>
 </html>
