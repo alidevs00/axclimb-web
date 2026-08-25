@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, gym, message } = req.body;
+  const { name, gym, email, color, message } = req.body;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -19,13 +19,16 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: "axclimb@gmail.com",
+      replyTo: email,
       subject: `Nuevo lead: ${gym}`,
       text: `
 Nombre: ${name}
 Rocódromo: ${gym}
+Email: ${email}
+Color de acento: ${color || "(no especificado)"}
 
 Mensaje:
-${message}
+${message || "(sin mensaje)"}
       `,
     });
 

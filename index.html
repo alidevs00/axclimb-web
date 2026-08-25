@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AX Climb — La app para tu rocódromo</title>
+<title>AX Climb — La app para vuestro rocódromo</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
@@ -61,6 +61,9 @@
   nav ul { list-style: none; display: flex; gap: 32px; align-items: center; }
   nav ul a { text-decoration: none; color: var(--slate); font-size: 14px; font-weight: 500; transition: color 0.15s; }
   nav ul a:hover { color: var(--hold-orange); }
+
+  /* Offset anchor-scroll targets so the sticky nav (64px) doesn't cover the top of the section */
+  #modulos, #trial, #equipo, #contacto { scroll-margin-top: 84px; }
   .nav-cta {
     background: var(--black) !important; color: var(--white) !important;
     padding: 8px 20px; border-radius: 40px;
@@ -75,7 +78,86 @@
     padding: 120px 8% 40px;
     max-width: 1280px; margin: 0 auto;
   }
-  .phone-wrapper { position: relative; height: 500px; display: flex; align-items: flex-end; justify-content: center; overflow: visible; }
+  .phone-wrapper { position: relative; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: visible; padding: 24px 0; }
+
+  /* APP SHOWCASE (CSS mockups matching the real app, fan layout + theme switch) */
+  .app-showcase { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 28px; --mk-bg: var(--chalk); --mk-card: #FFFFFF; --mk-card-soft: rgba(14,14,14,0.05); --mk-text: var(--black); --mk-text-soft: rgba(14,14,14,0.45); --mk-border: rgba(14,14,14,0.08); transition: color 0.2s; }
+  .app-showcase.theme-dark { --mk-bg: #0B0B0D; --mk-card: #18181A; --mk-card-soft: rgba(255,255,255,0.06); --mk-text: #FFFFFF; --mk-text-soft: rgba(255,255,255,0.45); --mk-border: rgba(255,255,255,0.08); }
+  .app-fan { display: flex; align-items: flex-end; justify-content: center; gap: 0; }
+  .app-fan-slot { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .app-fan-slot .app-frame { width: 210px; }
+  .app-fan-slot.slot-left { z-index: 2; transform: rotate(-6deg) translateY(26px); transform-origin: bottom center; margin-right: -28px; }
+  .app-fan-slot.slot-right { z-index: 2; transform: rotate(6deg) translateY(26px); transform-origin: bottom center; margin-left: -28px; }
+  .app-fan-slot.slot-center { z-index: 3; }
+  .app-fan-slot.slot-center .app-frame { width: 220px; }
+  .app-frame { position: relative; background: #111; border-radius: 40px; padding: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.1); }
+  .app-frame-screen { width: 100%; aspect-ratio: 550 / 1140; border-radius: 29px; overflow: hidden; background: var(--mk-bg); transition: background 0.2s; }
+  .app-showcase-caption { text-align: center; font-size: 10px; font-weight: 600; color: var(--mid); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; }
+  .app-theme-switch-wrap { display: flex; align-items: center; gap: 10px; }
+
+  /* MOCKUP SCREEN CONTENT */
+  .mk-screen { width: 100%; height: 100%; background: var(--mk-bg); color: var(--mk-text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; position: relative; transition: background 0.2s, color 0.2s; }
+  .mk-header { padding: 16px 14px 8px; }
+  .mk-avatar-row { display: flex; align-items: center; gap: 10px; }
+  .mk-avatar-wrap { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
+  .mk-avatar-ring { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mk-avatar { position: absolute; inset: 4px; border-radius: 50%; background: var(--hold-orange-light); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 13px; color: var(--hold-orange); }
+  .mk-week-row { display: flex; justify-content: space-between; margin-top: 12px; }
+  .mk-icon-box { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 6px; border: 1px solid var(--mk-border); background: var(--mk-card-soft); margin-right: 5px; vertical-align: middle; }
+  .mk-week-day { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .mk-week-day .lbl { font-size: 6.5px; font-weight: 700; color: var(--mk-text-soft); }
+  .mk-week-day.today .lbl { color: var(--hold-orange); }
+  .mk-week-dot { width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; }
+  .mk-week-dot.done { background: rgba(39,174,96,0.15); color: #27AE60; }
+  .mk-week-dot.miss { background: var(--mk-card-soft); color: var(--mk-text-soft); }
+  .mk-week-dot.today { background: var(--hold-orange); color: #fff; }
+  .mk-name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 800; line-height: 1.15; }
+  .mk-sub { font-size: 9px; color: var(--mk-text-soft); margin-top: 2px; }
+  .mk-badges { display: flex; gap: 6px; padding: 0 14px; margin-top: 8px; }
+  .mk-badge { font-size: 8px; font-weight: 700; padding: 4px 8px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; color: #fff; }
+  .mk-card { background: var(--mk-card); border: 1px solid var(--mk-border); border-radius: 14px; padding: 12px; margin: 10px 14px 0; transition: background 0.2s, border-color 0.2s; }
+  .mk-card-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--mk-text-soft); display: flex; align-items: center; gap: 5px; }
+  .mk-card-big { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; margin-top: 4px; }
+  .mk-card-note { font-size: 8px; color: var(--mk-text-soft); margin-top: 2px; }
+  .mk-section-label { font-size: 6.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mk-text-soft); padding: 0 14px; margin-top: 14px; margin-bottom: 6px; }
+  .mk-list { padding: 0 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
+  .mk-row { display: flex; align-items: center; gap: 7px; background: var(--mk-card-soft); border-radius: 9px; padding: 6px 8px; transition: background 0.2s; }
+  .mk-grade { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; color: #fff; flex-shrink: 0; }
+  .mk-row-text { flex: 1; min-width: 0; }
+  .mk-row-text .n { font-size: 9px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mk-row-text .s { font-size: 7px; color: var(--mk-text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mk-row-val { font-size: 9px; font-weight: 700; color: var(--mk-text-soft); flex-shrink: 0; }
+  .mk-nav { margin-top: auto; display: flex; justify-content: space-around; align-items: center; padding: 9px 6px 12px; border-top: 1px solid var(--mk-border); transition: border-color 0.2s; }
+  .mk-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 5.5px; color: var(--mk-text-soft); flex: 1; min-width: 0; }
+  .mk-nav-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .mk-nav-icon { display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 5px; }
+  .mk-nav-item i { font-size: 12px; }
+  .mk-nav-item.active .mk-nav-icon { background: var(--hold-orange); }
+  .mk-nav-item.active i { color: #fff; }
+  .mk-nav-item.active span { color: var(--hold-orange); font-weight: 700; }
+  .mk-blob { position: absolute; border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+  .mk-bars { display: flex; align-items: flex-end; gap: 2px; height: 13px; }
+  .mk-bars span { width: 3px; border-radius: 1px; background: var(--mk-text-soft); opacity: 0.5; display: block; }
+  .mk-bars span:last-child { background: var(--hold-orange); opacity: 1; }
+  .mk-rating { font-size: 7px; font-weight: 800; color: #8A6D1F; background: #F5E9C4; border: 1px solid #E8CE7A; border-radius: 20px; padding: 2px 5px; flex-shrink: 0; }
+  .mk-map { width: 100%; height: 100%; display: block; }
+  .mk-filter-pill { font-size: 5px; font-weight: 700; padding: 3px 5px; border-radius: 20px; background: var(--mk-card-soft); color: var(--mk-text-soft); white-space: nowrap; font-family: 'Space Grotesk', sans-serif; flex-shrink: 0; }
+  .mk-filter-pill.active { background: var(--hold-orange); color: #fff; }
+  .mk-map-dark { display: none; }
+  .app-showcase.theme-dark .mk-map-light { display: none; }
+  .app-showcase.theme-dark .mk-map-dark { display: block; }
+  .mk-avatar-ring-dark { display: none; }
+  .app-showcase.theme-dark .mk-avatar-ring-light { display: none; }
+  .app-showcase.theme-dark .mk-avatar-ring-dark { display: block; }
+  .mk-map-zone-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; }
+  .mk-map-zone-label { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  .app-theme-switch { position: relative; width: 50px; height: 28px; border-radius: 16px; background: var(--stone); border: none; padding: 0; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+  .app-theme-switch.on { background: var(--black); }
+  .app-theme-switch-icon-slot { position: absolute; top: 0; width: 25px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 12px; pointer-events: none; }
+  .app-theme-switch-icon-slot.sun { left: 0; color: var(--white); }
+  .app-theme-switch-icon-slot.moon { right: 0; color: var(--black); opacity: 0.55; }
+  .app-theme-switch-knob { position: absolute; top: 3px; left: 3px; z-index: 2; display: block; width: 22px; height: 22px; border-radius: 50%; background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.25); transition: transform 0.2s; }
+  .app-theme-switch.on .app-theme-switch-knob { transform: translateX(22px); }
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--hold-orange-light); color: var(--hold-orange);
@@ -104,150 +186,6 @@
   .btn-ghost:hover { border-color: var(--black); color: var(--black); }
 
 
-  /* PHONE SHOWCASE */
-  .phone-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position: relative;
-    padding-top: 0;
-  }
-  .phone-showcase {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 0;
-  }
-  .phone-slot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .phone-slot .phone-frame {
-    margin: 0;
-    width: 200px;
-    background: #111;
-    border-radius: 32px;
-    padding: 8px;
-    box-shadow: 0 32px 64px rgba(0,0,0,0.25), 0 6px 16px rgba(0,0,0,0.12);
-  }
-  .phone-slot .phone-screen {
-    width: 184px;
-    height: 398px;
-    border-radius: 25px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    color: #fff;
-    background: #0B0B0D;
-    flex-shrink: 0;
-  }
-  .phone-slot.slot-main {
-    z-index: 3;
-  }
-  .phone-slot.slot-main .phone-frame {
-    box-shadow: 0 48px 96px rgba(0,0,0,0.32), 0 8px 24px rgba(0,0,0,0.16);
-  }
-  .phone-slot.slot-side-left {
-    z-index: 2;
-    transform: rotate(-6deg) translateY(28px);
-    transform-origin: bottom center;
-    margin-right: -24px;
-  }
-  .phone-slot.slot-side-left .phone-frame {
-    opacity: 0.82;
-  }
-  .phone-slot.slot-side-right {
-    z-index: 2;
-    transform: rotate(6deg) translateY(28px);
-    transform-origin: bottom center;
-    margin-left: -24px;
-  }
-  .phone-slot.slot-side-right .phone-frame {
-    opacity: 0.82;
-  }
-  .phone-caption {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--mid);
-    margin-top: 14px;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-
-  /* MINI MAP SCREEN (side phone) */
-  .mm-seg { display: flex; background: rgba(255,255,255,0.06); border-radius: 30px; padding: 3px; margin: 14px 16px 10px; }
-  .mm-seg-btn { flex: 1; text-align: center; padding: 6px 0; font-size: 10px; font-weight: 700; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; }
-  .mm-seg-btn.active { background: var(--accent); color: white; }
-  .mm-seg-btn:not(.active) { color: rgba(255,255,255,0.4); }
-  .mm-zone-grid { margin: 0 16px 10px; background: rgba(255,255,255,0.04); border-radius: 14px; padding: 10px; position: relative; height: 110px; overflow: hidden; }
-  .mm-zone { position: absolute; background: rgba(255,255,255,0.06); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
-  .mm-zone .zn { font-size: 6px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-weight: 700; }
-  .mm-zone .zc { font-size: 13px; font-weight: 800; color: white; font-family: 'Space Grotesk', sans-serif; }
-  .mm-colors { display: flex; gap: 5px; margin: 0 16px 10px; overflow: hidden; }
-  .mm-chip { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.06); border-radius: 14px; padding: 4px 8px; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.7); flex-shrink: 0; }
-  .mm-dot { width: 8px; height: 8px; border-radius: 3px; flex-shrink: 0; }
-  .mm-list { margin: 0 16px; display: flex; flex-direction: column; gap: 6px; }
-  .mm-row { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 8px 10px; }
-  .mm-grade { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; flex-shrink: 0; }
-  .mm-row-text .nm { font-size: 10px; font-weight: 700; color: white; margin: 0; }
-  .mm-row-text .sb { font-size: 8px; color: rgba(255,255,255,0.4); margin: 1px 0 0; }
-
-  /* MINI PROFILE SCREEN (side phone) */
-  .mp-logo { text-align: center; padding: 16px 0 10px; }
-  .mp-logo span { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; color: rgba(255,255,255,0.85); }
-  .mp-pay { margin: 0 16px 12px; background: rgba(255,255,255,0.06); border-radius: 14px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; }
-  .mp-pay-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-  .mp-pay-label { font-size: 11px; font-weight: 700; color: white; flex: 1; }
-  .mp-section-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.35); margin: 0 16px 8px; }
-  .mp-blocks-row { display: flex; gap: 6px; margin: 0 16px 14px; overflow: hidden; }
-  .mp-block-card { flex-shrink: 0; width: 92px; background: rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; }
-  .mp-block-grade { width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; margin-bottom: 8px; }
-  .mp-block-card .bn { font-size: 9px; font-weight: 700; color: white; margin: 0 0 1px; line-height: 1.2; }
-  .mp-block-card .bs { font-size: 7px; color: rgba(255,255,255,0.4); margin: 0; }
-  .mp-tabs { display: flex; gap: 5px; margin: 0 16px 12px; }
-  .mp-tab { font-size: 9px; font-weight: 700; padding: 5px 9px; border-radius: 14px; }
-  .mp-tab.active { background: var(--accent); color: white; }
-  .mp-tab:not(.active) { color: rgba(255,255,255,0.35); }
-  .mp-bars { display: flex; align-items: flex-end; gap: 6px; margin: 0 16px; height: 70px; }
-  .mp-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .mp-bar-val { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.6); }
-  .mp-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--accent); }
-  .mp-bar-lbl { font-size: 6.5px; color: rgba(255,255,255,0.35); margin-top: 2px; }
-  .phone-outer {
-    width: 270px; height: 560px; background: var(--black); border-radius: 44px; padding: 12px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10);
-    position: relative; z-index: 2;
-  }
-  .phone-inner { width: 100%; height: 100%; background: #141414; border-radius: 34px; overflow: hidden; }
-  .phone-notch { width: 90px; height: 26px; background: var(--black); border-radius: 0 0 16px 16px; margin: 0 auto; position: relative; z-index: 10; }
-  .phone-status { display: flex; justify-content: space-between; align-items: center; padding: 4px 20px 0; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.8); }
-  .app-header-bar { padding: 12px 18px 10px; display: flex; justify-content: space-between; align-items: center; }
-  .app-logo-sm { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.04em; }
-  .app-logo-sm span { color: var(--hold-orange); }
-  .app-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--hold-orange); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; font-family: 'Space Grotesk', sans-serif; }
-  .app-hero-card { margin: 0 16px 14px; background: linear-gradient(135deg, #E85D26 0%, #C03F10 100%); border-radius: 18px; padding: 16px; color: white; }
-  .app-hero-card p { font-size: 9px; opacity: 0.8; margin-bottom: 2px; }
-  .app-hero-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -0.03em; }
-  .app-stats-row { display: flex; gap: 8px; margin-top: 12px; }
-  .app-stat { flex: 1; background: rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
-  .app-stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-  .app-stat .lbl { font-size: 8px; opacity: 0.75; display: block; white-space: nowrap; }
-  .app-section-title { color: rgba(255,255,255,0.5); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 18px 8px; }
-  .app-module-list { padding: 0 16px; display: flex; flex-direction: column; gap: 6px; }
-  .app-module-item { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 13px; display: flex; align-items: center; gap: 10px; }
-  .app-module-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-  .app-module-text .title { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.9); }
-  .app-module-text .sub { font-size: 8.5px; color: rgba(255,255,255,0.45); }
-  .app-nav-bar { margin-top: auto; padding: 10px 16px 0; display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.08); }
-  .app-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 7.5px; color: rgba(255,255,255,0.35); }
-  .app-nav-item.active { color: var(--hold-orange); }
-  .app-nav-item svg { width: 18px; height: 18px; }
   .phone-bg-ring { position: absolute; width: 620px; height: 620px; border: 70px solid rgba(232,93,38,0.09); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
   .phone-bg-ring-2 { position: absolute; width: 820px; height: 820px; border: 40px solid rgba(232,93,38,0.05); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
 
@@ -319,6 +257,7 @@
   .block-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: 40px; margin-bottom: 14px; }
   .block-tag.community { background: var(--hold-orange-light); color: var(--hold-orange); }
   .block-tag.gestion { background: rgba(255,255,255,0.1); color: white; }
+  .block-tag.admin { background: var(--black); color: white; }
   .block-head h3 { font-size: 26px; margin-bottom: 8px; }
   .product-block.gestion .block-head h3 { color: white; }
   .block-head p { font-size: 14px; color: var(--mid); max-width: 480px; line-height: 1.6; }
@@ -357,19 +296,14 @@
   @media (min-width: 861px) {
     .phase-arrow {
       display: flex; align-items: center; justify-content: center;
-      position: absolute; right: -30px; top: 50%; transform: translateY(-50%);
-      width: 24px; height: 24px; color: var(--stone); font-size: 18px; z-index: 2;
+      position: absolute; right: -26px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--white); border: 1px solid var(--stone);
+      color: var(--mid); font-size: 13px; z-index: 3;
     }
   }
   .trial-section { background: var(--white); border-top: 1px solid var(--stone); border-bottom: 1px solid var(--stone); padding: 90px 8%; }
   .trial-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .trial-steps { display: flex; flex-direction: column; gap: 0; margin-top: 36px; }
-  .trial-step { display: flex; gap: 20px; position: relative; }
-  .trial-step:not(:last-child)::before { content: ''; position: absolute; left: 19px; top: 40px; width: 1px; height: calc(100% - 8px); background: var(--stone); }
-  .step-num { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--stone); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--black); flex-shrink: 0; background: var(--chalk); position: relative; z-index: 1; }
-  .step-content { padding: 8px 0 32px; }
-  .step-content h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.02em; }
-  .step-content p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 
   /* TRIAL CARD */
   .trial-card { background: var(--black); border-radius: 24px; padding: 40px; color: white; }
@@ -389,10 +323,41 @@
     background: transparent;
     border: 1px solid rgba(255,255,255,0.15);
     color: white;
+    font-family: inherit;
+    font-size: 14px;
     padding: 12px 14px;
     border-radius: 12px;
     outline: none;
   }
+  .trial-card .trial-form input::placeholder,
+  .trial-card .trial-form textarea::placeholder {
+    font-family: inherit;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .trial-color-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+  .trial-color-field input[type="color"] {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+  }
+  .trial-color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .trial-color-field input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
+  .trial-color-label { display: flex; flex-direction: column; gap: 2px; }
+  .trial-color-label .label-title { font-size: 13px; font-weight: 500; color: white; }
+  .trial-color-label .label-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
 
   /* MODULE PICKER */
   .module-picker { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
@@ -461,19 +426,17 @@
   .team-section .section-label { color: rgba(255,255,255,0.4); }
   .team-section .section-title { color: var(--white); font-size: 36px; }
   .team-section .section-sub { color: rgba(255,255,255,0.55); margin-bottom: 0; }
-  .team-cards { display: flex; flex-direction: column; gap: 16px; }
-  .team-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+  .team-cards { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .team-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; gap: 16px; min-width: 0; }
   .team-avatar { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: white; flex-shrink: 0; }
+  .team-info { min-width: 0; }
   .team-info h4 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: white; letter-spacing: -0.02em; }
-  .team-info p { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .team-info p { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
 
   /* CTA */
   .cta-section { text-align: center; padding: 100px 8%; max-width: 700px; margin: 0 auto; }
   .cta-section h2 { font-size: clamp(34px, 5vw, 56px); margin-bottom: 20px; }
   .cta-section p { font-size: 17px; color: var(--mid); font-weight: 300; margin-bottom: 36px; line-height: 1.7; }
-  .contact-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
-  .contact-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--stone); border-radius: 40px; padding: 10px 20px; font-size: 14px; font-weight: 500; color: var(--slate); text-decoration: none; transition: border-color 0.15s, color 0.15s; }
-  .contact-chip:hover { border-color: var(--hold-orange); color: var(--hold-orange); }
 
   /* FOOTER */
   footer { border-top: 1px solid var(--stone); padding: 28px 8%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--mid); }
@@ -549,79 +512,18 @@
       margin-left: 0; padding: 11px 22px; font-size: 14px;
     }
 
-    /* PHONE SLIDER móvil */
+    /* APP SHOWCASE móvil */
     .phone-wrapper {
       order: -1;
       width: 100%;
-      overflow: hidden;
+      overflow: visible;
       position: relative;
     }
-    .phone-showcase { display: none; }
-    .phone-bg-ring { display: none; }
-    .phone-bg-ring-2 { display: none; }
-
-    .mobile-slider {
-      display: flex;
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      gap: 0;
-      width: 100%;
-    }
-    .mobile-slider::-webkit-scrollbar { display: none; }
-    .mobile-slide {
-      flex: 0 0 100%;
-      scroll-snap-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 8px 0 16px;
-    }
-    .mobile-slide .slide-frame {
-      width: 220px;
-      background: #111;
-      border-radius: 36px;
-      padding: 9px;
-      box-shadow: 0 32px 64px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.14);
-    }
-    .mobile-slide .slide-screen {
-      width: 202px;
-      height: 410px;
-      border-radius: 28px;
-      overflow: hidden;
-      background: #0B0B0D;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      color: white;
-    }
-    .mobile-slide .slide-caption {
-      margin-top: 12px;
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--mid);
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .slider-dots {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .slider-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--stone);
-      transition: background 0.2s, width 0.2s;
-    }
-    .slider-dot.active {
-      background: var(--hold-orange);
-      width: 18px;
-      border-radius: 3px;
-    }
+    .phone-bg-ring, .phone-bg-ring-2 { display: none; }
+    .app-fan-slot .app-frame { width: 142px; }
+    .app-fan-slot.slot-center .app-frame { width: 150px; }
+    .app-fan-slot.slot-left { margin-right: -20px; }
+    .app-fan-slot.slot-right { margin-left: -20px; }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
@@ -654,7 +556,6 @@
     .trial-inner { grid-template-columns: 1fr; gap: 40px; }
     .trial-card { padding: 28px 24px; }
     .trial-card h3 { font-size: 22px; }
-    .step-content { padding: 6px 0 24px; }
 
     /* DIFF */
     .diff-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
@@ -676,8 +577,6 @@
     .cta-section { padding: 64px 6%; }
     .cta-section h2 { font-size: 32px; }
     .cta-section .btn-primary { display: block; width: 100%; text-align: center; padding: 16px 20px; font-size: 15px; }
-    .contact-row { flex-direction: column; align-items: center; }
-    .contact-chip { width: 100%; justify-content: center; }
 
     /* FOOTER */
     footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 6%; }
@@ -719,454 +618,264 @@
     <div class="hero-copy">
       <div class="hero-eyebrow">Diseñado para rocódromos</div>
       <h1>Tu rocódromo,<em>en el bolsillo</em></h1>
-      <p class="hero-sub">AX Climb conecta a tu equipo con tus escaladores. Mapa, bloques, comunidad y estadísticas listos para usar desde el día uno — y reservas, abonos y pagos integrados con vuestro sistema cuando deis el paso.</p>
+      <p class="hero-sub">AX Climb conecta a vuestro equipo con vuestros escaladores. Mapa, bloques, comunidad y estadísticas listos para usar desde el día uno — y reservas, abonos y pagos integrados con vuestro sistema cuando deis el paso.</p>
       <div class="hero-buttons">
-        <a href="#trial" class="btn-primary">Solicita tu demo</a>
+        <a href="#trial" class="btn-primary">Solicitad vuestra demo</a>
         <a href="#modulos" class="btn-ghost">Ver módulos</a>
       </div>
     </div>
     <div class="phone-wrapper">
       <div class="phone-bg-ring"></div>
       <div class="phone-bg-ring-2"></div>
-      <div style="display:flex;align-items:flex-end;justify-content:center;gap:0;">
+      <div class="app-showcase" id="appShowcase">
+        <div class="app-fan">
 
-        <!-- PERFIL: izquierda, girado -6deg -->
-        <div style="display:flex;flex-direction:column;align-items:center;z-index:1;transform:rotate(-6deg) translateY(30px);transform-origin:bottom center;margin-right:-28px;">
-          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 24px 48px rgba(0,0,0,0.2),0 6px 16px rgba(0,0,0,0.1);opacity:0.88;flex-shrink:0;">
-            <div style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;position:relative;">
-
-              <!-- HEADER -->
-              <div style="padding:18px 16px 12px;display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.02em;">Alicia</div>
-                  <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px;">Madrid · escaladora desde 2021</div>
-                </div>
-                <div style="width:38px;height:38px;border-radius:50%;background:#E85D26;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:16px;">A</div>
-              </div>
-
-              <!-- STATS ROW -->
-              <div style="display:flex;gap:6px;padding:0 16px;margin-bottom:12px;">
-                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
-                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">284</div>
-                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">bloques totales</div>
-                </div>
-                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
-                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">48</div>
-                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">sesiones</div>
-                </div>
-                <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 8px;text-align:center;">
-                  <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;color:#E85D26;">6B</div>
-                  <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:2px;">nivel máx</div>
-                </div>
-              </div>
-
-              <!-- GRÁFICO MENSUAL -->
-              <div style="padding:0 16px;margin-bottom:8px;">
-                <div style="margin-bottom:6px;">
-                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);">Bloques por mes</span>
-                </div>
-                <div style="display:flex;align-items:flex-end;gap:4px;height:36px;">
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Feb</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:24px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mar</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:20px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Abr</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:28px;background:rgba(255,255,255,0.1);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">May</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:36px;background:#E85D26;border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">Jun</span></div>
-                </div>
-              </div>
-
-              <!-- CALENDARIO SEMANA -->
-              <div style="padding:0 16px;margin-bottom:8px;">
-                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Esta semana</div>
-                <div style="display:flex;gap:4px;">
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">L</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">M</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">X</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">J</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">V</span><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:11px;color:white;"></i></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">S</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;"><span style="font-size:7px;color:rgba(255,255,255,0.3);font-weight:600;">D</span><div style="width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);"></div></div>
-                </div>
-              </div>
-
-              <!-- NIVEL MÁS HECHO -->
-              <div style="padding:0 16px;margin-bottom:8px;margin-top:4px;">
-                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Nivel más escalado</div>
-                <div style="display:flex;gap:4px;align-items:flex-end;height:36px;margin-top:2px;">
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:10px;background:rgba(255,255,255,0.08);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">5A</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.12);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">5B</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:#E85D26;border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:white;font-weight:700;">5C</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.12);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">6A</span></div>
-                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:3px 3px 0 0;"></div><span style="font-size:6px;color:rgba(255,255,255,0.3);">6B</span></div>
-                </div>
-              </div>
-
-              <!-- ÚLTIMOS BLOQUES -->
-              <div style="padding:0 16px;flex:1;margin-top:6px;">
-                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:5px;">Últimos bloques</div>
-                <div style="display:flex;flex-direction:column;gap:4px;">
-                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
-                    <div style="width:24px;height:24px;border-radius:7px;background:#9B51E0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">6A</div>
-                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Cave Violeta 3</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Cave · hoy</div></div>
-                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
-                    <div style="width:24px;height:24px;border-radius:7px;background:#E85D26;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div>
-                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Organic Naranja 2</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · ayer</div></div>
-                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:6px 10px;">
-                    <div style="width:24px;height:24px;border-radius:7px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5B</div>
-                    <div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Slab Verde 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Slab · vie</div></div>
-                    <i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i>
-                  </div>
-                </div>
-              </div>
-
-              <!-- BOTTOM NAV -->
-              <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 8px 12px;border-top:1px solid rgba(255,255,255,0.06);background:rgba(11,11,13,0.92);backdrop-filter:blur(8px);">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Inicio</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Mapa</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-user" style="font-size:13px;color:white;"></i></div>
-                  <span style="font-size:7px;color:white;font-weight:600;">Perfil</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Perfil y estadísticas</p>
-        </div>
-
-        <!-- HOME: centro -->
-        <div style="display:flex;flex-direction:column;align-items:center;z-index:2;">
-          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,0.3),0 8px 24px rgba(0,0,0,0.15);">
-            <div id="phoneScreen" style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;position:relative;--accent:#E85D26;">
-
-              <svg style="position:absolute;top:0;left:0;width:100%;height:180px;opacity:0.2;pointer-events:none;" viewBox="0 0 236 180" preserveAspectRatio="none">
-                <path d="M-10,30 C40,8 90,52 150,22 C190,4 220,36 250,15" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
-                <path d="M-10,60 C50,38 100,82 160,52 C200,34 225,66 250,45" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none"/>
-              </svg>
-
-              <div style="padding:18px 16px 0;position:relative;z-index:1;">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-                  <div style="display:flex;align-items:center;gap:7px;">
-                    <div id="logoMark" style="width:28px;height:28px;border-radius:8px;background:#E85D26;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;font-family:'Space Grotesk',sans-serif;">S</div>
-                    <span id="brandName" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;">Tu rocódromo</span>
-                  </div>
-                  <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;">
-                    <i class="ti ti-bell" style="font-size:13px;color:rgba(255,255,255,0.4);"></i>
-                  </div>
-                </div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:3px;">Hola,<br>Alicia.</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:14px;">Madrid · sesión nº 48</div>
-              </div>
-
-              <div style="padding:0 12px;display:flex;flex-direction:column;gap:8px;flex:1;position:relative;z-index:1;">
-                <div style="display:flex;gap:8px;">
-                  <div id="passCard" style="flex:1.4;background:#E85D26;border-radius:16px;padding:12px;position:relative;overflow:hidden;">
-                    <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.75;margin-bottom:8px;font-family:'Space Grotesk',sans-serif;">Acceso rápido</div>
-                    <div style="background:white;border-radius:8px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
-                      <img src="images/qr-demo.png" alt="QR" style="width:40px;height:40px;display:block;">
-                    </div>
-                    <div style="position:absolute;width:60px;height:60px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:rgba(255,255,255,0.15);top:-20px;right:-20px;"></div>
-                  </div>
-                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;">
-                    <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);font-family:'Space Grotesk',sans-serif;">Bono</div>
-                    <div>
-                      <div style="font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1;font-family:'Space Grotesk',sans-serif;">7</div>
-                      <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">sesiones</div>
+          <!-- PERFIL -->
+          <div class="app-fan-slot slot-left">
+            <div class="app-frame">
+              <div class="app-frame-screen">
+                <div class="mk-screen">
+                  <div class="mk-header">
+                    <div class="mk-avatar-row">
+                      <div class="mk-avatar-wrap">
+                        <svg class="mk-avatar-ring mk-avatar-ring-light" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E9E4DC" stroke-width="3"/>
+                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E85D26" stroke-width="3" stroke-linecap="round" stroke-dasharray="80.7 113.1" transform="rotate(-90 20 20)"/>
+                        </svg>
+                        <svg class="mk-avatar-ring mk-avatar-ring-dark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="20" cy="20" r="18" fill="none" stroke="#2A2A2C" stroke-width="3"/>
+                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E85D26" stroke-width="3" stroke-linecap="round" stroke-dasharray="80.7 113.1" transform="rotate(-90 20 20)"/>
+                        </svg>
+                        <div class="mk-avatar">A</div>
+                      </div>
+                      <div>
+                        <div class="mk-name">Alicia</div>
+                        <div class="mk-sub">5/7 días esta semana</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:14px;position:relative;overflow:hidden;">
-                  <div style="position:absolute;width:16px;height:26px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#E85D26;top:10px;right:44px;transform:rotate(20deg);"></div>
-                  <div style="position:absolute;width:12px;height:18px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#F2C94C;top:30px;right:18px;transform:rotate(-15deg);"></div>
-                  <div style="position:absolute;width:14px;height:20px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#2D9CDB;top:8px;right:10px;transform:rotate(10deg);"></div>
-                  <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Setting de hoy</div>
-                  <div style="font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-family:'Space Grotesk',sans-serif;">8 bloques<br>nuevos</div>
-                  <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">Zonas A y C · sube ahora</div>
-                </div>
-                <div style="display:flex;gap:8px;">
-                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
-                    <i class="ti ti-calendar-event" style="font-size:14px;color:rgba(255,255,255,0.35);"></i>
-                    <div style="font-size:16px;font-weight:800;margin:8px 0 2px;letter-spacing:-0.02em;font-family:'Space Grotesk',sans-serif;">18:00</div>
-                    <div style="font-size:9px;color:rgba(255,255,255,0.4);">tu reserva</div>
+                  <div class="mk-badges">
+                    <span class="mk-badge" style="background:#3B82F6;">Medio 6B</span>
+                    <span class="mk-badge" style="background:#9B51E0;">Máx 7C</span>
                   </div>
-                  <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
-                    <div style="display:flex;align-items:flex-end;gap:3px;height:16px;margin-bottom:6px;">
-                      <div style="width:4px;height:6px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
-                      <div style="width:4px;height:10px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
-                      <div style="width:4px;height:8px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
-                      <div style="width:4px;height:13px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
-                      <div style="width:4px;height:16px;background:#E85D26;border-radius:2px;"></div>
+                  <div class="mk-card">
+                    <div class="mk-card-label"><span class="mk-icon-box"><i class="ti ti-flame" style="color:var(--hold-orange);font-size:10px;"></i></span> Racha</div>
+                    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px;">
+                      <div class="mk-card-big" style="color:var(--hold-orange);white-space:nowrap;flex-shrink:0;font-size:19px;">12 <span style="font-size:9px;font-weight:600;color:var(--mk-text-soft);">días</span></div>
+                      <div class="mk-card-note" style="margin:0;white-space:nowrap;flex-shrink:0;font-size:6.5px;">Récord: 21 días</div>
                     </div>
-                    <div style="font-size:16px;font-weight:800;letter-spacing:-0.02em;font-family:'Space Grotesk',sans-serif;">12 <span style="font-size:9px;font-weight:500;color:#E85D26;">+15%</span></div>
-                    <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">tops</div>
+                    <div class="mk-week-row">
+                      <div class="mk-week-day"><span class="lbl">X</span><span class="mk-week-dot done">✓</span></div>
+                      <div class="mk-week-day"><span class="lbl">J</span><span class="mk-week-dot done">✓</span></div>
+                      <div class="mk-week-day"><span class="lbl">V</span><span class="mk-week-dot miss">✕</span></div>
+                      <div class="mk-week-day"><span class="lbl">S</span><span class="mk-week-dot done">✓</span></div>
+                      <div class="mk-week-day"><span class="lbl">D</span><span class="mk-week-dot done">✓</span></div>
+                      <div class="mk-week-day"><span class="lbl">L</span><span class="mk-week-dot miss">✕</span></div>
+                      <div class="mk-week-day today"><span class="lbl">M</span><span class="mk-week-dot today">✓</span></div>
+                    </div>
+                  </div>
+                  <div class="mk-section-label">Proyectos activos</div>
+                  <div class="mk-list">
+                    <div class="mk-row"><div class="mk-grade" style="background:#9B51E0;">7A</div><div class="mk-row-text"><div class="n">Follaje</div><div class="s">Chimenea</div></div><div class="mk-row-val">12</div></div>
+                    <div class="mk-row"><div class="mk-grade" style="background:#0E0E0E;">7C</div><div class="mk-row-text"><div class="n">Cráter</div><div class="s">MoonBoard</div></div><div class="mk-row-val">24</div></div>
+                    <div class="mk-row"><div class="mk-grade" style="background:#3B82F6;">6B</div><div class="mk-row-text"><div class="n">Polen</div><div class="s">Chimenea</div></div><div class="mk-row-val">7</div></div>
+                  </div>
+                  <div class="mk-nav">
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
+                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="app-showcase-caption">Perfil y estadísticas</div>
+          </div>
 
-              <div style="position:absolute;bottom:-6px;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 8px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-home" style="font-size:13px;color:white;"></i></div>
-                  <span style="font-size:7px;color:white;font-weight:600;">Inicio</span>
+          <!-- INICIO -->
+          <div class="app-fan-slot slot-center">
+            <div class="app-frame">
+              <div class="app-frame-screen">
+                <div class="mk-screen">
+                  <div class="mk-header">
+                    <div class="mk-name" style="font-size:16px;">Hola,<br>Alicia.</div>
+                    <div class="mk-sub">Legazpi · sesión nº 48</div>
+                  </div>
+                  <div style="display:flex;gap:8px;padding:10px 14px 0;">
+                    <div class="mk-card" style="flex:1.3;margin:0;background:var(--hold-orange);border:none;">
+                      <div class="mk-card-label" style="color:rgba(255,255,255,0.8);">Acceso rápido</div>
+                      <div style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;margin-top:8px;"><i class="ti ti-qrcode" style="font-size:18px;color:#0E0E0E;"></i></div>
+                    </div>
+                    <div class="mk-card" style="flex:1;margin:0;">
+                      <div class="mk-card-label">Bono</div>
+                      <div class="mk-card-big">7</div>
+                      <div class="mk-card-note">sesiones</div>
+                    </div>
+                  </div>
+                  <div class="mk-card" style="position:relative;overflow:hidden;">
+                    <div class="mk-blob" style="width:12px;height:19px;background:var(--hold-orange);top:8px;right:38px;transform:rotate(20deg);"></div>
+                    <div class="mk-blob" style="width:9px;height:14px;background:#F2C94C;top:22px;right:16px;transform:rotate(-15deg);"></div>
+                    <div class="mk-blob" style="width:10px;height:16px;background:#2D9CDB;top:6px;right:8px;transform:rotate(10deg);"></div>
+                    <div class="mk-card-label">Setting de hoy</div>
+                    <div class="mk-card-big" style="font-size:15px;">8 bloques nuevos</div>
+                    <div class="mk-card-note">Zonas A y C · sube ahora</div>
+                  </div>
+                  <div style="display:flex;gap:8px;padding:0 14px;margin-top:10px;">
+                    <div class="mk-card" style="flex:1;margin:0;padding:9px 10px;">
+                      <i class="ti ti-calendar-event" style="font-size:11px;color:var(--mk-text-soft);"></i>
+                      <div class="mk-card-big" style="font-size:13px;margin-top:4px;">18:00</div>
+                      <div class="mk-card-note">tu reserva</div>
+                    </div>
+                    <div class="mk-card" style="flex:1;margin:0;padding:9px 10px;">
+                      <div class="mk-bars"><span style="height:4px;"></span><span style="height:6px;"></span><span style="height:5px;"></span><span style="height:8px;"></span><span style="height:10px;"></span></div>
+                      <div class="mk-card-big" style="font-size:13px;margin-top:4px;">12 <span style="font-size:8px;color:var(--hold-orange);">+15%</span></div>
+                      <div class="mk-card-note">tops esta semana</div>
+                    </div>
+                  </div>
+                  <div class="mk-nav">
+                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
+                  </div>
                 </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Mapa</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Perfil</span></div>
               </div>
             </div>
+            <div class="app-showcase-caption">Inicio</div>
           </div>
-          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Inicio</p>
-        </div>
 
-        <!-- MAPA: derecha, girado +6deg -->
-        <div style="display:flex;flex-direction:column;align-items:center;z-index:1;transform:rotate(6deg) translateY(30px);transform-origin:bottom center;margin-left:-28px;">
-          <div style="width:260px;background:#111;border-radius:40px;padding:12px;box-shadow:0 24px 48px rgba(0,0,0,0.2),0 6px 16px rgba(0,0,0,0.1);opacity:0.88;">
-            <div style="width:236px;height:510px;border-radius:30px;overflow:hidden;background:#0B0B0D;display:flex;flex-direction:column;color:white;font-family:'DM Sans',sans-serif;">
-
-              <div style="display:flex;background:rgba(255,255,255,0.07);border-radius:30px;padding:3px;margin:14px 14px 12px;">
-                <div style="flex:1;text-align:center;padding:7px 0;font-size:11px;font-weight:700;border-radius:20px;background:#E85D26;color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
-                <div style="flex:1;text-align:center;padding:7px 0;font-size:11px;font-weight:700;border-radius:20px;color:rgba(255,255,255,0.4);font-family:'Space Grotesk',sans-serif;">Vías</div>
-              </div>
-
-              <div style="margin:0 14px 10px;background:#1a1f2e;border-radius:16px;height:160px;position:relative;overflow:hidden;">
-                <svg viewBox="-20 0 208 132" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#252d3d" stroke="#2a3448" stroke-width="3"/>
-                  <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="none" stroke="#3d4d6a" stroke-width="1"/>
-                  <line x1="8" y1="88" x2="148" y2="88" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
-                  <line x1="58" y1="88" x2="58" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
-                  <line x1="108" y1="88" x2="108" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
-                  <rect x="68" y="117" width="30" height="6" fill="#1a1f2e"/>
-                  <line x1="68" y1="117" x2="68" y2="123" stroke="#3d4d6a" stroke-width="1"/>
-                  <line x1="98" y1="117" x2="98" y2="123" stroke="#3d4d6a" stroke-width="1"/>
-                  <text x="83" y="131" fill="rgba(255,255,255,0.4)" font-size="4" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ENTRADA</text>
-                  <text x="44" y="18" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ORGANIC</text>
-                  <circle cx="44" cy="32" r="11" fill="#1e2840"/><text x="44" y="36" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">12</text>
-                  <text x="100" y="14" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">CAVE</text>
-                  <circle cx="100" cy="28" r="11" fill="#1e2840"/><text x="100" y="32" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">7</text>
-                  <text x="152" y="22" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">WOODIE</text>
-                  <circle cx="152" cy="33" r="11" fill="#1e2840"/><text x="152" y="37" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
-                  <text x="34" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SLAB</text>
-                  <circle cx="34" cy="66" r="11" fill="#1e2840"/><text x="34" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">8</text>
-                  <text x="132" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">COMP</text>
-                  <circle cx="132" cy="66" r="11" fill="#1e2840"/><text x="132" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">9</text>
-                  <text x="30" y="93" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 1</text>
-                  <circle cx="30" cy="108" r="11" fill="#1e2840"/><text x="30" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">4</text>
-                  <text x="83" y="93" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">BOULDER</text>
-                  <circle cx="83" cy="108" r="11" fill="#1e2840"/><text x="83" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">5</text>
-                  <text x="128" y="93" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 2</text>
-                  <circle cx="128" cy="108" r="11" fill="#1e2840"/><text x="128" y="112" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
-                </svg>
-              </div>
-
-              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 14px 8px;">Filtrar por color</div>
-              <div style="display:flex;gap:5px;margin:0 14px 10px;overflow:hidden;">
-                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block;"></span>15</div>
-                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#27AE60;display:inline-block;"></span>19</div>
-                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>18</div>
-                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</div>
-                <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);border-radius:14px;padding:4px 8px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:8px;height:8px;border-radius:50%;background:#9B51E0;display:inline-block;"></span>9</div>
-              </div>
-
-              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 14px 8px;">Bloques · 84</div>
-              <div style="display:flex;flex-direction:column;gap:6px;margin:0 14px;flex:1;overflow:hidden;">
-                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
-                  <div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">4C</div>
-                  <div><div style="font-size:11px;font-weight:600;color:white;">Organic Blanco 1</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · fácil</div></div>
+          <!-- MAPA -->
+          <div class="app-fan-slot slot-right">
+            <div class="app-frame">
+              <div class="app-frame-screen">
+                <div class="mk-screen">
+                  <div style="display:flex;background:var(--mk-card-soft);border-radius:20px;padding:3px;margin:10px 14px 8px;">
+                    <div style="flex:1;text-align:center;padding:5px 0;font-size:9px;font-weight:700;border-radius:16px;background:var(--hold-orange);color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
+                    <div style="flex:1;text-align:center;padding:5px 0;font-size:9px;font-weight:700;border-radius:16px;color:var(--mk-text-soft);font-family:'Space Grotesk',sans-serif;">Vías</div>
+                  </div>
+                  <div style="margin:0 14px 8px;border-radius:12px;overflow:hidden;height:132px;border:1px solid var(--mk-border);">
+                    <svg class="mk-map mk-map-light" viewBox="2 4 172 122" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#FFFFFF" stroke="#E9E4DC" stroke-width="2"/>
+                      <text x="44" y="18" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">CHIMENEA</text><circle cx="44" cy="32" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="44" y="36" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">12</text>
+                      <text x="100" y="14" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">CUEVA</text><circle cx="100" cy="28" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="100" y="32" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
+                      <text x="152" y="22" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">CORNISA</text><circle cx="152" cy="33" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="152" y="37" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
+                      <text x="34" y="54" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">VERTICAL</text><circle cx="34" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="34" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
+                      <text x="83" y="54" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">TECHOS</text><circle cx="83" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="83" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">8</text>
+                      <text x="132" y="54" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">PLACA</text><circle cx="132" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="132" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
+                      <text x="30" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">FISURA</text><circle cx="30" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="30" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
+                      <text x="83" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">VOLUMEN</text><circle cx="83" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="83" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
+                      <text x="132" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">DESPLOME</text><circle cx="132" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="132" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
+                    </svg>
+                    <svg class="mk-map mk-map-dark" viewBox="2 4 172 122" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#18181A" stroke="#2A2A2C" stroke-width="2"/>
+                      <text x="44" y="18" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">CHIMENEA</text><circle cx="44" cy="32" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="44" y="36" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">12</text>
+                      <text x="100" y="14" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">CUEVA</text><circle cx="100" cy="28" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="100" y="32" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
+                      <text x="152" y="22" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">CORNISA</text><circle cx="152" cy="33" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="152" y="37" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
+                      <text x="34" y="54" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">VERTICAL</text><circle cx="34" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="34" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
+                      <text x="83" y="54" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">TECHOS</text><circle cx="83" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="83" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">8</text>
+                      <text x="132" y="54" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">PLACA</text><circle cx="132" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="132" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
+                      <text x="30" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">FISURA</text><circle cx="30" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="30" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
+                      <text x="83" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">VOLUMEN</text><circle cx="83" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="83" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
+                      <text x="132" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">DESPLOME</text><circle cx="132" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="132" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
+                    </svg>
+                  </div>
+                  <div class="mk-section-label" style="margin-top:0;margin-bottom:4px;">Filtrar por dificultad</div>
+                  <div style="display:flex;gap:3px;padding:0 14px;margin-bottom:6px;overflow:hidden;">
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#fff;border:1px solid var(--mk-border);display:inline-block;"></span>14</span>
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#27AE60;display:inline-block;"></span>17</span>
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>17</span>
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</span>
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#9B51E0;display:inline-block;"></span>11</span>
+                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#EB5757;display:inline-block;"></span>9</span>
+                  </div>
+                  <div style="display:flex;gap:3px;padding:0 14px;margin-bottom:8px;overflow:hidden;">
+                    <span class="mk-filter-pill active">Todos</span>
+                    <span class="mk-filter-pill">Completados</span>
+                    <span class="mk-filter-pill">Proyectos</span>
+                    <span class="mk-filter-pill">Favoritos</span>
+                  </div>
+                  <div class="mk-section-label" style="margin-top:0;">Bloques · 85</div>
+                  <div class="mk-list">
+                    <div class="mk-row"><div class="mk-grade" style="background:#0E0E0E;">4C</div><div class="mk-row-text"><div class="n">Raíz Viva</div><div class="s">Chimenea</div></div><div class="mk-rating">★ 4,0</div></div>
+                    <div class="mk-row"><div class="mk-grade" style="background:#27AE60;">5A</div><div class="mk-row-text"><div class="n">Enredadera</div><div class="s">Chimenea</div></div><div class="mk-rating">★ 5,0</div></div>
+                  </div>
+                  <div class="mk-nav">
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
+                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
+                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
+                  </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
-                  <div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5A</div>
-                  <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:white;">Organic Blanco 2</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · fácil</div></div>
-                  <i class="ti ti-check" style="font-size:14px;color:#E85D26;"></i>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px 10px;">
-                  <div style="width:32px;height:32px;border-radius:10px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div>
-                  <div><div style="font-size:11px;font-weight:600;color:white;">Organic Verde 1</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Organic · 2 intentos</div></div>
-                </div>
-              </div>
-
-              <div style="display:flex;justify-content:space-around;align-items:center;padding:10px 8px 12px;border-top:1px solid rgba(255,255,255,0.06);margin-top:8px;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Inicio</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                  <div style="width:34px;height:22px;border-radius:11px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-map-2" style="font-size:13px;color:white;"></i></div>
-                  <span style="font-size:7px;color:white;font-weight:600;">Mapa</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:15px;color:rgba(255,255,255,0.3);"></i><span style="font-size:7px;color:rgba(255,255,255,0.3);">Perfil</span></div>
               </div>
             </div>
+            <div class="app-showcase-caption">Mapa y bloques</div>
           </div>
-          <p style="text-align:center;font-size:10px;font-weight:600;color:var(--mid);margin-top:14px;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Mapa y bloques</p>
-        </div>
 
-      </div><!-- end flex container -->
+        </div>
+        <div class="app-theme-switch-wrap">
+          <button class="app-theme-switch" id="showcaseThemeSwitch" type="button" role="switch" aria-checked="false" aria-label="Cambiar a modo oscuro">
+            <span class="app-theme-switch-icon-slot sun"><i class="ti ti-sun"></i></span>
+            <span class="app-theme-switch-icon-slot moon"><i class="ti ti-moon"></i></span>
+            <span class="app-theme-switch-knob"></span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- MOBILE SLIDER (solo visible en móvil) -->
-<div class="mobile-slider-wrap" style="display:none;">
-  <div class="mobile-slider" id="mobileSlider">
-
-    <!-- SLIDE 1: PERFIL -->
-    <div class="mobile-slide">
-      <div class="slide-frame">
-        <div class="slide-screen" style="--accent:#E85D26;">
-          <div style="padding:14px 14px 10px;display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-0.02em;">Alicia</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px;">Madrid · escaladora desde 2021</div></div>
-            <div style="width:32px;height:32px;border-radius:50%;background:#E85D26;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:13px;">A</div>
-          </div>
-          <div style="display:flex;gap:5px;padding:0 14px;margin-bottom:10px;">
-            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">284</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">bloques</div></div>
-            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">48</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">sesiones</div></div>
-            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 6px;text-align:center;"><div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#E85D26;">6B</div><div style="font-size:7px;color:rgba(255,255,255,0.4);margin-top:1px;">nivel máx</div></div>
-          </div>
-          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Bloques por mes</div><div style="display:flex;align-items:flex-end;gap:3px;height:32px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Feb</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:22px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Mar</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:18px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Abr</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:rgba(255,255,255,0.1);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">May</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:32px;background:#E85D26;border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">Jun</span></div></div></div>
-          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Esta semana</div><div style="display:flex;gap:3px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">L</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">M</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">X</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">J</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">V</span><div style="width:18px;height:18px;border-radius:5px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-check" style="font-size:9px;color:white;"></i></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">S</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><span style="font-size:6px;color:rgba(255,255,255,0.3);font-weight:600;">D</span><div style="width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,0.06);"></div></div></div></div>
-          <div style="padding:0 14px;margin-bottom:8px;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:10px;">Nivel más escalado</div><div style="display:flex;gap:3px;align-items:flex-end;height:28px;"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">5A</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:16px;background:rgba(255,255,255,0.12);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">5B</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:26px;background:#E85D26;border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:white;font-weight:700;">5C</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:14px;background:rgba(255,255,255,0.12);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">6A</span></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:2px 2px 0 0;"></div><span style="font-size:5px;color:rgba(255,255,255,0.3);">6B</span></div></div></div>
-          <div style="padding:0 14px;flex:1;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45);margin-bottom:5px;">Últimos bloques</div><div style="display:flex;flex-direction:column;gap:4px;"><div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.05);border-radius:8px;padding:6px 8px;"><div style="width:22px;height:22px;border-radius:6px;background:#9B51E0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">6A</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:white;">Cave Violeta 3</div><div style="font-size:7px;color:rgba(255,255,255,0.4);">Cave · hoy</div></div><i class="ti ti-check" style="font-size:10px;color:#E85D26;"></i></div><div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.05);border-radius:8px;padding:6px 8px;"><div style="width:22px;height:22px;border-radius:6px;background:#E85D26;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:white;">Organic Naranja 2</div><div style="font-size:7px;color:rgba(255,255,255,0.4);">Organic · ayer</div></div><i class="ti ti-check" style="font-size:10px;color:#E85D26;"></i></div></div></div>
-          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Inicio</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mapa</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-user" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Perfil</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-caption">Perfil y estadísticas</div>
-    </div>
-
-    <!-- SLIDE 2: INICIO -->
-    <div class="mobile-slide">
-      <div class="slide-frame">
-        <div class="slide-screen" style="--accent:#E85D26;">
-          <div style="padding:14px 14px 0;position:relative;z-index:1;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-              <div style="display:flex;align-items:center;gap:7px;"><div style="width:26px;height:26px;border-radius:8px;background:#E85D26;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:11px;font-family:'Space Grotesk',sans-serif;">S</div><span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.5);font-family:'Space Grotesk',sans-serif;">Tu rocódromo</span></div>
-              <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;"><i class="ti ti-bell" style="font-size:12px;color:rgba(255,255,255,0.4);"></i></div>
-            </div>
-            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:2px;">Hola,<br>Alicia.</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px;">Madrid · sesión nº 48</div>
-          </div>
-          <div style="padding:0 14px;display:flex;flex-direction:column;gap:7px;flex:1;position:relative;z-index:1;">
-            <div style="display:flex;gap:7px;">
-              <div style="flex:1.4;background:#E85D26;border-radius:16px;padding:12px;position:relative;overflow:hidden;">
-                <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;opacity:0.75;margin-bottom:6px;font-family:'Space Grotesk',sans-serif;">Acceso rápido</div>
-                <div style="background:white;border-radius:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;"><img src="images/qr-demo.png" alt="QR" style="width:34px;height:34px;"></div>
-              </div>
-              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;">
-                <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);font-family:'Space Grotesk',sans-serif;">Bono</div>
-                <div><div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;margin:0;letter-spacing:-0.02em;line-height:1;">7</div><div style="font-size:9px;color:rgba(255,255,255,0.4);">sesiones</div></div>
-              </div>
-            </div>
-            <div style="background:rgba(255,255,255,0.05);border-radius:16px;padding:14px;position:relative;overflow:hidden;">
-              <div style="position:absolute;width:14px;height:22px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#E85D26;top:10px;right:44px;transform:rotate(20deg);"></div>
-              <div style="position:absolute;width:10px;height:16px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#F2C94C;top:28px;right:18px;transform:rotate(-15deg);"></div>
-              <div style="position:absolute;width:12px;height:18px;border-radius:60% 40% 55% 45%/50% 60% 40% 50%;background:#2D9CDB;top:8px;right:10px;transform:rotate(10deg);"></div>
-              <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:4px;font-family:'Space Grotesk',sans-serif;">Setting de hoy</div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;">8 bloques<br>nuevos</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;">Zonas A y C · sube ahora</div>
-            </div>
-            <div style="display:flex;gap:7px;">
-              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
-                <i class="ti ti-calendar-event" style="font-size:13px;color:rgba(255,255,255,0.35);"></i>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;margin:6px 0 2px;letter-spacing:-0.02em;">18:00</div>
-                <div style="font-size:9px;color:rgba(255,255,255,0.4);">tu reserva</div>
-              </div>
-              <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:16px;padding:12px;">
-                <div style="display:flex;align-items:flex-end;gap:3px;height:16px;margin-bottom:5px;"><div style="width:4px;height:6px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:10px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:8px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:13px;background:rgba(255,255,255,0.15);border-radius:2px;"></div><div style="width:4px;height:16px;background:#E85D26;border-radius:2px;"></div></div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.02em;">12 <span style="font-size:9px;font-weight:500;color:#E85D26;">+15%</span></div>
-                <div style="font-size:9px;color:rgba(255,255,255,0.4);">tops</div>
-              </div>
-            </div>
-          </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.08);background:#0B0B0D;z-index:10;">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-home" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Inicio</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-map-2" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Mapa</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Perfil</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-caption">Inicio</div>
-    </div>
-
-    <!-- SLIDE 3: MAPA -->
-    <div class="mobile-slide">
-      <div class="slide-frame">
-        <div class="slide-screen" style="--accent:#E85D26;">
-          <div style="display:flex;background:rgba(255,255,255,0.07);border-radius:24px;padding:3px;margin:12px 12px 10px;">
-            <div style="flex:1;text-align:center;padding:6px 0;font-size:10px;font-weight:700;border-radius:18px;background:#E85D26;color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
-            <div style="flex:1;text-align:center;padding:6px 0;font-size:10px;font-weight:700;border-radius:18px;color:rgba(255,255,255,0.4);font-family:'Space Grotesk',sans-serif;">Vías</div>
-          </div>
-          <div style="margin:0 12px 8px;background:#1a1f2e;border-radius:12px;height:130px;overflow:hidden;">
-            <svg viewBox="-20 0 208 132" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#252d3d" stroke="#2a3448" stroke-width="3"/>
-              <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="none" stroke="#3d4d6a" stroke-width="1"/>
-              <rect x="2" y="117" width="30" height="6" fill="#1a1f2e"/><line x1="68" y1="117" x2="68" y2="123" stroke="#3d4d6a" stroke-width="1"/><line x1="98" y1="117" x2="98" y2="123" stroke="#3d4d6a" stroke-width="1"/>
-              <line x1="8" y1="88" x2="148" y2="88" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/><line x1="58" y1="88" x2="58" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/><line x1="108" y1="88" x2="108" y2="120" stroke="#3d4d6a" stroke-width="0.8" stroke-dasharray="3,2"/>
-              <text x="44" y="18" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ORGANIC</text><circle cx="44" cy="32" r="11" fill="#1e2840"/><text x="44" y="36" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">12</text>
-              <text x="100" y="14" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">CAVE</text><circle cx="100" cy="28" r="11" fill="#1e2840"/><text x="100" y="32" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">7</text>
-              <text x="152" y="22" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">WOODIE</text><circle cx="152" cy="33" r="11" fill="#1e2840"/><text x="152" y="37" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
-              <text x="34" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SLAB</text><circle cx="34" cy="66" r="11" fill="#1e2840"/><text x="34" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">8</text>
-              <text x="132" y="54" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">COMP</text><circle cx="132" cy="66" r="11" fill="#1e2840"/><text x="132" y="70" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">9</text>
-              <text x="30" y="94" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 1</text><circle cx="30" cy="112" r="11" fill="#1e2840"/><text x="30" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">4</text>
-              <text x="83" y="94" fill="rgba(255,255,255,0.45)" font-size="5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">BOULDER</text><circle cx="83" cy="112" r="11" fill="#1e2840"/><text x="83" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">5</text>
-              <text x="128" y="94" fill="rgba(255,255,255,0.45)" font-size="4.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SECTOR 2</text><circle cx="128" cy="112" r="11" fill="#1e2840"/><text x="128" y="116" fill="white" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="800" text-anchor="middle">6</text>
-              <text x="83" y="131" fill="rgba(255,255,255,0.4)" font-size="4" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">ENTRADA</text>
-            </svg>
-          </div>
-          <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 12px 6px;">Filtrar por color</div>
-          <div style="display:flex;gap:4px;margin:0 12px 8px;overflow:hidden;">
-            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;"></span>15</div>
-            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#27AE60;display:inline-block;"></span>19</div>
-            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>18</div>
-            <div style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.07);border-radius:12px;padding:3px 7px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</div>
-          </div>
-          <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin:0 12px 6px;">Bloques · 84</div>
-          <div style="display:flex;flex-direction:column;gap:5px;margin:0 12px;flex:1;overflow:hidden;">
-            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">4C</div><div><div style="font-size:10px;font-weight:600;color:white;">Organic Blanco 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · fácil</div></div></div>
-            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5A</div><div style="flex:1;"><div style="font-size:10px;font-weight:600;color:white;">Organic Blanco 2</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · fácil</div></div><i class="ti ti-check" style="font-size:12px;color:#E85D26;"></i></div>
-            <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:10px;padding:7px 9px;"><div style="width:28px;height:28px;border-radius:8px;background:#27AE60;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;font-family:'Space Grotesk',sans-serif;flex-shrink:0;">5C</div><div><div style="font-size:10px;font-weight:600;color:white;">Organic Verde 1</div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Organic · 2 intentos</div></div></div>
-          </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:8px 6px 10px;border-top:1px solid rgba(255,255,255,0.06);background:#0B0B0D;">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-home" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Inicio</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-calendar" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Reservas</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:28px;height:18px;border-radius:9px;background:#E85D26;display:flex;align-items:center;justify-content:center;"><i class="ti ti-map-2" style="font-size:11px;color:white;"></i></div><span style="font-size:6px;color:white;font-weight:600;">Mapa</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-users" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Comunidad</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><i class="ti ti-user" style="font-size:13px;color:rgba(255,255,255,0.3);"></i><span style="font-size:6px;color:rgba(255,255,255,0.3);">Perfil</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-caption">Mapa y bloques</div>
-    </div>
-
-  </div>
-  <!-- DOTS -->
-  <div class="slider-dots" id="sliderDots">
-    <div class="slider-dot active"></div>
-    <div class="slider-dot"></div>
-    <div class="slider-dot"></div>
-  </div>
-</div>
 <section style="padding:60px 8% 40px;text-align:center;">
   <div class="section-label">¿Por qué AX Climb?</div>
   <h2 class="section-title">Menos gestión. Más escalada.</h2>
-  <p class="section-sub" style="margin:0 auto;">Los rocódromos utilizan múltiples herramientas para reservas, pagos, comunicación y seguimiento de usuarios. AX Climb las reúne en una sola app, construida en dos fases para que veas resultados desde el primer momento.</p>
+  <p class="section-sub" style="margin:0 auto;">Los rocódromos utilizan múltiples herramientas para reservas, pagos, comunicación y seguimiento de usuarios. AX Climb las reúne en una sola app, construida en bloques para que veáis resultados desde el primer momento.</p>
 </section>
 
+<!-- BENEFICIOS -->
+<section style="padding-top:0;">
+  <div class="section-label">Por qué tener la app</div>
+  <h2 class="section-title">Beneficios para vuestro rocódromo</h2>
+  <p class="section-sub">Más allá de las funcionalidades, esto es lo que AX Climb cambia en vuestro día a día.</p>
+  <div class="diff-grid">
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-repeat"></i></div>
+      <h4>Fidelización real</h4>
+      <p>Progreso, favoritos y comunidad mantienen a vuestros escaladores conectados a vuestra sala cada semana.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-folder"></i></div>
+      <h4>Menos gestión manual</h4>
+      <p>Reservas, pagos y comunicación centralizados, sin depender de hojas de cálculo ni mensajes sueltos.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-speakerphone"></i></div>
+      <h4>Comunicación directa</h4>
+      <p>Avisáis de bloques nuevos, cambios de horario o eventos al instante, en el móvil de vuestros socios.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-chart-line"></i></div>
+      <h4>Decisiones con datos</h4>
+      <p>Veis qué bloques y zonas se usan más para planificar el setting con criterio.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-map-2"></i></div>
+      <h4>Vuestra sala, siempre al día</h4>
+      <p>Publicáis un bloque nuevo, lo modificáis o lo retiráis del mapa en cuanto cambia en sala — todo desde la misma app.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-gift"></i></div>
+      <h4>Gratis para vuestros socios</h4>
+      <p>La app no tiene coste para los escaladores. El valor es para el centro; ellos solo disfrutan de la experiencia.</p>
+    </div>
+  </div>
+</section>
 
 <section id="modulos">
   <div class="section-label">Cómo está construida la app</div>
-  <h2 class="section-title">Dos bloques, un solo producto</h2>
-  <p class="section-sub">AX Climb se organiza en dos grandes bloques. Uno ya está listo para usar desde el primer día. El otro se conecta con vuestros sistemas actuales y lo construimos juntos.</p>
+  <h2 class="section-title">Tres bloques, un solo producto</h2>
+  <p class="section-sub">AX Climb se organiza en tres bloques. Comunidad y Administración ya están listos para usar desde el primer día. Gestión y pagos se conecta con vuestros sistemas actuales y lo construimos juntos.</p>
 
   <div class="blocks-wrap">
 
@@ -1176,7 +885,7 @@
         <div>
           <div class="block-tag community">🧗 Comunidad</div>
           <h3>La experiencia del escalador</h3>
-          <p>Todo lo que tus usuarios ven y usan cada día en sala: el mapa, los bloques, sus estadísticas y la comunidad. No depende de ningún sistema externo, así que está listo para activarse de inmediato.</p>
+          <p>Todo lo que vuestros usuarios ven y usan cada día en sala: el mapa, los bloques, sus estadísticas y la comunidad. No depende de ningún sistema externo, así que está listo para activarse de inmediato.</p>
         </div>
         <div class="block-status">
           <span class="status-pill ready">Listo para activar</span>
@@ -1197,8 +906,8 @@
         </div>
         <div class="bm-card">
           <div class="bm-icon">🧗‍♀️</div>
-          <h4>Bloques y detalle</h4>
-          <p>Ficha de cada bloque: grado, zona, foto y estado.</p>
+          <h4>Bloques y vías</h4>
+          <p>Ficha de cada bloque o vía: grado, zona, foto y estado — tanto para boulder como para muros con cuerda.</p>
         </div>
         <div class="bm-card">
           <div class="bm-icon">⭐</div>
@@ -1211,11 +920,6 @@
           <p>Bloques hechos por día, semana o mes, y nivel habitual de cada usuario.</p>
         </div>
         <div class="bm-card">
-          <div class="bm-icon">📱</div>
-          <h4>Compartir sesión</h4>
-          <p>Stories para Instagram al estilo Strava con cada sesión.</p>
-        </div>
-        <div class="bm-card">
           <div class="bm-icon">🔥</div>
           <h4>Setting del día</h4>
           <p>Comunica qué bloques nuevos hay, su nivel y su zona.</p>
@@ -1225,10 +929,63 @@
           <h4>Compartir rutas</h4>
           <p>Comunidad activa compartiendo líneas dentro del propio rocódromo.</p>
         </div>
+        <div class="bm-card">
+          <div class="bm-icon">🌗</div>
+          <h4>Modo claro y oscuro</h4>
+          <p>Cada escalador elige cómo quiere ver la app, de día o de noche en sala.</p>
+        </div>
       </div>
     </div>
 
-    <!-- BLOQUE 2: GESTIÓN Y PAGOS -->
+    <!-- BLOQUE 2: ADMINISTRACIÓN -->
+    <div class="product-block admin">
+      <div class="block-head">
+        <div>
+          <div class="block-tag admin">🛠️ Administración</div>
+          <h3>El control para vuestro equipo</h3>
+          <p>El panel desde el que vuestro equipo gestiona la sala: qué bloques están activos, qué sectores y tarifas tenéis, y qué estadísticas de uso vais generando. Listo para usar desde el primer día, junto al bloque Comunidad.</p>
+        </div>
+        <div class="block-status">
+          <span class="status-pill ready">Listo para activar</span>
+          <span class="status-note">Disponible en la prueba gratuita</span>
+        </div>
+      </div>
+
+      <div class="block-modules-grid">
+        <div class="bm-card">
+          <div class="bm-icon">🧗‍♀️</div>
+          <h4>Bloques</h4>
+          <p>Creáis, editáis o elimináis un bloque en cuanto cambia en sala.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🗺️</div>
+          <h4>Sectores</h4>
+          <p>Organizáis las zonas del rocódromo tal y como están distribuidas.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🎨</div>
+          <h4>Graduación y colores</h4>
+          <p>Configuráis vuestro propio sistema de graduación y los colores que usáis en sala, para que el mapa y las fichas de bloque los reflejen.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">🔔</div>
+          <h4>Anuncios</h4>
+          <p>Publicáis, editáis o elimináis avisos para vuestros escaladores: setting nuevo, cambios de horario o eventos.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">💶</div>
+          <h4>Tarifas</h4>
+          <p>Definís los precios y tipos de acceso que verán vuestros escaladores.</p>
+        </div>
+        <div class="bm-card">
+          <div class="bm-icon">📊</div>
+          <h4>Estadísticas</h4>
+          <p>Datos de bloques, sectores y usuarios — qué métricas mostrar se define con cada centro.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 3: GESTIÓN Y PAGOS -->
     <div class="product-block gestion">
       <div class="block-head">
         <div>
@@ -1246,7 +1003,7 @@
         <div class="bm-card">
           <div class="bm-icon">📅</div>
           <h4>Gestión de reservas</h4>
-          <p>Reserva de plaza, control de aforo y cancelaciones en tiempo real.</p>
+          <p>Reserva de plaza, control de aforo y cancelaciones en tiempo real — se adapta a lo que ya ofrecéis: sesiones libres, clases, cursos o lo que uséis en vuestro sistema actual.</p>
         </div>
         <div class="bm-card">
           <div class="bm-icon">💳</div>
@@ -1268,18 +1025,13 @@
           <h4>Información del centro</h4>
           <p>Horarios, precios y eventos actualizados desde vuestra gestión.</p>
         </div>
-        <div class="bm-card">
-          <div class="bm-icon">📣</div>
-          <h4>Notificaciones del centro</h4>
-          <p>Talleres, mantenimientos o cambios de horario al instante.</p>
-        </div>
       </div>
     </div>
 
   </div>
 
   <div class="addon-note">
-    <strong>¿Por qué dos bloques?</strong> El bloque de Comunidad no depende de ningún sistema externo, así que podemos activarlo desde el primer día. El de Gestión y pagos sí requiere estudiar e integrar vuestro sistema actual — por eso lo desarrollamos a medida una vez decidís seguir adelante.
+    <strong>¿Por qué tres bloques?</strong> Comunidad y Administración no dependen de ningún sistema externo, así que podemos activarlos desde el primer día. El de Gestión y pagos sí requiere estudiar e integrar vuestro sistema actual — por eso lo desarrollamos a medida una vez decidís seguir adelante.
   </div>
 </section>
 
@@ -1287,27 +1039,27 @@
 <section style="padding-top:0;">
   <div class="section-label">El camino hasta tener AX Climb</div>
   <h2 class="section-title">De ver la demo a tenerla funcionando</h2>
-  <p class="section-sub">No empezamos pidiéndote que te comprometas con todo. Vas viendo el valor paso a paso, y solo avanzamos a la siguiente fase si te encaja.</p>
+  <p class="section-sub">No empezamos pidiéndoos que os comprometáis con todo. Vais viendo el valor paso a paso, y solo avanzamos a la siguiente fase si os encaja.</p>
 
   <div class="phase-grid">
     <div class="phase-card active">
       <div class="phase-num">FASE 1 · AHORA</div>
-      <h4>Ves la demo completa</h4>
-      <p>Te enseñamos AX Climb funcionando con datos de ejemplo, con los dos bloques activos: Comunidad y Gestión y pagos. Así ves la app entera, no solo una parte.</p>
+      <h4>Veis la demo completa</h4>
+      <p>Os enseñamos AX Climb funcionando con datos de ejemplo, con los tres bloques activos: Comunidad, Administración y Gestión y pagos. Así veis la app entera, no solo una parte.</p>
       <div class="phase-includes">
         <span class="phase-chip">Datos de prueba</span>
-        <span class="phase-chip">Ambos bloques</span>
+        <span class="phase-chip">Los tres bloques</span>
         <span class="phase-chip">Sin compromiso</span>
       </div>
       <div class="phase-arrow">→</div>
     </div>
 
     <div class="phase-card">
-      <div class="phase-num">FASE 2 · SI TE CONVENCE</div>
-      <h4>Pruebas el bloque Comunidad gratis</h4>
-      <p>Activamos el bloque de Comunidad en tu rocódromo de verdad, con tus escaladores, durante 3 a 6 meses sin coste. Sin integración previa, porque no la necesita.</p>
+      <div class="phase-num">FASE 2 · SI OS CONVENCE</div>
+      <h4>Probáis Comunidad y Administración gratis</h4>
+      <p>Activamos Comunidad y Administración en vuestro rocódromo de verdad, con vuestros escaladores y vuestro equipo, durante 2 meses sin coste. Sin integración previa, porque no la necesitan.</p>
       <div class="phase-includes">
-        <span class="phase-chip">3-6 meses gratis</span>
+        <span class="phase-chip">2 meses gratis</span>
         <span class="phase-chip">Usuarios reales</span>
         <span class="phase-chip">Sin tarjeta</span>
       </div>
@@ -1333,49 +1085,24 @@
     <div>
       <div class="section-label">Empieza por la demo</div>
       <h2 class="section-title">¿Quieres ver cómo funciona?</h2>
-      <p class="section-sub" style="margin-bottom:0;">Te enviamos una demo con datos de prueba que incluye los dos bloques — Comunidad y Gestión y pagos — para que veas la app completa en tu móvil, sin que tengamos que integrar nada todavía.</p>
-      <div class="trial-steps" style="margin-top:32px;">
-        <div class="trial-step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <h4>Te enviamos la demo completa</h4>
-            <p>Con datos de ejemplo y los dos bloques activos, para que veas el producto entero desde el móvil.</p>
-          </div>
-        </div>
-        <div class="trial-step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <h4>La pruebas como si ya estuviera activa</h4>
-            <p>Reservas, setting, pagos, comunidad… todo simulado para que veas el flujo real de un usuario.</p>
-          </div>
-        </div>
-        <div class="trial-step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <h4>Si te encaja, activamos el bloque Comunidad gratis</h4>
-            <p>Con usuarios reales de tu rocódromo, durante 3 a 6 meses, sin coste y sin necesitar ninguna integración.</p>
-          </div>
-        </div>
-        <div class="trial-step">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <h4>Y si queréis seguir, integramos Gestión y pagos</h4>
-            <p>Estudiamos vuestro sistema actual y lo conectamos con AX Climb, con onboarding presencial incluido.</p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="trial-card">
       <div class="trial-eyebrow">Empieza aquí</div>
-      <h3>Solicita tu demo</h3>
-      <p style="margin-bottom:20px;">Recibirás una demo con datos de ejemplo que incluye ambos bloques completos. Es solo para que la veas — la prueba gratuita real del bloque Comunidad llega en una segunda fase, si te convence.</p>
+      <h3>Solicitad vuestra demo</h3>
+      <p style="margin-bottom:20px;">Es una demo con datos de ejemplo, para que veáis la app completa antes de decidir nada. La prueba gratuita real llega después, si os convence.</p>
       <form class="trial-form" id="trialForm">
       <input type="text" name="name" placeholder="Tu nombre" required />
       <input type="text" name="gym" placeholder="Nombre de tu rocódromo" required />
       <input type="text" name="email" placeholder="Correo de contacto" required />
-      <input type="text" name="tlf" placeholder="Teléfono de contacto" required />
-      <textarea name="message" rows="5" placeholder="Cuéntanos qué necesitas o qué te gustaría mejorar" required></textarea>
+      <div class="trial-color-field">
+        <input type="color" name="color" value="#E85D26" />
+        <div class="trial-color-label">
+          <span class="label-title">Color de vuestro rocódromo</span>
+          <span class="label-sub">Lo usamos como color de acento en vuestra demo</span>
+        </div>
+      </div>
+      <textarea name="message" rows="5" placeholder="Cuéntanos qué necesitas o qué te gustaría mejorar (opcional)"></textarea>
 
       <button class="trial-cta-btn" type="submit">
         Solicitar demo
@@ -1383,7 +1110,7 @@
 
       </form>
       <div class="trial-guarantee">
-        <span class="guarantee-icon">🔒</span>
+        <span class="guarantee-icon"><i class="ti ti-lock"></i></span>
         <span>Demo con datos de ejemplo · Sin coste · Sin compromiso</span>
       </div>
     </div>
@@ -1397,30 +1124,35 @@
   <p class="section-sub">Hay otras soluciones en el mercado. La diferencia es que nosotros somos de aquí, escalamos aquí, y respondemos cuando nos llamas.</p>
   <div class="diff-grid">
     <div class="diff-card">
-      <div class="diff-num">🌎</div>
+      <div class="diff-num"><i class="ti ti-device-mobile"></i></div>
+      <h4>Vuestra app, no una compartida</h4>
+      <p>Una app exclusiva para vuestro rocódromo, con vuestra identidad y vuestra comunidad — no una plataforma compartida con otros centros.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num"><i class="ti ti-language"></i></div>
       <h4>Sin barreras de idioma</h4>
-      <p>App, soporte y comunicación en el idioma de tu comunidad.
-        Nada de traducciones automáticas raras ni confusión: todo suena nativo y claro para tus usuarios.</p>
+      <p>App, soporte y comunicación en el idioma de vuestra comunidad.
+        Nada de traducciones automáticas raras ni confusión: todo suena nativo y claro para vuestros usuarios.</p>
     </div>
     <div class="diff-card">
-      <div class="diff-num">📍</div>
+      <div class="diff-num"><i class="ti ti-map-pin"></i></div>
       <h4>Onboarding presencial en Madrid</h4>
-      <p>Venimos a tu rocódromo, configuramos todo contigo y formamos a tu equipo en persona.</p>
+      <p>Venimos a vuestro rocódromo, configuramos todo con vosotros y formamos a vuestro equipo en persona.</p>
     </div>
     <div class="diff-card">
-      <div class="diff-num">⚡</div>
-      <h4>Empiezas sin riesgo</h4>
-      <p>Pruebas el bloque Comunidad gratis antes de comprometerte con la integración de Gestión y pagos.</p>
+      <div class="diff-num"><i class="ti ti-shield-check"></i></div>
+      <h4>Empezáis sin riesgo</h4>
+      <p>Probáis Comunidad y Administración gratis antes de comprometeros con la integración de Gestión y pagos.</p>
     </div>
     <div class="diff-card">
-      <div class="diff-num">🧗</div>
+      <div class="diff-num"><i class="ti ti-mountain"></i></div>
       <h4>Hechos por escaladores</h4>
       <p>Entendemos el lenguaje, los problemas y el ritmo de un rocódromo porque los vivimos cada semana.</p>
     </div>
      <div class="diff-card">
-      <div class="diff-num">🎨</div>
-      <h4>Tu marca, no la nuestra</h4>
-      <p>Colores, imágenes, textos y estilo visual alineados con la personalidad de tu rocódromo para que tus socios la sientan como propia.</p>
+      <div class="diff-num"><i class="ti ti-palette"></i></div>
+      <h4>Vuestra marca, no la nuestra</h4>
+      <p>Colores, imágenes, textos y estilo visual alineados con la personalidad de vuestro rocódromo para que vuestros socios la sientan como propia.</p>
     </div>
   </div>
 </section>
@@ -1432,27 +1164,31 @@
   <div class="faq-list">
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Necesito hardware adicional para usar AX Climb? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">No. AX Climb funciona completamente desde el móvil. No necesitas ningún dispositivo especial ni instalación física en el rocódromo.</div>
+      <div class="faq-a">No. AX Climb funciona completamente desde el móvil. No necesitáis ningún dispositivo especial ni instalación física en el rocódromo.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Cuánto tiempo lleva poner en marcha la app? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">En la mayoría de casos, entre dos y tres semanas desde que empezamos a trabajar contigo. Hacemos una llamada inicial, configuramos el sistema con los datos de tu rocódromo y hacemos pruebas antes del lanzamiento.</div>
+      <div class="faq-a">En la mayoría de casos, entre dos y tres semanas desde que empezamos a trabajar con vosotros. Hacemos una llamada inicial, configuramos el sistema con los datos de vuestro rocódromo y hacemos pruebas antes del lanzamiento.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Qué pasa si quiero añadir un módulo más adelante? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Puedes activar nuevos módulos en cualquier momento. No hay penalizaciones ni contratos que lo impidan. Lo hablamos, lo configuramos juntos y lo tienes en funcionamiento en pocos días.</div>
+      <div class="faq-a">Podéis activar nuevos módulos en cualquier momento. No hay penalizaciones ni contratos que lo impidan. Lo hablamos, lo configuramos juntos y lo tenéis en funcionamiento en pocos días.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Los escaladores tienen que pagar algo por la app? <span class="faq-arrow">+</span></button>
       <div class="faq-a">No. La app es completamente gratuita para los usuarios del rocódromo. El coste lo asume el centro, que es quien obtiene el valor de gestión y fidelización.</div>
     </div>
     <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Cuánto cuesta después de la prueba gratuita? <span class="faq-arrow">+</span></button>
+      <div class="faq-a">Depende del tamaño de vuestro rocódromo y de qué módulos activéis. Comunidad tiene una cuota mensual que se define con vuestro centro, y Gestión y pagos se cotiza aparte según la integración con vuestro sistema. Os lo detallamos en una propuesta a medida después de la demo, sin sorpresas ni letra pequeña.</div>
+    </div>
+    <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Ofrecéis soporte si algo falla? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Sí. Al ser un equipo pequeño y local, el soporte es directo — no hay un sistema de tickets con semanas de espera. Nos contactas por email o WhatsApp y respondemos el mismo día.</div>
+      <div class="faq-a">Sí. Al ser un equipo pequeño y local, el soporte es directo — no hay un sistema de tickets con semanas de espera. Nos contactáis por email o WhatsApp y respondemos el mismo día.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Sí. No hay permanencia mínima. Si en algún momento decides que AX Climb no es para ti, cancelas sin coste adicional. Preferimos que te quedes porque ves valor, no porque estés atado.</div>
+      <div class="faq-a">Sí. No hay permanencia mínima. Si en algún momento decidís que AX Climb no es para vosotros, canceláis sin coste adicional. Preferimos que os quedéis porque veis valor, no porque estéis atados.</div>
     </div>
   </div>
 </section>
@@ -1463,20 +1199,20 @@
     <div>
       <div class="section-label">El equipo</div>
       <h2 class="section-title">Somos escaladores y desarrolladores</h2>
-      <p class="section-sub">AX Climb nace de entender el mundo de la escalada desde dentro. No somos una consultora — somos dos personas que escalan y desarrollan, con tiempo, cuidado y visión a largo plazo.</p>
+      <p class="section-sub">AX Climb nace de entender el mundo de la escalada desde dentro. No somos una consultora — desarrollamos con tiempo, cuidado y visión a largo plazo.</p>
     </div>
     <div class="team-cards">
       <div class="team-card">
-        <div class="team-avatar" style="background:var(--hold-orange);">A</div>
-        <div class="team-info"><h4>Alicia</h4><p>Desarrollo</p></div>
+        <div class="team-avatar" style="background:var(--hold-orange);"><i class="ti ti-mountain"></i></div>
+        <div class="team-info"><h4>Escaladores primero</h4><p>Probamos cada función en sala, antes de que llegue a vuestra app.</p></div>
       </div>
       <div class="team-card">
-        <div class="team-avatar" style="background:#3B82F6;">X</div>
-        <div class="team-info"><h4>Álvaro</h4><p>Desarrollo</p></div>
+        <div class="team-avatar" style="background:#3B82F6;"><i class="ti ti-code"></i></div>
+        <div class="team-info"><h4>Desarrollo propio</h4><p>Sin agencias externas: diseñamos y programamos cada parte de AX Climb.</p></div>
       </div>
-      <div class="team-card" style="border:1px solid rgba(232,93,38,0.3);">
-        <div style="font-size:24px;">🧗</div>
-        <div class="team-info"><h4>Proyecto AX Climb</h4><p>En desarrollo activo · disponible en 2026</p></div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#0E0E0E;"><i class="ti ti-map-pin"></i></div>
+        <div class="team-info"><h4>Con base en Madrid</h4><p>Onboarding presencial y soporte directo, sin intermediarios.</p></div>
       </div>
     </div>
   </div>
@@ -1485,21 +1221,17 @@
 <!-- CTA -->
 <div id="contacto">
   <div class="cta-section">
-    <div class="section-label">¿Te interesa?</div>
-    <h2 class="section-title">Hablemos de tu rocódromo</h2>
-    <p>Cuéntanos cómo funciona tu centro y te mostramos cómo AX Climb encajaría. Sin compromiso, sin letra pequeña.</p>
-    <a href="mailto:axclimb@gmail.com" class="btn-primary" style="font-size:16px;padding:16px 40px;">Envíanos un email</a>
-    <div class="contact-row">
-      <a href="mailto:axclimb@gmail.com" class="contact-chip">✉️ axclimb@gmail.com</a>
-      <a href="#" class="contact-chip">📷 @axclimb</a>
-    </div>
+    <div class="section-label">¿Os interesa?</div>
+    <h2 class="section-title">Hablemos de vuestro rocódromo</h2>
+    <p>Cuéntanos cómo funciona vuestro centro y os mostramos cómo AX Climb encajaría. Sin compromiso, sin letra pequeña.</p>
+    <a href="mailto:axclimb@gmail.com?subject=Dudas%20AX%20Climb" class="btn-primary" style="font-size:16px;padding:16px 40px;">Envíanos un email</a>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
   <a href="#" class="footer-logo">AX<span>.</span>Climb</a>
-  <span>© 2026 AX Climb · Hecho en Madrid 🧗</span>
+  <span>© 2026 AX Climb · Hecho en Madrid <i class="ti ti-mountain" style="font-size:13px;vertical-align:-1px;"></i></span>
 </footer>
 
 
@@ -1592,33 +1324,9 @@
     document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   }
-  var brands = {
-  sputnik: { accent: '#E85D26', name: 'Tu rocódromo', mark: 'S' },
-  vertex: { accent: '#4A7C5F', name: 'Vertex Climb', mark: 'V' }
-};
-var root = document.getElementById('phoneScreen');
-
-function applyBrand(key) {
-  var b = brands[key];
-  root.style.setProperty('--accent', b.accent);
-  document.getElementById('brandName').innerHTML = b.name + ' <i class="ti ti-chevron-down" style="font-size:13px;" aria-hidden="true"></i>';
-  document.getElementById('logoMark').textContent = b.mark;
-}
-
-var brandTabs = document.querySelectorAll('.brand-tab');
-for (var i = 0; i < brandTabs.length; i++) {
-  brandTabs[i].addEventListener('click', function() {
-    for (var j = 0; j < brandTabs.length; j++) brandTabs[j].classList.remove('active');
-    this.classList.add('active');
-    applyBrand(this.getAttribute('data-brand'));
-  });
-}
-
-applyBrand('sputnik');
-
 const form = document.getElementById('trialForm');
 const btn = document.querySelector('.trial-cta-btn');
-const inputs = form.querySelectorAll('input, textarea');
+const inputs = form.querySelectorAll('[required]');
 const toast = document.getElementById('toast');
 
 function showToast(msg) {
@@ -1654,6 +1362,8 @@ form.addEventListener('submit', async (e) => {
   const data = {
     name: form.name.value,
     gym: form.gym.value,
+    email: form.email.value,
+    color: form.color.value,
     message: form.message.value
   };
 
@@ -1675,33 +1385,29 @@ form.addEventListener('submit', async (e) => {
 
   checkForm();
 });
-  // MOBILE SLIDER
-  function initMobileSlider() {
-    const isMobile = window.innerWidth <= 860;
-    const wrap = document.querySelector('.mobile-slider-wrap');
-    const phoneWrapper = document.querySelector('.phone-wrapper');
-    if (!wrap || !phoneWrapper) return;
-    if (isMobile) {
-      wrap.style.display = 'block';
-      phoneWrapper.style.display = 'none';
-    } else {
-      wrap.style.display = 'none';
-      phoneWrapper.style.display = '';
+  // APP SHOWCASE (CSS mockups, light/dark switch)
+  (function () {
+    const showcase = document.getElementById('appShowcase');
+    const themeSwitch = document.getElementById('showcaseThemeSwitch');
+    if (!showcase || !themeSwitch) return;
+
+    let theme = 'light';
+
+    function render() {
+      const isDark = theme === 'dark';
+      showcase.classList.toggle('theme-dark', isDark);
+      themeSwitch.classList.toggle('on', isDark);
+      themeSwitch.setAttribute('aria-checked', String(isDark));
+      themeSwitch.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
     }
-  }
 
-  // Dots sync
-  const slider = document.getElementById('mobileSlider');
-  const dots = document.querySelectorAll('.slider-dot');
-  if (slider) {
-    slider.addEventListener('scroll', () => {
-      const idx = Math.round(slider.scrollLeft / slider.clientWidth);
-      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    themeSwitch.addEventListener('click', () => {
+      theme = theme === 'light' ? 'dark' : 'light';
+      render();
     });
-  }
 
-  initMobileSlider();
-  window.addEventListener('resize', initMobileSlider);
+    render();
+  })();
 </script>
 </body>
 </html>
