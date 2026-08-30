@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AX Climb</title>
+<title>AX Climb — La app para gestionar tu rocódromo</title>
+<meta name="description" content="Comunidad, administración y gestión para vuestro rocódromo, en una sola app. Empezad con una demo gratuita, con el nombre y el color de vuestra sala.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="AX Climb — La app para gestionar tu rocódromo">
+<meta property="og:description" content="Comunidad, administración y gestión para vuestro rocódromo, en una sola app. Empezad con una demo gratuita, con el nombre y el color de vuestra sala.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1696105538782-7815474f28e0?fm=jpg&q=80&w=1200&h=630&fit=crop&auto=format">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AX Climb — La app para gestionar tu rocódromo">
+<meta name="twitter:description" content="Comunidad, administración y gestión para vuestro rocódromo, en una sola app. Empezad con una demo gratuita, con el nombre y el color de vuestra sala.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1696105538782-7815474f28e0?fm=jpg&q=80&w=1200&h=630&fit=crop&auto=format">
 <link rel="shortcut icon" href="favicon.ico?v=4">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png?v=4">
@@ -26,6 +36,7 @@
     --white: #FFFFFF;
     --radius: 14px;
     --radius-sm: 8px;
+    --photo-tint: 24, 15, 9;
   }
 
   html { scroll-behavior: smooth; }
@@ -73,6 +84,7 @@
     background: var(--black) !important; color: var(--white) !important;
     padding: 8px 20px; border-radius: 40px;
     font-size: 13px !important; font-weight: 600 !important; transition: background 0.15s !important;
+    border: none; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block;
   }
   .nav-cta:hover { background: var(--hold-orange) !important; }
 
@@ -86,8 +98,8 @@
   .phone-wrapper { position: relative; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: visible; padding: 24px 0; }
 
   /* APP SHOWCASE (CSS mockups matching the real app, fan layout + theme switch) */
-  .app-showcase { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 28px; --mk-bg: var(--chalk); --mk-card: #FFFFFF; --mk-card-soft: rgba(14,14,14,0.05); --mk-text: var(--black); --mk-text-soft: rgba(14,14,14,0.45); --mk-border: rgba(14,14,14,0.08); transition: color 0.2s; }
-  .app-showcase.theme-dark { --mk-bg: #0B0B0D; --mk-card: #18181A; --mk-card-soft: rgba(255,255,255,0.06); --mk-text: #FFFFFF; --mk-text-soft: rgba(255,255,255,0.45); --mk-border: rgba(255,255,255,0.08); }
+  .app-showcase { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 28px; --mk-bg: var(--chalk); }
+  .app-showcase.theme-dark { --mk-bg: #0B0B0D; }
   .app-fan { display: flex; align-items: flex-end; justify-content: center; gap: 0; }
   .app-fan-slot { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
   .app-fan-slot .app-frame { width: 210px; }
@@ -96,66 +108,15 @@
   .app-fan-slot.slot-center { z-index: 3; }
   .app-fan-slot.slot-center .app-frame { width: 220px; }
   .app-frame { position: relative; background: #111; border-radius: 40px; padding: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.1); }
-  .app-frame-screen { width: 100%; aspect-ratio: 550 / 1140; border-radius: 29px; overflow: hidden; background: var(--mk-bg); transition: background 0.2s; }
+  .app-frame-screen { position: relative; width: 100%; aspect-ratio: 1206 / 2500; border-radius: 29px; overflow: hidden; background: var(--mk-bg); transition: background 0.2s; }
   .app-showcase-caption { text-align: center; font-size: 10px; font-weight: 600; color: var(--mid); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; }
   .app-theme-switch-wrap { display: flex; align-items: center; gap: 10px; }
 
-  /* MOCKUP SCREEN CONTENT */
-  .mk-screen { width: 100%; height: 100%; background: var(--mk-bg); color: var(--mk-text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; position: relative; transition: background 0.2s, color 0.2s; }
-  .mk-header { padding: 16px 14px 8px; }
-  .mk-avatar-row { display: flex; align-items: center; gap: 10px; }
-  .mk-avatar-wrap { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
-  .mk-avatar-ring { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .mk-avatar { position: absolute; inset: 4px; border-radius: 50%; background: var(--hold-orange-light); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 13px; color: var(--hold-orange); }
-  .mk-week-row { display: flex; justify-content: space-between; margin-top: 12px; }
-  .mk-icon-box { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 6px; border: 1px solid var(--mk-border); background: var(--mk-card-soft); margin-right: 5px; vertical-align: middle; }
-  .mk-week-day { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .mk-week-day .lbl { font-size: 6.5px; font-weight: 700; color: var(--mk-text-soft); }
-  .mk-week-day.today .lbl { color: var(--hold-orange); }
-  .mk-week-dot { width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; }
-  .mk-week-dot.done { background: rgba(39,174,96,0.15); color: #27AE60; }
-  .mk-week-dot.miss { background: var(--mk-card-soft); color: var(--mk-text-soft); }
-  .mk-week-dot.today { background: var(--hold-orange); color: #fff; }
-  .mk-name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 800; line-height: 1.15; }
-  .mk-sub { font-size: 9px; color: var(--mk-text-soft); margin-top: 2px; }
-  .mk-badges { display: flex; gap: 6px; padding: 0 14px; margin-top: 8px; }
-  .mk-badge { font-size: 8px; font-weight: 700; padding: 4px 8px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; color: #fff; }
-  .mk-card { background: var(--mk-card); border: 1px solid var(--mk-border); border-radius: 14px; padding: 12px; margin: 10px 14px 0; transition: background 0.2s, border-color 0.2s; }
-  .mk-card-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--mk-text-soft); display: flex; align-items: center; gap: 5px; }
-  .mk-card-big { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; margin-top: 4px; }
-  .mk-card-note { font-size: 8px; color: var(--mk-text-soft); margin-top: 2px; }
-  .mk-section-label { font-size: 6.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mk-text-soft); padding: 0 14px; margin-top: 14px; margin-bottom: 6px; }
-  .mk-list { padding: 0 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
-  .mk-row { display: flex; align-items: center; gap: 7px; background: var(--mk-card-soft); border-radius: 9px; padding: 6px 8px; transition: background 0.2s; }
-  .mk-grade { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; color: #fff; flex-shrink: 0; }
-  .mk-row-text { flex: 1; min-width: 0; }
-  .mk-row-text .n { font-size: 9px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mk-row-text .s { font-size: 7px; color: var(--mk-text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mk-row-val { font-size: 9px; font-weight: 700; color: var(--mk-text-soft); flex-shrink: 0; }
-  .mk-nav { margin-top: auto; display: flex; justify-content: space-around; align-items: center; padding: 9px 6px 12px; border-top: 1px solid var(--mk-border); transition: border-color 0.2s; }
-  .mk-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 5.5px; color: var(--mk-text-soft); flex: 1; min-width: 0; }
-  .mk-nav-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-  .mk-nav-icon { display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 5px; }
-  .mk-nav-item i { font-size: 12px; }
-  .mk-nav-item.active .mk-nav-icon { background: var(--hold-orange); }
-  .mk-nav-item.active i { color: #fff; }
-  .mk-nav-item.active span { color: var(--hold-orange); font-weight: 700; }
-  .mk-blob { position: absolute; border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
-  .mk-bars { display: flex; align-items: flex-end; gap: 2px; height: 13px; }
-  .mk-bars span { width: 3px; border-radius: 1px; background: var(--mk-text-soft); opacity: 0.5; display: block; }
-  .mk-bars span:last-child { background: var(--hold-orange); opacity: 1; }
-  .mk-rating { font-size: 7px; font-weight: 800; color: #8A6D1F; background: #F5E9C4; border: 1px solid #E8CE7A; border-radius: 20px; padding: 2px 5px; flex-shrink: 0; }
-  .mk-map { width: 100%; height: 100%; display: block; }
-  .mk-filter-pill { font-size: 5px; font-weight: 700; padding: 3px 5px; border-radius: 20px; background: var(--mk-card-soft); color: var(--mk-text-soft); white-space: nowrap; font-family: 'Space Grotesk', sans-serif; flex-shrink: 0; }
-  .mk-filter-pill.active { background: var(--hold-orange); color: #fff; }
-  .mk-map-dark { display: none; }
-  .app-showcase.theme-dark .mk-map-light { display: none; }
-  .app-showcase.theme-dark .mk-map-dark { display: block; }
-  .mk-avatar-ring-dark { display: none; }
-  .app-showcase.theme-dark .mk-avatar-ring-light { display: none; }
-  .app-showcase.theme-dark .mk-avatar-ring-dark { display: block; }
-  .mk-map-zone-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; }
-  .mk-map-zone-label { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  /* MOCKUP SCREEN CONTENT (real app screenshots, swapped by the theme switch) */
+  .mk-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .mk-shot-dark { display: none; }
+  .app-showcase.theme-dark .mk-shot-light { display: none; }
+  .app-showcase.theme-dark .mk-shot-dark { display: block; }
   .app-theme-switch { position: relative; width: 50px; height: 28px; border-radius: 16px; background: var(--stone); border: none; padding: 0; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
   .app-theme-switch.on { background: var(--black); }
   .app-theme-switch-icon-slot { position: absolute; top: 0; width: 25px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 12px; pointer-events: none; }
@@ -174,6 +135,12 @@
   .hero h1 em { font-style: normal; color: var(--hold-orange); display: block; }
   .hero-sub { font-size: 17px; color: var(--mid); line-height: 1.7; margin-bottom: 36px; max-width: 460px; font-weight: 300; }
 
+  /* Flex + wrap so a 3rd button (or a narrower viewport) wraps onto a clean new
+     row instead of relying on inline-block's default left-clumped text wrapping. */
+  .hero-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .hero-platforms { display: flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 13px; color: var(--mid); }
+  .hero-platforms i { font-size: 17px; color: var(--slate); }
+
   .btn-primary {
     display: inline-block; background: var(--hold-orange); color: var(--white);
     padding: 14px 32px; border-radius: 40px;
@@ -183,10 +150,10 @@
   }
   .btn-primary:hover { background: #6B1222; transform: translateY(-1px); }
   .btn-ghost {
-    display: inline-block; background: transparent; color: var(--slate);
+    display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--slate);
     padding: 14px 28px; border-radius: 40px; border: 1.5px solid var(--stone);
     font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 500;
-    text-decoration: none; margin-left: 12px; transition: border-color 0.15s, color 0.15s;
+    text-decoration: none; cursor: pointer; transition: border-color 0.15s, color 0.15s;
   }
   .btn-ghost:hover { border-color: var(--black); color: var(--black); }
 
@@ -221,6 +188,34 @@
 .navitem.active { color: #fff; }
   .blob { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
 
+  /* Scroll-reveal: fade + rise as elements enter the viewport (see IntersectionObserver
+     script at the bottom). Respects prefers-reduced-motion for accessibility. */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* PHOTO BANNER */
+  .photo-banner {
+    position: relative; height: 60vh; min-height: 380px; max-height: 560px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    overflow: hidden; background: #000;
+  }
+  .photo-banner img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.85; transform: scale(1.06);
+    transition: transform 6s ease-out;
+  }
+  .photo-banner.in-view img { transform: scale(1); }
+  .photo-banner::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(var(--photo-tint),0.55) 0%, rgba(var(--photo-tint),0.25) 50%, rgba(var(--photo-tint),0.65) 100%);
+  }
+  .photo-banner-text { position: relative; z-index: 2; max-width: 720px; padding: 0 8%; color: white; }
+  .photo-banner-text .section-label { color: var(--hold-orange); }
+  .photo-banner-text h2 { font-size: clamp(28px, 4vw, 44px); color: white; }
+
   /* SECTIONS */
   section { padding: 90px 8%; max-width: 1280px; margin: 0 auto; }
   .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--hold-orange); font-weight: 600; margin-bottom: 12px; }
@@ -240,8 +235,8 @@
 
   /* MODULES */
   .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-  .module-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s, transform 0.15s; }
-  .module-card:hover { border-color: var(--hold-orange); transform: translateY(-2px); }
+  .module-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+  .module-card:hover { border-color: var(--hold-orange); transform: translateY(-4px); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
   .module-icon { width: 44px; height: 44px; border-radius: 10px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
   .module-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
   .module-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
@@ -249,10 +244,6 @@
   .badge-gym { background: #EEF4FF; color: #2563EB; }
   .badge-user { background: #F0FDF4; color: #16A34A; }
   .badge-both { background: var(--hold-orange-light); color: var(--hold-orange); }
-
-  /* ADDON NOTE */
-  .addon-note { margin-top: 20px; padding: 20px 24px; background: var(--hold-orange-light); border-radius: var(--radius); font-size: 14px; color: var(--slate); border-left: 3px solid var(--hold-orange); }
-  .addon-note strong { color: var(--hold-orange); }
 
   /* PRODUCT BLOCKS (Comunidad / Gestión y pagos) */
   .blocks-wrap { display: flex; flex-direction: column; gap: 56px; }
@@ -276,9 +267,12 @@
   .product-block.gestion .block-status .status-note { color: rgba(255,255,255,0.4); }
 
   .block-modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
-  .bm-card { border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); }
+  .bm-card { border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s; }
+  .bm-card:hover { transform: translateY(-4px); border-color: var(--hold-orange); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
   .product-block.gestion .bm-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
-  .bm-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; background: var(--white); }
+  .product-block.gestion .bm-card:hover { border-color: rgba(232,93,38,0.6); background: rgba(255,255,255,0.08); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
+  .bm-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; background: var(--white); transition: transform 0.2s; }
+  .bm-card:hover .bm-icon { transform: scale(1.08); }
   .product-block.gestion .bm-icon { background: rgba(255,255,255,0.08); }
   .bm-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; letter-spacing: -0.01em; }
   .product-block.gestion .bm-card h4 { color: white; }
@@ -309,9 +303,18 @@
   }
   .trial-section { background: var(--white); border-top: 1px solid var(--stone); border-bottom: 1px solid var(--stone); padding: 90px 8%; }
   .trial-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .trial-inner .section-sub { margin-bottom: 0; }
 
   /* TRIAL CARD */
-  .trial-card { background: var(--black); border-radius: 24px; padding: 40px; color: white; }
+  /* Same two-layer pattern as .team-section: the card is a photo frame, and a solid
+     inner card (.trial-content) holds the readable content on top of it. */
+  .trial-card {
+    border-radius: 24px; padding: 22px; color: white;
+    background-image: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45)),
+      url('https://images.unsplash.com/photo-1689775884478-9ed19b79d659?fm=jpg&q=70&w=1200&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+  }
+  .trial-content { background: rgba(var(--photo-tint),0.86); border-radius: 18px; padding: 32px; }
   .trial-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; color: var(--hold-orange); margin-bottom: 12px; }
   .trial-card h3 { font-size: 26px; color: white; margin-bottom: 10px; line-height: 1.15; }
   .trial-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.6; font-weight: 300; }
@@ -408,8 +411,10 @@
 
   /* DIFFERENTIATORS */
   .diff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 48px; }
-  .diff-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 28px 24px; }
-  .diff-num { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--hold-orange); letter-spacing: -0.04em; line-height: 1; margin-bottom: 10px; }
+  .diff-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 28px 24px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .diff-card:hover { transform: translateY(-4px); border-color: var(--hold-orange); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
+  .diff-num { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--hold-orange); letter-spacing: -0.04em; line-height: 1; margin-bottom: 10px; display: inline-block; transition: transform 0.2s; }
+  .diff-card:hover .diff-num { transform: scale(1.1); }
   .diff-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
   .diff-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
 
@@ -418,16 +423,44 @@
   .faq-item { border-top: 1px solid var(--stone); }
   .faq-item:last-child { border-bottom: 1px solid var(--stone); }
   .faq-q { width: 100%; background: none; border: none; text-align: left; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--black); letter-spacing: -0.02em; gap: 16px; }
-  .faq-arrow { font-size: 18px; color: var(--mid); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-arrow { font-size: 18px; color: var(--mid); transition: transform 0.25s; flex-shrink: 0; }
   .faq-item.open .faq-arrow { transform: rotate(45deg); }
-  .faq-a { font-size: 14px; color: var(--mid); line-height: 1.7; padding-bottom: 20px; display: none; }
-  .faq-item.open .faq-a { display: block; }
+  /* Grid 0fr->1fr trick: animates to the answer's natural height without knowing it
+     upfront (unlike max-height, which needs a fixed guess). .faq-a-inner clips the
+     content while collapsed so its own bottom padding doesn't peek out at 0 height. */
+  .faq-a-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+  .faq-item.open .faq-a-wrap { grid-template-rows: 1fr; }
+  .faq-a-inner { overflow: hidden; }
+  .faq-a { font-size: 14px; color: var(--mid); line-height: 1.7; padding-bottom: 20px; }
 
   .trial-guarantee { display: flex; align-items: center; gap: 10px; padding-top: 16px; font-size: 12px; color: rgba(255,255,255,0.35); }
   .guarantee-icon { font-size: 14px; flex-shrink: 0; }
 
+  /* Deliberately understated vs. the "Solicitar demo" button -- this is the escape
+     hatch for someone hesitant to fill the form, not a competing equal option. */
+  .trial-call-note {
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px; color: rgba(255,255,255,0.45);
+  }
+  .trial-call-link {
+    display: inline; background: none; border: none; padding: 0; margin-left: 4px;
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--hold-orange);
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .trial-call-link:hover { color: #FF7A42; }
+
   /* TEAM */
-  .team-section { background: var(--black); border-radius: 24px; padding: 60px; margin: 0 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .team-section {
+    border-radius: 24px; margin: 0 5%; padding: 28px;
+    background-image: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45)),
+      url('https://images.unsplash.com/photo-1775654792362-2eed733e9470?fm=jpg&q=70&w=1600&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+  }
+  /* Info card sits on top of the photo so text stays readable regardless of what's behind it. */
+  .team-content {
+    background: rgba(var(--photo-tint),0.86); border-radius: 18px; padding: 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+  }
   .team-section .section-label { color: rgba(255,255,255,0.4); }
   .team-section .section-title { color: var(--white); font-size: 36px; }
   .team-section .section-sub { color: rgba(255,255,255,0.55); margin-bottom: 0; }
@@ -442,6 +475,8 @@
   .cta-section { text-align: center; padding: 100px 8%; max-width: 700px; margin: 0 auto; }
   .cta-section h2 { font-size: clamp(34px, 5vw, 56px); margin-bottom: 20px; }
   .cta-section p { font-size: 17px; color: var(--mid); font-weight: 300; margin-bottom: 36px; line-height: 1.7; }
+  .cta-buttons { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .cta-buttons .btn-primary, .cta-buttons .btn-ghost { font-size: 16px; padding: 16px 32px; margin-left: 0; }
 
   /* FOOTER */
   footer { border-top: 1px solid var(--stone); padding: 28px 8%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--mid); }
@@ -484,12 +519,16 @@
     transition: color 0.15s;
   }
   .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a.menu-cta {
+  .mobile-menu a.menu-cta,
+  .mobile-menu button.menu-cta {
+    display: block; width: 100%; text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.03em;
+    border: none; cursor: pointer;
     margin-top: 16px;
     background: var(--hold-orange); color: white;
     text-align: center; border-radius: 40px;
     padding: 16px; border-bottom: none;
-    font-size: 17px;
+    font-size: 17px; font-weight: 600;
   }
 
   @media (max-width: 860px) {
@@ -512,10 +551,9 @@
       display: flex; flex-direction: row;
       gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
     }
-    .btn-primary, .btn-ghost {
-      display: inline-block; width: auto;
-      margin-left: 0; padding: 11px 22px; font-size: 14px;
-    }
+    .hero-platforms { justify-content: center; }
+    .btn-primary { display: inline-block; width: auto; padding: 11px 22px; font-size: 14px; }
+    .btn-ghost { padding: 11px 22px; font-size: 14px; }
 
     /* APP SHOWCASE móvil */
     .phone-wrapper {
@@ -559,7 +597,8 @@
     /* TRIAL */
     .trial-section { padding: 56px 6%; }
     .trial-inner { grid-template-columns: 1fr; gap: 40px; }
-    .trial-card { padding: 28px 24px; }
+    .trial-card { padding: 16px; }
+    .trial-content { padding: 28px 24px; }
     .trial-card h3 { font-size: 22px; }
 
     /* DIFF */
@@ -571,10 +610,10 @@
     .faq-q { font-size: 14px; padding: 16px 0; }
 
     /* TEAM */
-    .team-section {
+    .team-section { margin: 0; border-radius: 0; padding: 16px; }
+    .team-content {
       grid-template-columns: 1fr;
-      margin: 0; border-radius: 0;
-      padding: 48px 6%; gap: 32px;
+      padding: 32px 24px; gap: 32px;
     }
     .team-section .section-title { font-size: 28px; }
 
@@ -590,7 +629,7 @@
   @media (max-width: 480px) {
     .hero h1 { font-size: 32px; }
     .diff-grid { grid-template-columns: 1fr; }
-    .trial-card { padding: 24px 20px; }
+    .trial-content { padding: 24px 20px; }
   }
 </style>
 </head>
@@ -628,6 +667,11 @@
         <a href="#trial" class="btn-primary">Solicitad vuestra demo</a>
         <a href="#modulos" class="btn-ghost">Ver módulos</a>
       </div>
+      <div class="hero-platforms">
+        <i class="ti ti-brand-apple"></i>
+        <i class="ti ti-brand-android"></i>
+        <span>Disponible en Android e iOS</span>
+      </div>
     </div>
     <div class="phone-wrapper">
       <div class="phone-bg-ring"></div>
@@ -639,60 +683,8 @@
           <div class="app-fan-slot slot-left">
             <div class="app-frame">
               <div class="app-frame-screen">
-                <div class="mk-screen">
-                  <div class="mk-header">
-                    <div class="mk-avatar-row">
-                      <div class="mk-avatar-wrap">
-                        <svg class="mk-avatar-ring mk-avatar-ring-light" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E9E4DC" stroke-width="3"/>
-                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E85D26" stroke-width="3" stroke-linecap="round" stroke-dasharray="80.7 113.1" transform="rotate(-90 20 20)"/>
-                        </svg>
-                        <svg class="mk-avatar-ring mk-avatar-ring-dark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="20" cy="20" r="18" fill="none" stroke="#2A2A2C" stroke-width="3"/>
-                          <circle cx="20" cy="20" r="18" fill="none" stroke="#E85D26" stroke-width="3" stroke-linecap="round" stroke-dasharray="80.7 113.1" transform="rotate(-90 20 20)"/>
-                        </svg>
-                        <div class="mk-avatar">A</div>
-                      </div>
-                      <div>
-                        <div class="mk-name">Alicia</div>
-                        <div class="mk-sub">5/7 días esta semana</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mk-badges">
-                    <span class="mk-badge" style="background:#3B82F6;">Medio 6B</span>
-                    <span class="mk-badge" style="background:#9B51E0;">Máx 7C</span>
-                  </div>
-                  <div class="mk-card">
-                    <div class="mk-card-label"><span class="mk-icon-box"><i class="ti ti-flame" style="color:var(--hold-orange);font-size:10px;"></i></span> Racha</div>
-                    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px;">
-                      <div class="mk-card-big" style="color:var(--hold-orange);white-space:nowrap;flex-shrink:0;font-size:19px;">12 <span style="font-size:9px;font-weight:600;color:var(--mk-text-soft);">días</span></div>
-                      <div class="mk-card-note" style="margin:0;white-space:nowrap;flex-shrink:0;font-size:6.5px;">Récord: 21 días</div>
-                    </div>
-                    <div class="mk-week-row">
-                      <div class="mk-week-day"><span class="lbl">X</span><span class="mk-week-dot done">✓</span></div>
-                      <div class="mk-week-day"><span class="lbl">J</span><span class="mk-week-dot done">✓</span></div>
-                      <div class="mk-week-day"><span class="lbl">V</span><span class="mk-week-dot miss">✕</span></div>
-                      <div class="mk-week-day"><span class="lbl">S</span><span class="mk-week-dot done">✓</span></div>
-                      <div class="mk-week-day"><span class="lbl">D</span><span class="mk-week-dot done">✓</span></div>
-                      <div class="mk-week-day"><span class="lbl">L</span><span class="mk-week-dot miss">✕</span></div>
-                      <div class="mk-week-day today"><span class="lbl">M</span><span class="mk-week-dot today">✓</span></div>
-                    </div>
-                  </div>
-                  <div class="mk-section-label">Proyectos activos</div>
-                  <div class="mk-list">
-                    <div class="mk-row"><div class="mk-grade" style="background:#9B51E0;">7A</div><div class="mk-row-text"><div class="n">Follaje</div><div class="s">Chimenea</div></div><div class="mk-row-val">12</div></div>
-                    <div class="mk-row"><div class="mk-grade" style="background:#0E0E0E;">7C</div><div class="mk-row-text"><div class="n">Cráter</div><div class="s">MoonBoard</div></div><div class="mk-row-val">24</div></div>
-                    <div class="mk-row"><div class="mk-grade" style="background:#3B82F6;">6B</div><div class="mk-row-text"><div class="n">Polen</div><div class="s">Chimenea</div></div><div class="mk-row-val">7</div></div>
-                  </div>
-                  <div class="mk-nav">
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
-                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
-                  </div>
-                </div>
+                <img class="mk-shot mk-shot-light" src="images/screenshots/perfil-light-final.png" alt="Captura real de la pantalla de Perfil en AX Climb" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/perfil-dark-final.png" alt="" />
               </div>
             </div>
             <div class="app-showcase-caption">Perfil y estadísticas</div>
@@ -702,50 +694,8 @@
           <div class="app-fan-slot slot-center">
             <div class="app-frame">
               <div class="app-frame-screen">
-                <div class="mk-screen">
-                  <div class="mk-header">
-                    <div class="mk-name" style="font-size:16px;">Hola,<br>Alicia.</div>
-                    <div class="mk-sub">Legazpi · sesión nº 48</div>
-                  </div>
-                  <div style="display:flex;gap:8px;padding:10px 14px 0;">
-                    <div class="mk-card" style="flex:1.3;margin:0;background:var(--hold-orange);border:none;">
-                      <div class="mk-card-label" style="color:rgba(255,255,255,0.8);">Acceso rápido</div>
-                      <div style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;margin-top:8px;"><i class="ti ti-qrcode" style="font-size:18px;color:#0E0E0E;"></i></div>
-                    </div>
-                    <div class="mk-card" style="flex:1;margin:0;">
-                      <div class="mk-card-label">Bono</div>
-                      <div class="mk-card-big">7</div>
-                      <div class="mk-card-note">sesiones</div>
-                    </div>
-                  </div>
-                  <div class="mk-card" style="position:relative;overflow:hidden;">
-                    <div class="mk-blob" style="width:12px;height:19px;background:var(--hold-orange);top:8px;right:38px;transform:rotate(20deg);"></div>
-                    <div class="mk-blob" style="width:9px;height:14px;background:#F2C94C;top:22px;right:16px;transform:rotate(-15deg);"></div>
-                    <div class="mk-blob" style="width:10px;height:16px;background:#2D9CDB;top:6px;right:8px;transform:rotate(10deg);"></div>
-                    <div class="mk-card-label">Setting de hoy</div>
-                    <div class="mk-card-big" style="font-size:15px;">8 bloques nuevos</div>
-                    <div class="mk-card-note">Zonas A y C · sube ahora</div>
-                  </div>
-                  <div style="display:flex;gap:8px;padding:0 14px;margin-top:10px;">
-                    <div class="mk-card" style="flex:1;margin:0;padding:9px 10px;">
-                      <i class="ti ti-calendar-event" style="font-size:11px;color:var(--mk-text-soft);"></i>
-                      <div class="mk-card-big" style="font-size:13px;margin-top:4px;">18:00</div>
-                      <div class="mk-card-note">tu reserva</div>
-                    </div>
-                    <div class="mk-card" style="flex:1;margin:0;padding:9px 10px;">
-                      <div class="mk-bars"><span style="height:4px;"></span><span style="height:6px;"></span><span style="height:5px;"></span><span style="height:8px;"></span><span style="height:10px;"></span></div>
-                      <div class="mk-card-big" style="font-size:13px;margin-top:4px;">12 <span style="font-size:8px;color:var(--hold-orange);">+15%</span></div>
-                      <div class="mk-card-note">tops esta semana</div>
-                    </div>
-                  </div>
-                  <div class="mk-nav">
-                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
-                  </div>
-                </div>
+                <img class="mk-shot mk-shot-light" src="images/screenshots/inicio-light-final.png" alt="Captura real de la pantalla de Inicio en AX Climb" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/inicio-dark-final.png" alt="" />
               </div>
             </div>
             <div class="app-showcase-caption">Inicio</div>
@@ -755,65 +705,8 @@
           <div class="app-fan-slot slot-right">
             <div class="app-frame">
               <div class="app-frame-screen">
-                <div class="mk-screen">
-                  <div style="display:flex;background:var(--mk-card-soft);border-radius:20px;padding:3px;margin:10px 14px 8px;">
-                    <div style="flex:1;text-align:center;padding:5px 0;font-size:9px;font-weight:700;border-radius:16px;background:var(--hold-orange);color:white;font-family:'Space Grotesk',sans-serif;">Bloques</div>
-                    <div style="flex:1;text-align:center;padding:5px 0;font-size:9px;font-weight:700;border-radius:16px;color:var(--mk-text-soft);font-family:'Space Grotesk',sans-serif;">Vías</div>
-                  </div>
-                  <div style="margin:0 14px 8px;border-radius:12px;overflow:hidden;height:132px;border:1px solid var(--mk-border);">
-                    <svg class="mk-map mk-map-light" viewBox="2 4 172 122" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#FFFFFF" stroke="#E9E4DC" stroke-width="2"/>
-                      <text x="44" y="18" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">CHIMENEA</text><circle cx="44" cy="32" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="44" y="36" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">12</text>
-                      <text x="100" y="14" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">CUEVA</text><circle cx="100" cy="28" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="100" y="32" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
-                      <text x="152" y="22" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">CORNISA</text><circle cx="152" cy="33" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="152" y="37" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
-                      <text x="34" y="54" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">VERTICAL</text><circle cx="34" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="34" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
-                      <text x="83" y="54" class="mk-map-zone-label" font-size="5" fill="#7A7570" text-anchor="middle">TECHOS</text><circle cx="83" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="83" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">8</text>
-                      <text x="132" y="54" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">PLACA</text><circle cx="132" cy="66" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="132" y="70" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">7</text>
-                      <text x="30" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">FISURA</text><circle cx="30" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="30" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
-                      <text x="83" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">VOLUMEN</text><circle cx="83" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="83" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
-                      <text x="132" y="94" class="mk-map-zone-label" font-size="4.5" fill="#7A7570" text-anchor="middle">DESPLOME</text><circle cx="132" cy="106" r="11" fill="#F2F0EC" stroke="#E9E4DC" stroke-width="1"/><text x="132" y="110" class="mk-map-zone-num" font-size="11" fill="#0E0E0E" text-anchor="middle">6</text>
-                    </svg>
-                    <svg class="mk-map mk-map-dark" viewBox="2 4 172 122" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8,28 L18,10 L52,10 L62,16 L88,10 L116,10 L128,16 L148,10 L162,22 L168,40 L162,54 L168,66 L160,82 L148,88 L148,120 L8,120 L8,88 L20,82 L14,66 L20,54 L14,40 Z" fill="#18181A" stroke="#2A2A2C" stroke-width="2"/>
-                      <text x="44" y="18" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">CHIMENEA</text><circle cx="44" cy="32" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="44" y="36" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">12</text>
-                      <text x="100" y="14" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">CUEVA</text><circle cx="100" cy="28" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="100" y="32" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
-                      <text x="152" y="22" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">CORNISA</text><circle cx="152" cy="33" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="152" y="37" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
-                      <text x="34" y="54" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">VERTICAL</text><circle cx="34" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="34" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
-                      <text x="83" y="54" class="mk-map-zone-label" font-size="5" fill="#8C8C8E" text-anchor="middle">TECHOS</text><circle cx="83" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="83" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">8</text>
-                      <text x="132" y="54" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">PLACA</text><circle cx="132" cy="66" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="132" y="70" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
-                      <text x="30" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">FISURA</text><circle cx="30" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="30" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
-                      <text x="83" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">VOLUMEN</text><circle cx="83" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="83" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
-                      <text x="132" y="94" class="mk-map-zone-label" font-size="4.5" fill="#8C8C8E" text-anchor="middle">DESPLOME</text><circle cx="132" cy="106" r="11" fill="#232325" stroke="#2A2A2C" stroke-width="1"/><text x="132" y="110" class="mk-map-zone-num" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
-                    </svg>
-                  </div>
-                  <div class="mk-section-label" style="margin-top:0;margin-bottom:4px;">Filtrar por dificultad</div>
-                  <div style="display:flex;gap:3px;padding:0 14px;margin-bottom:6px;overflow:hidden;">
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#fff;border:1px solid var(--mk-border);display:inline-block;"></span>14</span>
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#27AE60;display:inline-block;"></span>17</span>
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#F2C94C;display:inline-block;"></span>17</span>
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#2D9CDB;display:inline-block;"></span>15</span>
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#9B51E0;display:inline-block;"></span>11</span>
-                    <span style="display:inline-flex;align-items:center;gap:2px;background:var(--mk-card-soft);border-radius:12px;padding:2px 6px;font-size:5.5px;font-weight:700;color:var(--mk-text-soft);flex-shrink:0;"><span style="width:5px;height:5px;border-radius:50%;background:#EB5757;display:inline-block;"></span>9</span>
-                  </div>
-                  <div style="display:flex;gap:3px;padding:0 14px;margin-bottom:8px;overflow:hidden;">
-                    <span class="mk-filter-pill active">Todos</span>
-                    <span class="mk-filter-pill">Completados</span>
-                    <span class="mk-filter-pill">Proyectos</span>
-                    <span class="mk-filter-pill">Favoritos</span>
-                  </div>
-                  <div class="mk-section-label" style="margin-top:0;">Bloques · 85</div>
-                  <div class="mk-list">
-                    <div class="mk-row"><div class="mk-grade" style="background:#0E0E0E;">4C</div><div class="mk-row-text"><div class="n">Raíz Viva</div><div class="s">Chimenea</div></div><div class="mk-rating">★ 4,0</div></div>
-                    <div class="mk-row"><div class="mk-grade" style="background:#27AE60;">5A</div><div class="mk-row-text"><div class="n">Enredadera</div><div class="s">Chimenea</div></div><div class="mk-rating">★ 5,0</div></div>
-                  </div>
-                  <div class="mk-nav">
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-home"></i></div><span>Inicio</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-calendar"></i></div><span>Reservas</span></div>
-                    <div class="mk-nav-item active"><div class="mk-nav-icon"><i class="ti ti-map-2"></i></div><span>Mapa</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-users"></i></div><span>Comunidad</span></div>
-                    <div class="mk-nav-item"><div class="mk-nav-icon"><i class="ti ti-user"></i></div><span>Perfil</span></div>
-                  </div>
-                </div>
+                <img class="mk-shot mk-shot-light" src="images/screenshots/mapa-light-final.png" alt="Captura real de la pantalla de Mapa en AX Climb" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/mapa-dark-final.png" alt="" />
               </div>
             </div>
             <div class="app-showcase-caption">Mapa y bloques</div>
@@ -832,44 +725,39 @@
   </div>
 </div>
 
-<section style="padding:60px 8% 40px;text-align:center;">
-  <div class="section-label">¿Por qué AX Climb?</div>
-  <h2 class="section-title">Menos gestión. Más escalada.</h2>
-  <p class="section-sub" style="margin:0 auto;">Los rocódromos utilizan múltiples herramientas para reservas, pagos, comunicación y seguimiento de usuarios. AX Climb las reúne en una sola app, construida en bloques para que veáis resultados desde el primer momento.</p>
-</section>
 
 <!-- BENEFICIOS -->
-<section style="padding-top:0;">
+<section>
   <div class="section-label">Por qué tener la app</div>
-  <h2 class="section-title">Beneficios para vuestro rocódromo</h2>
+  <h2 class="section-title reveal">Beneficios para vuestro rocódromo</h2>
   <p class="section-sub">Más allá de las funcionalidades, esto es lo que AX Climb cambia en vuestro día a día.</p>
   <div class="diff-grid">
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-repeat"></i></div>
       <h4>Fidelización real</h4>
       <p>Progreso, favoritos y comunidad mantienen a vuestros escaladores conectados a vuestra sala cada semana.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-folder"></i></div>
       <h4>Menos gestión manual</h4>
       <p>Reservas, pagos y comunicación centralizados, sin depender de hojas de cálculo ni mensajes sueltos.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-speakerphone"></i></div>
       <h4>Comunicación directa</h4>
       <p>Avisáis de bloques nuevos, cambios de horario o eventos al instante, en el móvil de vuestros socios.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-chart-line"></i></div>
       <h4>Decisiones con datos</h4>
       <p>Veis qué bloques y zonas se usan más para planificar el setting con criterio.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-map-2"></i></div>
       <h4>Vuestra sala, siempre al día</h4>
       <p>Publicáis un bloque nuevo, lo modificáis o lo retiráis del mapa en cuanto cambia en sala — todo desde la misma app.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-gift"></i></div>
       <h4>Gratis para vuestros socios</h4>
       <p>La app no tiene coste para los escaladores. El valor es para el centro; ellos solo disfrutan de la experiencia.</p>
@@ -877,9 +765,18 @@
   </div>
 </section>
 
+<!-- PHOTO BANNER -->
+<div class="photo-banner reveal">
+  <img src="https://images.unsplash.com/photo-1696105538782-7815474f28e0?fm=jpg&q=75&w=2000&auto=format&fit=crop" alt="Escalador en un rocódromo de boulder, entre presas de colores" loading="lazy" />
+  <div class="photo-banner-text">
+    <div class="section-label">La escalada, primero</div>
+    <h2>La pared manda, la pantalla ayuda</h2>
+  </div>
+</div>
+
 <section id="modulos">
   <div class="section-label">Cómo está construida la app</div>
-  <h2 class="section-title">Tres bloques, un solo producto</h2>
+  <h2 class="section-title reveal">Tres bloques, un solo producto</h2>
   <p class="section-sub">AX Climb se organiza en tres bloques. Comunidad y Administración ya están listos para usar desde el primer día. Gestión y pagos se conecta con vuestros sistemas actuales y lo construimos juntos.</p>
 
   <div class="blocks-wrap">
@@ -890,7 +787,7 @@
         <div>
           <div class="block-tag community">🧗 Comunidad</div>
           <h3>La experiencia del escalador</h3>
-          <p>Todo lo que vuestros usuarios ven y usan cada día en sala: el mapa, los bloques, sus estadísticas y la comunidad. No depende de ningún sistema externo, así que está listo para activarse de inmediato.</p>
+          <p>Todo lo que vuestros usuarios ven y usan cada día en sala: el mapa, los bloques, sus estadísticas y la comunidad. No depende de ningún sistema externo, así que podemos ponerlo en marcha en cuanto empecemos a trabajar juntos, sin esperar a integraciones.</p>
         </div>
         <div class="block-status">
           <span class="status-pill ready">Listo para activar</span>
@@ -899,45 +796,45 @@
       </div>
 
       <div class="block-modules-grid">
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🔑</div>
           <h4>Registro y login</h4>
-          <p>Cada escalador crea su cuenta y accede con su perfil personal.</p>
+          <p>Cuenta y perfil propios para cada escalador.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🗺️</div>
           <h4>Plano y mapa de zonas</h4>
           <p>Vista del rocódromo con zonas por color y bloques ubicados.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🧗‍♀️</div>
           <h4>Bloques y vías</h4>
           <p>Ficha de cada bloque o vía: grado, zona, foto y estado — tanto para boulder como para muros con cuerda.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">⭐</div>
           <h4>Comentarios y valoración</h4>
           <p>Los usuarios puntúan y comentan los bloques tras intentarlos.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">📊</div>
           <h4>Perfil y estadísticas</h4>
           <p>Bloques hechos por día, semana o mes, y nivel habitual de cada usuario.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🔥</div>
           <h4>Setting del día</h4>
           <p>Comunica qué bloques nuevos hay, su nivel y su zona.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🤝</div>
           <h4>Compartir rutas</h4>
           <p>Comunidad activa compartiendo líneas dentro del propio rocódromo.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🌗</div>
           <h4>Modo claro y oscuro</h4>
-          <p>Cada escalador elige cómo quiere ver la app, de día o de noche en sala.</p>
+          <p>A elección de cada escalador.</p>
         </div>
       </div>
     </div>
@@ -957,35 +854,40 @@
       </div>
 
       <div class="block-modules-grid">
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🧗‍♀️</div>
           <h4>Bloques</h4>
           <p>Creáis, editáis o elimináis un bloque en cuanto cambia en sala.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🗺️</div>
           <h4>Sectores</h4>
-          <p>Organizáis las zonas del rocódromo tal y como están distribuidas.</p>
+          <p>Tal y como están distribuidos en sala.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🎨</div>
           <h4>Graduación y colores</h4>
-          <p>Configuráis vuestro propio sistema de graduación y los colores que usáis en sala, para que el mapa y las fichas de bloque los reflejen.</p>
+          <p>Vuestro sistema de graduación y colores, reflejado en el mapa y las fichas.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🔔</div>
           <h4>Anuncios</h4>
-          <p>Publicáis, editáis o elimináis avisos para vuestros escaladores: setting nuevo, cambios de horario o eventos.</p>
+          <p>Avisos para vuestros escaladores: setting nuevo, horarios, eventos.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">💶</div>
           <h4>Tarifas</h4>
           <p>Definís los precios y tipos de acceso que verán vuestros escaladores.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">📊</div>
           <h4>Estadísticas</h4>
           <p>Datos de bloques, sectores y usuarios — qué métricas mostrar se define con cada centro.</p>
+        </div>
+        <div class="bm-card reveal">
+          <div class="bm-icon">📱</div>
+          <h4>Se adapta a tablet</h4>
+          <p>Igual de bien que en el móvil, para gestionar desde recepción.</p>
         </div>
       </div>
     </div>
@@ -1005,27 +907,27 @@
       </div>
 
       <div class="block-modules-grid">
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">📅</div>
           <h4>Gestión de reservas</h4>
-          <p>Reserva de plaza, control de aforo y cancelaciones en tiempo real — se adapta a lo que ya ofrecéis: sesiones libres, clases, cursos o lo que uséis en vuestro sistema actual.</p>
+          <p>Reserva, aforo y cancelaciones en tiempo real, adaptado a lo que ya ofrecéis: sesiones libres, clases o cursos.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">💳</div>
           <h4>Pagos integrados</h4>
-          <p>Sesión puntual, bono o abono pagado desde la app.</p>
+          <p>Sesión, bono o abono, pagado desde la app.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🎟️</div>
           <h4>Mi abono y saldo</h4>
           <p>Cada usuario ve su tipo de abono y las sesiones que le quedan.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🏦</div>
           <h4>Datos personales y de pago</h4>
           <p>Número de cuenta, método de pago y facturación sincronizados con vuestro sistema.</p>
         </div>
-        <div class="bm-card">
+        <div class="bm-card reveal">
           <div class="bm-icon">🗺️</div>
           <h4>Información del centro</h4>
           <p>Horarios, precios y eventos actualizados desde vuestra gestión.</p>
@@ -1034,23 +936,19 @@
     </div>
 
   </div>
-
-  <div class="addon-note">
-    <strong>¿Por qué tres bloques?</strong> Comunidad y Administración no dependen de ningún sistema externo, así que podemos activarlos desde el primer día. El de Gestión y pagos sí requiere estudiar e integrar vuestro sistema actual — por eso lo desarrollamos a medida una vez decidís seguir adelante.
-  </div>
 </section>
 
 <!-- PROCESO -->
 <section style="padding-top:0;">
   <div class="section-label">El camino hasta tener AX Climb</div>
-  <h2 class="section-title">De ver la demo a tenerla funcionando</h2>
+  <h2 class="section-title reveal">De ver la demo a tenerla funcionando</h2>
   <p class="section-sub">No empezamos pidiéndoos que os comprometáis con todo. Vais viendo el valor paso a paso, y solo avanzamos a la siguiente fase si os encaja.</p>
 
   <div class="phase-grid">
-    <div class="phase-card active">
+    <div class="phase-card active reveal">
       <div class="phase-num">FASE 1 · AHORA</div>
       <h4>Veis la demo completa</h4>
-      <p>Os enseñamos AX Climb funcionando con datos de ejemplo, con los tres bloques activos: Comunidad, Administración y Gestión y pagos. Así veis la app entera, no solo una parte.</p>
+      <p>Rellenáis el formulario con el nombre y color de vuestro rocódromo, y os la enseñamos funcionando con esa identidad, con los tres bloques activos.</p>
       <div class="phase-includes">
         <span class="phase-chip">Datos de prueba</span>
         <span class="phase-chip">Los tres bloques</span>
@@ -1059,10 +957,10 @@
       <div class="phase-arrow">→</div>
     </div>
 
-    <div class="phase-card">
+    <div class="phase-card reveal">
       <div class="phase-num">FASE 2 · SI OS CONVENCE</div>
       <h4>Probáis Comunidad y Administración gratis</h4>
-      <p>Activamos Comunidad y Administración en vuestro rocódromo de verdad, con vuestros escaladores y vuestro equipo, durante 2 meses sin coste. Sin integración previa, porque no la necesitan.</p>
+      <p>Nos mandáis sectores y graduación, los cargamos, y activamos Comunidad y Administración en vuestro rocódromo real durante 2 meses sin coste.</p>
       <div class="phase-includes">
         <span class="phase-chip">2 meses gratis</span>
         <span class="phase-chip">Usuarios reales</span>
@@ -1071,10 +969,10 @@
       <div class="phase-arrow">→</div>
     </div>
 
-    <div class="phase-card">
+    <div class="phase-card reveal">
       <div class="phase-num">FASE 3 · SI QUERÉIS SEGUIR</div>
       <h4>Integramos Gestión y pagos</h4>
-      <p>Estudiamos vuestro sistema actual y construimos juntos la integración: reservas, abonos, pagos y datos de cuenta sincronizados con vuestra gestión.</p>
+      <p>Nos dais acceso a vuestro sistema actual de reservas y pagos, y a vuestras tarifas, y construimos juntos la integración: reservas, abonos y datos de cuenta sincronizados.</p>
       <div class="phase-includes">
         <span class="phase-chip">A medida</span>
         <span class="phase-chip">Con vuestro equipo</span>
@@ -1084,39 +982,61 @@
   </div>
 </section>
 
+<!-- PHOTO BANNER 2 -->
+<div class="photo-banner reveal">
+  <img src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?fm=jpg&q=75&w=2000&auto=format&fit=crop" alt="Escaladora completando un movimiento dinámico en un rocódromo de boulder" loading="lazy" />
+  <div class="photo-banner-text">
+    <div class="section-label">Como en la pared</div>
+    <h2>El primer movimiento es siempre el más difícil</h2>
+  </div>
+</div>
+
 <!-- FREE TRIAL -->
 <div class="trial-section" id="trial">
   <div class="trial-inner">
     <div>
       <div class="section-label">Empieza por la demo</div>
-      <h2 class="section-title">¿Quieres ver cómo funciona?</h2>
+      <h2 class="section-title reveal">¿Quieres ver cómo funciona?</h2>
+      <p class="section-sub">Os preparamos una demo con el nombre y el color de vuestro rocódromo, para que veáis la app funcionando de verdad antes de decidir nada.</p>
     </div>
 
-    <div class="trial-card">
-      <div class="trial-eyebrow">Empieza aquí</div>
-      <h3>Solicitad vuestra demo</h3>
-      <p style="margin-bottom:20px;">Es una demo con datos de ejemplo, para que veáis la app completa antes de decidir nada. La prueba gratuita real llega después, si os convence.</p>
-      <form class="trial-form" id="trialForm">
-      <input type="text" name="name" placeholder="Tu nombre" required />
-      <input type="text" name="gym" placeholder="Nombre de tu rocódromo" required />
-      <input type="text" name="email" placeholder="Correo de contacto" required />
-      <div class="trial-color-field">
-        <input type="color" name="color" value="#E85D26" />
-        <div class="trial-color-label">
-          <span class="label-title">Color de vuestro rocódromo</span>
-          <span class="label-sub">Lo usamos como color de acento en vuestra demo</span>
+    <div class="trial-card reveal">
+      <div class="trial-content">
+        <div class="trial-eyebrow">Empieza aquí</div>
+        <h3>Solicitad vuestra demo</h3>
+        <p style="margin-bottom:20px;">Es una demo con datos de ejemplo, para que veáis la app completa en acción. La prueba gratuita real llega después, si os convence.</p>
+        <form class="trial-form" id="trialForm">
+        <input type="text" name="name" placeholder="Tu nombre" required />
+        <input type="text" name="gym" placeholder="Nombre de tu rocódromo" required />
+        <input type="text" name="email" placeholder="Correo de contacto" required />
+        <div class="trial-color-field">
+          <input type="color" name="color" value="#E85D26" />
+          <div class="trial-color-label">
+            <span class="label-title">Color de vuestro rocódromo</span>
+            <span class="label-sub">Lo usamos como color principal en la demo</span>
+          </div>
         </div>
-      </div>
-      <textarea name="message" rows="5" placeholder="Cuéntanos qué necesitas o qué te gustaría mejorar (opcional)"></textarea>
+        <textarea name="message" rows="5" placeholder="Contadnos qué necesitáis o qué os gustaría mejorar (opcional)"></textarea>
 
-      <button class="trial-cta-btn" type="submit">
-        Solicitar demo
-      </button>
+        <button class="trial-cta-btn" type="submit">
+          Solicitar demo
+        </button>
 
-      </form>
-      <div class="trial-guarantee">
-        <span class="guarantee-icon"><i class="ti ti-lock"></i></span>
-        <span>Demo con datos de ejemplo · Sin coste · Sin compromiso</span>
+        </form>
+        <div class="trial-guarantee">
+          <span class="guarantee-icon"><i class="ti ti-lock"></i></span>
+          <span>Demo con datos de ejemplo · Sin coste · Sin compromiso</span>
+        </div>
+        <div class="trial-call-note">
+          ¿Tenéis dudas antes de pedir la demo?
+          <button
+            type="button"
+            class="trial-call-link"
+            data-cal-namespace="llamada"
+            data-cal-link="ax-climb-gmi8d2/30min"
+            data-cal-config='{"layout":"month_view"}'
+          >Reservad una llamada rápida →</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1125,36 +1045,26 @@
 <!-- DIFFERENTIATORS -->
 <section>
   <div class="section-label">Por qué nosotros</div>
-  <h2 class="section-title">Diseñada desde dentro del rocódromo</h2>
-  <p class="section-sub">Hay otras soluciones en el mercado. La diferencia es que nosotros somos de aquí, escalamos aquí, y respondemos cuando nos llamas.</p>
+  <h2 class="section-title reveal">Diseñada desde dentro del rocódromo</h2>
+  <p class="section-sub">Hay otras soluciones en el mercado. La diferencia es que nosotros somos de aquí, escalamos aquí, y respondemos cuando nos llamáis.</p>
   <div class="diff-grid">
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-device-mobile"></i></div>
       <h4>Vuestra app, no una compartida</h4>
       <p>Una app exclusiva para vuestro rocódromo, con vuestra identidad y vuestra comunidad — no una plataforma compartida con otros centros.</p>
     </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-language"></i></div>
       <h4>Sin barreras de idioma</h4>
       <p>App, soporte y comunicación en el idioma de vuestra comunidad.
         Nada de traducciones automáticas raras ni confusión: todo suena nativo y claro para vuestros usuarios.</p>
     </div>
-    <div class="diff-card">
-      <div class="diff-num"><i class="ti ti-map-pin"></i></div>
-      <h4>Onboarding presencial en Madrid</h4>
-      <p>Venimos a vuestro rocódromo, configuramos todo con vosotros y formamos a vuestro equipo en persona.</p>
-    </div>
-    <div class="diff-card">
+    <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-shield-check"></i></div>
       <h4>Empezáis sin riesgo</h4>
       <p>Probáis Comunidad y Administración gratis antes de comprometeros con la integración de Gestión y pagos.</p>
     </div>
-    <div class="diff-card">
-      <div class="diff-num"><i class="ti ti-mountain"></i></div>
-      <h4>Hechos por escaladores</h4>
-      <p>Entendemos el lenguaje, los problemas y el ritmo de un rocódromo porque los vivimos cada semana.</p>
-    </div>
-     <div class="diff-card">
+     <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-palette"></i></div>
       <h4>Vuestra marca, no la nuestra</h4>
       <p>Colores, imágenes, textos y estilo visual alineados con la personalidad de vuestro rocódromo para que vuestros socios la sientan como propia.</p>
@@ -1165,35 +1075,35 @@
 <!-- FAQ -->
 <section style="padding-top:0;">
   <div class="section-label">Preguntas frecuentes</div>
-  <h2 class="section-title">Lo que suelen preguntarnos</h2>
+  <h2 class="section-title reveal">Lo que suelen preguntarnos</h2>
   <div class="faq-list">
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Necesito hardware adicional para usar AX Climb? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">No. AX Climb funciona completamente desde el móvil. No necesitáis ningún dispositivo especial ni instalación física en el rocódromo.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">No. AX Climb funciona completamente desde el móvil. No necesitáis ningún dispositivo especial ni instalación física en el rocódromo.</div></div></div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Cuánto tiempo lleva poner en marcha la app? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">En la mayoría de casos, entre dos y tres semanas desde que empezamos a trabajar con vosotros. Hacemos una llamada inicial, configuramos el sistema con los datos de vuestro rocódromo y hacemos pruebas antes del lanzamiento.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Para Comunidad y Administración, entre una y dos semanas: hacemos una llamada inicial, cargamos los datos de vuestro rocódromo (sectores, grados...) y hacemos pruebas antes de lanzarla con vuestros escaladores. Si más adelante integráis Gestión y pagos, el plazo depende de vuestro sistema actual, y os lo concretamos al estudiarlo.</div></div></div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Qué pasa si quiero añadir un módulo más adelante? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Podéis activar nuevos módulos en cualquier momento. No hay penalizaciones ni contratos que lo impidan. Lo hablamos, lo configuramos juntos y lo tenéis en funcionamiento en pocos días.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Podéis activar nuevos módulos en cualquier momento. No hay penalizaciones ni contratos que lo impidan. Lo hablamos, lo configuramos juntos y lo tenéis en funcionamiento en pocos días.</div></div></div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Los escaladores tienen que pagar algo por la app? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">No. La app es completamente gratuita para los usuarios del rocódromo. El coste lo asume el centro, que es quien obtiene el valor de gestión y fidelización.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">No. La app es completamente gratuita para los usuarios del rocódromo. El coste lo asume el centro, que es quien obtiene el valor de gestión y fidelización.</div></div></div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Cuánto cuesta después de la prueba gratuita? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Depende del tamaño de vuestro rocódromo y de qué módulos activéis. Comunidad tiene una cuota mensual que se define con vuestro centro, y Gestión y pagos se cotiza aparte según la integración con vuestro sistema. Os lo detallamos en una propuesta a medida después de la demo, sin sorpresas ni letra pequeña.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Depende del tamaño de vuestro rocódromo y de qué módulos activéis. Comunidad tiene una cuota mensual que se define con vuestro centro, y Gestión y pagos se cotiza aparte según la integración con vuestro sistema. Os lo detallamos en una propuesta a medida después de la demo, sin sorpresas ni letra pequeña.</div></div></div>
     </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">¿Ofrecéis soporte si algo falla? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Sí. Al ser un equipo pequeño y local, el soporte es directo — no hay un sistema de tickets con semanas de espera. Nos contactáis por email o WhatsApp y respondemos el mismo día.</div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">¿A quién acudo si algo falla? <span class="faq-arrow">+</span></button>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Al ser un equipo pequeño y local, el soporte es directo — no hay un sistema de tickets con semanas de espera. Nos contactáis por email o WhatsApp y respondemos el mismo día.</div></div></div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera? <span class="faq-arrow">+</span></button>
-      <div class="faq-a">Sí. No hay permanencia mínima. Si en algún momento decidís que AX Climb no es para vosotros, canceláis sin coste adicional. Preferimos que os quedéis porque veis valor, no porque estéis atados.</div>
+      <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Sí. No hay permanencia mínima. Si en algún momento decidís que AX Climb no es para vosotros, canceláis sin coste adicional. Preferimos que os quedéis porque veis valor, no porque estéis atados.</div></div></div>
     </div>
   </div>
 </section>
@@ -1201,23 +1111,25 @@
 <!-- TEAM -->
 <div style="padding:80px 0;">
   <div class="team-section" id="equipo">
-    <div>
-      <div class="section-label">El equipo</div>
-      <h2 class="section-title">Somos escaladores y desarrolladores</h2>
-      <p class="section-sub">AX Climb nace de entender el mundo de la escalada desde dentro. No somos una consultora — desarrollamos con tiempo, cuidado y visión a largo plazo.</p>
-    </div>
-    <div class="team-cards">
-      <div class="team-card">
-        <div class="team-avatar" style="background:var(--hold-orange);"><i class="ti ti-mountain"></i></div>
-        <div class="team-info"><h4>Escaladores primero</h4><p>Probamos cada función en sala, antes de que llegue a vuestra app.</p></div>
+    <div class="team-content">
+      <div>
+        <div class="section-label">El equipo</div>
+        <h2 class="section-title reveal">Somos escaladores y desarrolladores</h2>
+        <p class="section-sub">AX Climb nace de entender el mundo de la escalada desde dentro. No somos una consultora — desarrollamos con tiempo, cuidado y visión a largo plazo.</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar" style="background:#3B82F6;"><i class="ti ti-code"></i></div>
-        <div class="team-info"><h4>Desarrollo propio</h4><p>Sin agencias externas: diseñamos y programamos cada parte de AX Climb.</p></div>
-      </div>
-      <div class="team-card">
-        <div class="team-avatar" style="background:#0E0E0E;"><i class="ti ti-map-pin"></i></div>
-        <div class="team-info"><h4>Con base en Madrid</h4><p>Onboarding presencial y soporte directo, sin intermediarios.</p></div>
+      <div class="team-cards">
+        <div class="team-card reveal">
+          <div class="team-avatar" style="background:var(--hold-orange);"><i class="ti ti-mountain"></i></div>
+          <div class="team-info"><h4>Escaladores primero</h4><p>Probamos cada función en sala, antes de que llegue a vuestra app.</p></div>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar" style="background:#3B82F6;"><i class="ti ti-code"></i></div>
+          <div class="team-info"><h4>Desarrollo propio</h4><p>Sin agencias externas: diseñamos y programamos cada parte de AX Climb.</p></div>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar" style="background:#0E0E0E;"><i class="ti ti-map-pin"></i></div>
+          <div class="team-info"><h4>Con base en Madrid</h4><p>Onboarding presencial o en remoto, y soporte siempre directo, sin intermediarios.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1226,10 +1138,19 @@
 <!-- CTA -->
 <div id="contacto">
   <div class="cta-section">
-    <div class="section-label">¿Os interesa?</div>
-    <h2 class="section-title">Hablemos de vuestro rocódromo</h2>
-    <p>Cuéntanos cómo funciona vuestro centro y os mostramos cómo AX Climb encajaría. Sin compromiso, sin letra pequeña.</p>
-    <a href="mailto:axclimb@gmail.com?subject=Dudas%20AX%20Climb" class="btn-primary" style="font-size:16px;padding:16px 40px;">Envíanos un email</a>
+    <div class="section-label">¿Alguna duda?</div>
+    <h2 class="section-title reveal">Hablemos de lo que necesitéis</h2>
+    <p>Si después de ver todo esto os queda alguna duda o queréis profundizar en algún punto, escribidnos un email o reservad una llamada — hablamos de lo que haga falta.</p>
+    <div class="cta-buttons">
+      <button
+        type="button"
+        class="btn-ghost"
+        data-cal-namespace="llamada"
+        data-cal-link="ax-climb-gmi8d2/30min"
+        data-cal-config='{"layout":"month_view"}'
+      ><i class="ti ti-calendar-event"></i> Reservad una llamada</button>
+      <a href="mailto:axclimb@gmail.com?subject=Dudas%20AX%20Climb" class="btn-primary">Enviadnos un email</a>
+    </div>
   </div>
 </div>
 
@@ -1412,6 +1333,36 @@ form.addEventListener('submit', async (e) => {
     });
 
     render();
+  })();
+
+  // CAL.COM — botón "Reservad una llamada" (#contacto). Abre el widget de reserva
+  // en un modal, sin salir de la web. Snippet oficial de Cal.com; el modal en sí
+  // vive en su dominio, así que solo hace falta cargar el loader e inicializarlo.
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "llamada", { origin: "https://cal.com" });
+  Cal.ns.llamada("ui", {
+    theme: "light",
+    styles: { branding: { brandColor: "#E85D26" } },
+    hideEventTypeDetails: false,
+    layout: "month_view",
+  });
+
+  // SCROLL REVEAL — fade + rise elements marked .reveal as they enter the viewport.
+  // unobserve() after first trigger so it plays once per element, not on every scroll.
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   })();
 </script>
 </body>
