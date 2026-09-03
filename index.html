@@ -577,6 +577,11 @@
     .app-fan-slot.slot-center .app-frame { width: clamp(82px, 28vw, 150px); }
     .app-fan-slot.slot-left { margin-right: max(-20px, -4vw); transform: rotate(-4deg) translateY(26px); }
     .app-fan-slot.slot-right { margin-left: max(-20px, -4vw); transform: rotate(4deg) translateY(26px); }
+    /* .app-frame's bezel (padding) and corner radius are fixed px values sized for the desktop
+       210-220px frame -- at the shrunk mobile widths above they read as a chunky, disproportionate
+       black border instead of a slim phone bezel. Scaled down to match. */
+    .app-fan-slot .app-frame { padding: 6px; border-radius: 22px; }
+    .app-fan-slot .app-frame-screen { border-radius: 16px; }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
