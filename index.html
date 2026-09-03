@@ -39,7 +39,13 @@
     --photo-tint: 24, 15, 9;
   }
 
-  html { scroll-behavior: smooth; }
+  /* overflow-x: hidden also needs to sit on html, not just body -- the phone "fan" mockup in
+     the hero (see .app-fan) intentionally overflows its own container horizontally (rotated
+     phones + negative margins), and on mobile Safari specifically, hiding that overflow only on
+     body isn't enough: Safari sizes the page's layout viewport off the widest content on the
+     page regardless of body's own overflow, so the whole site renders zoomed/shifted to fit the
+     phones instead of the phones being cleanly clipped at the screen edge. */
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     font-family: 'DM Sans', sans-serif;
