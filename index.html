@@ -9,11 +9,11 @@
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="AX Climb — La app para gestionar tu rocódromo">
 <meta property="og:description" content="Comunidad, administración y gestión para vuestro rocódromo, en una sola app. Empezad con una demo gratuita, con el nombre y el color de vuestra sala.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1696105538782-7815474f28e0?fm=jpg&q=80&w=1200&h=630&fit=crop&auto=format">
+<meta property="og:image" content="images/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AX Climb — La app para gestionar tu rocódromo">
 <meta name="twitter:description" content="Comunidad, administración y gestión para vuestro rocódromo, en una sola app. Empezad con una demo gratuita, con el nombre y el color de vuestra sala.">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1696105538782-7815474f28e0?fm=jpg&q=80&w=1200&h=630&fit=crop&auto=format">
+<meta name="twitter:image" content="images/favicon-512.png">
 <link rel="shortcut icon" href="favicon.ico?v=4">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png?v=4">
@@ -568,10 +568,15 @@
       position: relative;
     }
     .phone-bg-ring, .phone-bg-ring-2 { display: none; }
-    .app-fan-slot .app-frame { width: 142px; }
-    .app-fan-slot.slot-center .app-frame { width: 150px; }
-    .app-fan-slot.slot-left { margin-right: -20px; }
-    .app-fan-slot.slot-right { margin-left: -20px; }
+    /* clamp()'d to a % of viewport width (capped at the desktop-ish sizes below ~550px screen
+       width) instead of a fixed 142/150px -- fixed widths + the ±6deg fan rotation added up to
+       ~460px total, wider than any phone viewport, so the fan was getting clipped on the right by
+       body/html's overflow-x: hidden. Scaling with the viewport (and trimming the rotation angle
+       below) keeps the fan's total footprint inside the screen at any phone width. */
+    .app-fan-slot .app-frame { width: clamp(76px, 26vw, 142px); }
+    .app-fan-slot.slot-center .app-frame { width: clamp(82px, 28vw, 150px); }
+    .app-fan-slot.slot-left { margin-right: max(-20px, -4vw); transform: rotate(-4deg) translateY(26px); }
+    .app-fan-slot.slot-right { margin-left: max(-20px, -4vw); transform: rotate(4deg) translateY(26px); }
 
     /* SECTIONS */
     section { padding: 56px 6%; }
