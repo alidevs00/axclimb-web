@@ -20,7 +20,9 @@
 <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png?v=4">
 <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png?v=4">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<!-- Pinned version (was @latest) -- an unpinned CDN import can silently change icon
+     names/glyphs across a major release and break icons on the page with no warning. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/tabler-icons.min.css">
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +34,10 @@
     --hold-orange: #E85D26;
     --hold-orange-light: #FFF0E9;
     --slate: #3A3A3A;
-    --mid: #7A7570;
+    /* Darkened slightly from #7A7570 -- that shade only hit ~4.26:1 against --chalk,
+       just under WCAG AA's 4.5:1 minimum for the small/light-weight body text it's
+       used on throughout the page. This hits ~4.8:1. */
+    --mid: #726D67;
     --white: #FFFFFF;
     --radius: 14px;
     --radius-sm: 8px;
@@ -73,6 +78,13 @@
     padding: 0 5%;
     display: flex; align-items: center; justify-content: space-between;
     height: 64px;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  /* Toggled by JS once the page scrolls past the hero -- a plain flat bar reads fine
+     over the hero, but blends into busy sections below without a bit of depth. */
+  nav.nav-scrolled {
+    background: rgba(245,242,238,0.98);
+    box-shadow: 0 4px 20px rgba(14,14,14,0.06);
   }
   .nav-logo {
     font-family: 'Space Grotesk', sans-serif;
@@ -167,7 +179,6 @@
   .phone-bg-ring { position: absolute; width: 620px; height: 620px; border: 70px solid rgba(232,93,38,0.09); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
   .phone-bg-ring-2 { position: absolute; width: 820px; height: 820px; border: 40px solid rgba(232,93,38,0.05); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
 
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
   .phone-frame { width: 320px; background: #111; border-radius: 32px; padding: 10px; margin: 0 auto 1rem; }
   .phone-screen { background: #0B0B0D; border-radius: 24px; overflow: hidden; font-family: 'DM Sans', sans-serif; min-height: 660px; display: flex; flex-direction: column; position: relative; color: #fff; }
   .sg { font-family: 'Space Grotesk', sans-serif; }
@@ -228,29 +239,6 @@
   .section-title { font-size: clamp(30px, 4vw, 48px); color: var(--black); margin-bottom: 16px; }
   .section-sub { font-size: 17px; color: var(--mid); font-weight: 300; max-width: 540px; line-height: 1.7; margin-bottom: 56px; }
 
-  /* DUAL GRID */
-  .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .dual-card { border-radius: var(--radius); padding: 40px; }
-  .dual-card.gym { background: var(--black); color: var(--white); }
-  .dual-card.user { background: var(--hold-orange); color: var(--white); }
-  .dual-card .role-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; font-weight: 600; margin-bottom: 16px; }
-  .dual-card h3 { font-size: 26px; margin-bottom: 20px; }
-  .dual-card ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .dual-card ul li { font-size: 14px; opacity: 0.85; padding-left: 20px; position: relative; line-height: 1.5; }
-  .dual-card ul li::before { content: '→'; position: absolute; left: 0; opacity: 0.6; }
-
-  /* MODULES */
-  .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-  .module-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
-  .module-card:hover { border-color: var(--hold-orange); transform: translateY(-4px); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
-  .module-icon { width: 44px; height: 44px; border-radius: 10px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-  .module-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
-  .module-card p { font-size: 13px; color: var(--mid); line-height: 1.6; }
-  .module-badge { display: inline-block; margin-top: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 20px; }
-  .badge-gym { background: #EEF4FF; color: #2563EB; }
-  .badge-user { background: #F0FDF4; color: #16A34A; }
-  .badge-both { background: var(--hold-orange-light); color: var(--hold-orange); }
-
   /* PRODUCT BLOCKS (Comunidad / Gestión y pagos) */
   .blocks-wrap { display: flex; flex-direction: column; gap: 56px; }
   .product-block { border-radius: 24px; padding: 40px; border: 1px solid var(--stone); background: var(--white); }
@@ -273,6 +261,25 @@
   .product-block.gestion .block-status .status-note { color: rgba(255,255,255,0.4); }
 
   .block-modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+
+  /* "VER MÁS" toggle for block-modules-grid -- hidden by default (desktop's multi-column
+     grid already shows every card without feeling long), only switched on inside the
+     mobile media query below, where each block's cards stack full-width one per row. */
+  .modules-toggle {
+    display: none;
+    align-items: center; justify-content: center; gap: 6px;
+    width: 100%; margin-top: 12px; padding: 13px;
+    background: var(--white); border: 1px solid var(--stone); border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--slate); cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  }
+  .modules-toggle:hover { border-color: var(--hold-orange); color: var(--hold-orange); }
+  .modules-toggle i { font-size: 15px; transition: transform 0.2s; }
+  .modules-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
+  .product-block.gestion .modules-toggle {
+    background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.75);
+  }
+  .product-block.gestion .modules-toggle:hover { border-color: var(--hold-orange); color: var(--hold-orange); }
   .bm-card { border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s; }
   .bm-card:hover { transform: translateY(-4px); border-color: var(--hold-orange); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
   .product-block.gestion .bm-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
@@ -314,13 +321,17 @@
   /* TRIAL CARD */
   /* Same two-layer pattern as .team-section: the card is a photo frame, and a solid
      inner card (.trial-content) holds the readable content on top of it. */
-  .trial-card {
-    border-radius: 24px; padding: 22px; color: white;
-    background-image: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45)),
-      url('https://images.unsplash.com/photo-1689775884478-9ed19b79d659?fm=jpg&q=70&w=1200&auto=format&fit=crop');
-    background-size: cover; background-position: center;
+  /* Background photo is a real <img loading="lazy"> now (was a CSS background-image) --
+     backgrounds set via CSS always download eagerly regardless of scroll position, while
+     this section sits well below the fold. Matches .photo-banner's img + ::after overlay
+     pattern below. */
+  .trial-card { position: relative; overflow: hidden; border-radius: 24px; padding: 22px; color: white; }
+  .trial-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .trial-card::after {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45));
   }
-  .trial-content { background: rgba(var(--photo-tint),0.86); border-radius: 18px; padding: 32px; }
+  .trial-content { position: relative; z-index: 2; background: rgba(var(--photo-tint),0.86); border-radius: 18px; padding: 32px; }
   .trial-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; color: var(--hold-orange); margin-bottom: 12px; }
   .trial-card h3 { font-size: 26px; color: white; margin-bottom: 10px; line-height: 1.15; }
   .trial-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; line-height: 1.6; font-weight: 300; }
@@ -372,37 +383,6 @@
   .trial-color-label { display: flex; flex-direction: column; gap: 2px; }
   .trial-color-label .label-title { font-size: 13px; font-weight: 500; color: white; }
   .trial-color-label .label-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
-
-  /* MODULE PICKER */
-  .module-picker { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-  .module-pick-item {
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.08);
-    border-radius: 10px; padding: 11px 14px;
-    cursor: pointer; transition: border-color 0.15s, background 0.15s;
-    user-select: none;
-  }
-  .module-pick-item:hover { border-color: rgba(232,93,38,0.5); background: rgba(232,93,38,0.06); }
-  .module-pick-item.selected { border-color: var(--hold-orange); background: rgba(232,93,38,0.1); }
-  .pick-icon { font-size: 16px; width: 28px; text-align: center; flex-shrink: 0; }
-  .pick-text { flex: 1; }
-  .pick-text .name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
-  .pick-text .desc { font-size: 11px; color: rgba(255,255,255,0.4); }
-  .pick-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.15s, border-color 0.15s; }
-  .module-pick-item.selected .pick-check { background: var(--hold-orange); border-color: var(--hold-orange); }
-  .pick-check-inner { width: 6px; height: 6px; border-radius: 50%; background: white; opacity: 0; transition: opacity 0.15s; }
-  .module-pick-item.selected .pick-check-inner { opacity: 1; }
-
-  .trial-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0; }
-
-  .unsure-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; transition: border-color 0.15s; margin-bottom: 20px; }
-  .unsure-row:hover { border-color: rgba(255,255,255,0.2); }
-  .unsure-row.selected { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.07); }
-  .unsure-row.selected .pick-check { background: var(--hold-orange); border-color: var(--hold-orange); }
-  .unsure-row.selected .pick-check-inner { opacity: 1; }
-  .unsure-icon { font-size: 18px; }
-  .unsure-text .name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); }
-  .unsure-text .desc { font-size: 11px; color: rgba(255,255,255,0.4); }
 
   .trial-cta-btn {
     display: block; width: 100%; text-align: center;
@@ -456,14 +436,17 @@
   .trial-call-link:hover { color: #FF7A42; }
 
   /* TEAM */
-  .team-section {
-    border-radius: 24px; margin: 0 5%; padding: 28px;
-    background-image: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45)),
-      url('https://images.unsplash.com/photo-1775654792362-2eed733e9470?fm=jpg&q=70&w=1600&auto=format&fit=crop');
-    background-size: cover; background-position: center;
+  /* Same lazy <img> + overlay treatment as .trial-card (see above) instead of a CSS
+     background-image, so this below-the-fold photo doesn't load until it's needed. */
+  .team-section { position: relative; overflow: hidden; border-radius: 24px; margin: 0 5%; padding: 28px; }
+  .team-section img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .team-section::after {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(var(--photo-tint),0.25), rgba(var(--photo-tint),0.45));
   }
   /* Info card sits on top of the photo so text stays readable regardless of what's behind it. */
   .team-content {
+    position: relative; z-index: 2;
     background: rgba(var(--photo-tint),0.86); border-radius: 18px; padding: 48px;
     display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
   }
@@ -488,6 +471,23 @@
   footer { border-top: 1px solid var(--stone); padding: 28px 8%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--mid); }
   .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.04em; color: var(--black); text-decoration: none; }
   .footer-logo span { color: var(--hold-orange); }
+
+  /* ── MOBILE STICKY CTA ── */
+  /* Fixed bottom bar, mobile-only: keeps "Solicitad demo" reachable without scrolling
+     back to the hero or down to the closing CTA, on what is still a long page. Sits
+     below .mobile-menu's z-index so opening the hamburger menu naturally covers it. */
+  .mobile-sticky-cta {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 95;
+    background: var(--white);
+    border-top: 1px solid var(--stone);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    box-shadow: 0 -6px 20px rgba(14,14,14,0.08);
+  }
+  .mobile-sticky-cta .btn-primary {
+    display: block; width: 100%; text-align: center;
+    padding: 14px 20px; font-size: 15px;
+  }
 
   /* ── MOBILE NAV HAMBURGER ── */
   .nav-hamburger {
@@ -538,6 +538,10 @@
   }
 
   @media (max-width: 860px) {
+    /* STICKY CTA */
+    .mobile-sticky-cta { display: block; }
+    body { padding-bottom: 76px; }
+
     /* NAV */
     nav ul { display: none; }
     .nav-hamburger { display: flex; }
@@ -587,11 +591,6 @@
     section { padding: 56px 6%; }
     .section-sub { font-size: 15px; margin-bottom: 36px; }
 
-    /* DUAL GRID */
-    .dual-grid { grid-template-columns: 1fr; gap: 16px; }
-    .dual-card { padding: 28px 24px; }
-    .dual-card h3 { font-size: 22px; }
-
     /* PRODUCT BLOCKS */
     .blocks-wrap { gap: 32px; }
     .product-block { padding: 28px 22px; border-radius: 20px; }
@@ -600,14 +599,16 @@
     .block-head h3 { font-size: 21px; }
     .block-modules-grid { grid-template-columns: 1fr; gap: 10px; }
     .bm-card { padding: 16px; }
+    /* Only the first 3 feature cards show per block until "ver más" is pressed --
+       19 stacked full-width cards across the three blocks was the single biggest
+       contributor to how long/recargada the page felt on mobile. */
+    .block-modules-grid .bm-card:nth-child(n+4) { display: none; }
+    .block-modules-grid.expanded .bm-card:nth-child(n+4) { display: block; }
+    .modules-toggle { display: flex; }
 
     /* PHASES */
     .phase-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
     .phase-card { padding: 22px 20px; }
-
-    /* MODULES */
-    .modules-grid { grid-template-columns: 1fr; gap: 12px; }
-    .module-card { padding: 20px; }
 
     /* TRIAL */
     .trial-section { padding: 56px 6%; }
@@ -620,6 +621,13 @@
     .diff-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
     .diff-card { padding: 20px; }
     .diff-num { font-size: 28px; }
+    /* Same "ver más" pattern as Módulos: show the first 2 rows (grid is 2 columns
+       here) and collapse the rest behind the toggle. Each grid's own
+       data-collapse-after says how many cards start visible. */
+    .diff-grid[data-collapse-after="4"] .diff-card:nth-child(n+5) { display: none; }
+    .diff-grid[data-collapse-after="4"].expanded .diff-card:nth-child(n+5) { display: block; }
+    .diff-grid[data-collapse-after="2"] .diff-card:nth-child(n+3) { display: none; }
+    .diff-grid[data-collapse-after="2"].expanded .diff-card:nth-child(n+3) { display: block; }
 
     /* FAQ */
     .faq-q { font-size: 14px; padding: 16px 0; }
@@ -707,7 +715,7 @@
             <div class="app-frame">
               <div class="app-frame-screen">
                 <img class="mk-shot mk-shot-light" src="images/screenshots/perfil-light-final.png" alt="Captura real de la pantalla de Perfil en AX Climb" />
-                <img class="mk-shot mk-shot-dark" src="images/screenshots/perfil-dark-final.png" alt="" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/perfil-dark-final.png" alt="Captura real de la pantalla de Perfil en AX Climb" />
               </div>
             </div>
             <div class="app-showcase-caption">Perfil y estadísticas</div>
@@ -718,7 +726,7 @@
             <div class="app-frame">
               <div class="app-frame-screen">
                 <img class="mk-shot mk-shot-light" src="images/screenshots/inicio-light-final.png" alt="Captura real de la pantalla de Inicio en AX Climb" />
-                <img class="mk-shot mk-shot-dark" src="images/screenshots/inicio-dark-final.png" alt="" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/inicio-dark-final.png" alt="Captura real de la pantalla de Inicio en AX Climb" />
               </div>
             </div>
             <div class="app-showcase-caption">Inicio</div>
@@ -729,7 +737,7 @@
             <div class="app-frame">
               <div class="app-frame-screen">
                 <img class="mk-shot mk-shot-light" src="images/screenshots/mapa-light-final.png" alt="Captura real de la pantalla de Mapa en AX Climb" />
-                <img class="mk-shot mk-shot-dark" src="images/screenshots/mapa-dark-final.png" alt="" />
+                <img class="mk-shot mk-shot-dark" src="images/screenshots/mapa-dark-final.png" alt="Captura real de la pantalla de Mapa en AX Climb" />
               </div>
             </div>
             <div class="app-showcase-caption">Mapa y bloques</div>
@@ -754,7 +762,7 @@
   <div class="section-label">Por qué tener la app</div>
   <h2 class="section-title reveal">Beneficios para vuestro rocódromo</h2>
   <p class="section-sub">Más allá de las funcionalidades, esto es lo que AX Climb cambia en vuestro día a día.</p>
-  <div class="diff-grid">
+  <div class="diff-grid" data-collapse-after="4">
     <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-repeat"></i></div>
       <h4>Fidelización real</h4>
@@ -786,6 +794,9 @@
       <p>La app no tiene coste para los escaladores. El valor es para el centro; ellos solo disfrutan de la experiencia.</p>
     </div>
   </div>
+  <button class="modules-toggle" type="button" aria-expanded="false" data-show="Ver 2 beneficios más" data-hide="Ver menos" onclick="toggleModules(this)">
+    <span>Ver 2 beneficios más</span> <i class="ti ti-chevron-down"></i>
+  </button>
 </section>
 
 <!-- PHOTO BANNER -->
@@ -860,6 +871,9 @@
           <p>A elección de cada escalador.</p>
         </div>
       </div>
+      <button class="modules-toggle" type="button" aria-expanded="false" data-show="Ver 5 funciones más" data-hide="Ver menos" onclick="toggleModules(this)">
+        <span>Ver 5 funciones más</span> <i class="ti ti-chevron-down"></i>
+      </button>
     </div>
 
     <!-- BLOQUE 2: ADMINISTRACIÓN -->
@@ -908,6 +922,9 @@
           <p>En tablet no es solo una pantalla más grande: se activa una vista de dashboard con más datos a la vez, pensada para gestionar desde recepción.</p>
         </div>
       </div>
+      <button class="modules-toggle" type="button" aria-expanded="false" data-show="Ver 3 funciones más" data-hide="Ver menos" onclick="toggleModules(this)">
+        <span>Ver 3 funciones más</span> <i class="ti ti-chevron-down"></i>
+      </button>
     </div>
 
     <!-- BLOQUE 3: GESTIÓN Y PAGOS -->
@@ -951,6 +968,9 @@
           <p>Horarios, precios y eventos actualizados desde vuestra gestión.</p>
         </div>
       </div>
+      <button class="modules-toggle" type="button" aria-expanded="false" data-show="Ver 2 funciones más" data-hide="Ver menos" onclick="toggleModules(this)">
+        <span>Ver 2 funciones más</span> <i class="ti ti-chevron-down"></i>
+      </button>
     </div>
 
   </div>
@@ -1019,6 +1039,7 @@
     </div>
 
     <div class="trial-card reveal">
+      <img src="https://images.unsplash.com/photo-1689775884478-9ed19b79d659?fm=jpg&q=70&w=1200&auto=format&fit=crop" alt="" loading="lazy" />
       <div class="trial-content">
         <div class="trial-eyebrow">Empieza aquí</div>
         <h3>Solicitad vuestra demo</h3>
@@ -1065,7 +1086,7 @@
   <div class="section-label">Por qué nosotros</div>
   <h2 class="section-title reveal">Diseñada desde dentro del rocódromo</h2>
   <p class="section-sub">Hay otras soluciones en el mercado. La diferencia es que nosotros somos de aquí, escalamos aquí, y respondemos cuando nos llamáis.</p>
-  <div class="diff-grid">
+  <div class="diff-grid" data-collapse-after="2">
     <div class="diff-card reveal">
       <div class="diff-num"><i class="ti ti-device-mobile"></i></div>
       <h4>Vuestra app, no una compartida</h4>
@@ -1088,6 +1109,9 @@
       <p>Colores, imágenes, textos y estilo visual alineados con la personalidad de vuestro rocódromo para que vuestros socios la sientan como propia.</p>
     </div>
   </div>
+  <button class="modules-toggle" type="button" aria-expanded="false" data-show="Ver 2 razones más" data-hide="Ver menos" onclick="toggleModules(this)">
+    <span>Ver 2 razones más</span> <i class="ti ti-chevron-down"></i>
+  </button>
 </section>
 
 <!-- FAQ -->
@@ -1129,6 +1153,7 @@
 <!-- TEAM -->
 <div style="padding:80px 0;">
   <div class="team-section" id="equipo">
+    <img src="https://images.unsplash.com/photo-1775654792362-2eed733e9470?fm=jpg&q=70&w=1600&auto=format&fit=crop" alt="" loading="lazy" />
     <div class="team-content">
       <div>
         <div class="section-label">El equipo</div>
@@ -1195,61 +1220,6 @@
 "></div>
 
 <script>
-  const items = document.querySelectorAll('.module-pick-item');
-  const unsureCheck = document.getElementById('unsureCheck');
-  const trialBtn = document.getElementById('trialBtn');
-  let selectedModules = new Set();
-  let unsureSelected = false;
-
-  function updateBtn() {
-    const hasSelection = selectedModules.size > 0 || unsureSelected;
-    if (hasSelection) {
-      trialBtn.classList.add('active');
-    } else {
-      trialBtn.classList.remove('active');
-    }
-    if (unsureSelected) {
-      trialBtn.textContent = 'Pedir orientación personalizada →';
-    } else if (selectedModules.size > 0) {
-      const names = [...selectedModules].map(m => {
-        const el = document.querySelector(`[data-module="${m}"] .name`);
-        return el ? el.textContent : m;
-      });
-      trialBtn.textContent = `Solicitar prueba de ${names.length === 1 ? names[0] : names.length + ' módulos'} →`;
-    } else {
-      trialBtn.textContent = 'Selecciona una opción';
-    }
-  }
-
-  items.forEach(item => {
-    item.addEventListener('click', () => {
-      const mod = item.dataset.module;
-      if (selectedModules.has(mod)) {
-        selectedModules.delete(mod);
-        item.classList.remove('selected');
-      } else {
-        selectedModules.add(mod);
-        item.classList.add('selected');
-        unsureSelected = false;
-      }
-      updateBtn();
-    });
-  });
-
-
-  function handleTrialClick() {
-    if (!trialBtn.classList.contains('active')) return;
-    let subject, body;
-    if (unsureSelected) {
-      subject = 'AX Climb — Quiero que me orientéis';
-      body = 'Hola, me interesa AX Climb pero no tengo claro qué módulos necesito. ¿Podemos hablar?';
-    } else {
-      const mods = [...selectedModules].join(', ');
-      subject = 'AX Climb — Prueba gratuita: ' + mods;
-      body = 'Hola, me gustaría probar los siguientes módulos de AX Climb: ' + mods + '.\n\nNombre del rocódromo: \nNúmero aproximado de usuarios: \nCuándo podríamos hablar: ';
-    }
-    window.location.href = 'mailto:axclimb@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  }
   function toggleMenu() {
     const h = document.getElementById('hamburger');
     const m = document.getElementById('mobileMenu');
@@ -1268,6 +1238,21 @@
     document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   }
+  function toggleModules(btn) {
+    const grid = btn.previousElementSibling;
+    const expanded = grid.classList.toggle('expanded');
+    btn.setAttribute('aria-expanded', String(expanded));
+    btn.querySelector('span').textContent = expanded ? btn.dataset.hide : btn.dataset.show;
+  }
+
+  // NAV SCROLL SHADOW — adds depth to the sticky nav once the page scrolls past the
+  // hero, so it doesn't blend flat into busier sections underneath.
+  (function () {
+    const nav = document.querySelector('nav');
+    const onScroll = () => nav.classList.toggle('nav-scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
 const form = document.getElementById('trialForm');
 const btn = document.querySelector('.trial-cta-btn');
 const inputs = form.querySelectorAll('[required]');
@@ -1383,5 +1368,9 @@ form.addEventListener('submit', async (e) => {
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   })();
 </script>
+<div class="mobile-sticky-cta">
+  <a href="#trial" class="btn-primary">Solicitad vuestra demo</a>
+</div>
+
 </body>
 </html>
