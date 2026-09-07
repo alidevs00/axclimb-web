@@ -21,8 +21,12 @@
 <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png?v=4">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <!-- Pinned version (was @latest) -- an unpinned CDN import can silently change icon
-     names/glyphs across a major release and break icons on the page with no warning. -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/tabler-icons.min.css">
+     names/glyphs across a major release and break icons on the page with no warning.
+     Path is dist/tabler-icons.min.css, not the package root -- 3.46.0 ships the CSS
+     under dist/ (confirmed via data.jsdelivr.com's file listing for this version);
+     the old @latest link worked at the root path only because whatever version it
+     happened to resolve to at the time still had the CSS at the package root. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/dist/tabler-icons.min.css">
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -113,19 +117,50 @@
     padding: 120px 8% 40px;
     max-width: 1280px; margin: 0 auto;
   }
-  .phone-wrapper { position: relative; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: visible; padding: 24px 0; }
+  /* Own transform/opacity (distinct from the entrance animation on its *children*,
+     see .hero-copy > * below) -- this one is driven continuously by JS on scroll, to
+     ease the hero out as the next section scrolls into view. */
+  .hero-copy { transition: transform 0.2s ease-out, opacity 0.2s ease-out; }
+  .phone-wrapper {
+    position: relative; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: visible; padding: 24px 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  }
+
+  /* HERO ENTRANCE -- staggered fade/rise/unblur for each direct child of .hero-copy,
+     plus the phone showcase, on page load. Hidden state only applies once JS has
+     confirmed it can reveal things again (.anim-ready, set synchronously at the top
+     of <body>) -- with JS disabled the hero just renders visible, no animation. */
+  .anim-ready .hero-copy > * {
+    opacity: 0; transform: translateY(28px); filter: blur(6px);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.9s ease;
+  }
+  .anim-ready .hero-copy > *:nth-child(1) { transition-delay: 0s; }
+  .anim-ready .hero-copy > *:nth-child(2) { transition-delay: 0.08s; }
+  .anim-ready .hero-copy > *:nth-child(3) { transition-delay: 0.16s; }
+  .anim-ready .hero-copy > *:nth-child(4) { transition-delay: 0.24s; }
+  .anim-ready .hero-copy > *:nth-child(5) { transition-delay: 0.32s; }
+  .anim-ready .phone-wrapper { opacity: 0; transform: translateY(24px) scale(0.94); transition-delay: 0.15s; }
+  .hero.hero-in .hero-copy > * { opacity: 1; transform: none; filter: blur(0); }
+  .hero.hero-in .phone-wrapper { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .anim-ready .hero-copy > *, .anim-ready .phone-wrapper { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+  }
 
   /* APP SHOWCASE (CSS mockups matching the real app, fan layout + theme switch) */
   .app-showcase { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 28px; --mk-bg: var(--chalk); }
   .app-showcase.theme-dark { --mk-bg: #0B0B0D; }
-  .app-fan { display: flex; align-items: flex-end; justify-content: center; gap: 0; }
+  /* perspective gives the mouse-driven rotateX/rotateY tilt on .app-frame (see JS) an
+     actual sense of depth instead of looking like a flat skew. */
+  .app-fan { display: flex; align-items: flex-end; justify-content: center; gap: 0; perspective: 1200px; }
   .app-fan-slot { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
   .app-fan-slot .app-frame { width: 210px; }
   .app-fan-slot.slot-left { z-index: 2; transform: rotate(-6deg) translateY(26px); transform-origin: bottom center; margin-right: -28px; }
   .app-fan-slot.slot-right { z-index: 2; transform: rotate(6deg) translateY(26px); transform-origin: bottom center; margin-left: -28px; }
   .app-fan-slot.slot-center { z-index: 3; }
   .app-fan-slot.slot-center .app-frame { width: 220px; }
-  .app-frame { position: relative; background: #111; border-radius: 40px; padding: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.1); }
+  /* Own transform is left free for JS (parallax + tilt on pointermove) -- the fan's
+     rotate/offset lives one level up, on .app-fan-slot, so the two never fight. */
+  .app-frame { position: relative; background: #111; border-radius: 40px; padding: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 6px 16px rgba(0,0,0,0.1); transition: transform 0.2s ease-out; }
   .app-frame-screen { position: relative; width: 100%; aspect-ratio: 1206 / 2500; border-radius: 29px; overflow: hidden; background: var(--mk-bg); transition: background 0.2s; }
   .app-showcase-caption { text-align: center; font-size: 10px; font-weight: 600; color: var(--mid); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; }
   .app-theme-switch-wrap { display: flex; align-items: center; gap: 10px; }
@@ -149,6 +184,13 @@
     padding: 6px 14px; border-radius: 40px; margin-bottom: 24px;
   }
   .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--hold-orange); border-radius: 50%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-eyebrow::before { animation: eyebrow-pulse 2.4s ease-in-out infinite; }
+  }
+  @keyframes eyebrow-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
   .hero h1 { font-size: clamp(40px, 5vw, 68px); line-height: 1.0; margin-bottom: 24px; }
   .hero h1 em { font-style: normal; color: var(--hold-orange); display: block; }
   .hero-sub { font-size: 17px; color: var(--mid); line-height: 1.7; margin-bottom: 36px; max-width: 460px; font-weight: 300; }
@@ -175,9 +217,28 @@
   }
   .btn-ghost:hover { border-color: var(--black); color: var(--black); }
 
+  /* Shine sweep on every .btn-primary/.btn-ghost site-wide; the magnetic pointer-pull
+     (see JS) layers on top of this same pair of selectors wherever a fine pointer is
+     available, so this one CSS treatment covers the hero, the closing CTA section,
+     and the mobile sticky bar consistently. */
+  .btn-primary,
+  .btn-ghost {
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after,
+  .btn-ghost::after {
+    content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+    pointer-events: none;
+  }
+  .btn-primary::after { background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent); }
+  .btn-ghost::after { background: linear-gradient(120deg, transparent, rgba(232,93,38,0.18), transparent); }
+  .btn-primary:hover::after,
+  .btn-ghost:hover::after { left: 130%; }
 
-  .phone-bg-ring { position: absolute; width: 620px; height: 620px; border: 70px solid rgba(232,93,38,0.09); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
-  .phone-bg-ring-2 { position: absolute; width: 820px; height: 820px; border: 40px solid rgba(232,93,38,0.05); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; }
+  .phone-bg-ring { position: absolute; width: 620px; height: 620px; border: 70px solid rgba(232,93,38,0.09); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; transition: transform 0.2s ease-out; }
+  .phone-bg-ring-2 { position: absolute; width: 820px; height: 820px; border: 40px solid rgba(232,93,38,0.05); border-radius: 50%; top: 70%; left: 50%; transform: translate(-50%,-50%); z-index: 1; transition: transform 0.2s ease-out; }
 
   .phone-frame { width: 320px; background: #111; border-radius: 32px; padding: 10px; margin: 0 auto 1rem; }
   .phone-screen { background: #0B0B0D; border-radius: 24px; overflow: hidden; font-family: 'DM Sans', sans-serif; min-height: 660px; display: flex; flex-direction: column; position: relative; color: #fff; }
@@ -207,10 +268,53 @@
 
   /* Scroll-reveal: fade + rise as elements enter the viewport (see IntersectionObserver
      script at the bottom). Respects prefers-reduced-motion for accessibility. */
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.in-view { opacity: 1; transform: translateY(0); }
+  .reveal {
+    opacity: 0; transform: translateY(28px) scale(0.98); filter: blur(3px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.8s ease;
+  }
+  .reveal.in-view { opacity: 1; transform: none; filter: blur(0); }
+  /* Blurring a full-bleed photo during its own transition is comparatively expensive
+     for not much payoff at that size -- skip it there, keep the fade/rise only. */
+  .photo-banner.reveal, .photo-banner.reveal.in-view { filter: none; }
+
+  /* Same idea as .reveal, but for the section-label/section-sub pair that flank most
+     .section-title.reveal headings -- these don't carry the .reveal class themselves
+     (the JS observer below watches them separately) so label/title/sub cascade in
+     with a slight stagger instead of the whole block appearing at once. */
+  .section-label, .section-sub {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .section-label.in-view, .section-sub.in-view { opacity: 1; transform: none; }
+  .section-label + .section-title.reveal { transition-delay: 0.08s; }
+  .section-title.reveal + .section-sub { transition-delay: 0.16s; }
+
+  /* Per-card stagger for the grids that use .reveal on each item -- without this every
+     card in a row fades in in perfect unison, since they all cross the intersection
+     threshold in the same scroll frame. */
+  .diff-grid .reveal:nth-child(1) { transition-delay: 0s; }
+  .diff-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
+  .diff-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
+  .diff-grid .reveal:nth-child(4) { transition-delay: 0.18s; }
+  .diff-grid .reveal:nth-child(5) { transition-delay: 0.24s; }
+  .diff-grid .reveal:nth-child(6) { transition-delay: 0.3s; }
+  .block-modules-grid .reveal:nth-child(1) { transition-delay: 0s; }
+  .block-modules-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
+  .block-modules-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
+  .block-modules-grid .reveal:nth-child(4) { transition-delay: 0.18s; }
+  .block-modules-grid .reveal:nth-child(5) { transition-delay: 0.24s; }
+  .block-modules-grid .reveal:nth-child(6) { transition-delay: 0.3s; }
+  .block-modules-grid .reveal:nth-child(7) { transition-delay: 0.36s; }
+  .block-modules-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
+  .phase-grid .reveal:nth-child(1) { transition-delay: 0s; }
+  .phase-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+  .phase-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+  .team-cards .reveal:nth-child(1) { transition-delay: 0s; }
+  .team-cards .reveal:nth-child(2) { transition-delay: 0.1s; }
+  .team-cards .reveal:nth-child(3) { transition-delay: 0.2s; }
+
   @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
+    .reveal, .section-label, .section-sub { opacity: 1; transform: none; filter: none; transition: none; }
   }
 
   /* PHOTO BANNER */
@@ -280,10 +384,22 @@
     background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.75);
   }
   .product-block.gestion .modules-toggle:hover { border-color: var(--hold-orange); color: var(--hold-orange); }
-  .bm-card { border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s; }
+  .bm-card { position: relative; overflow: hidden; border-radius: 16px; padding: 20px; border: 1px solid var(--stone); background: var(--chalk); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s; }
   .bm-card:hover { transform: translateY(-4px); border-color: var(--hold-orange); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
   .product-block.gestion .bm-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
   .product-block.gestion .bm-card:hover { border-color: rgba(232,93,38,0.6); background: rgba(255,255,255,0.08); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
+  /* Cursor-follow spotlight glow, driven by --mx/--my set in JS on pointermove
+     (delegated at the .block-modules-grid level). Skipped on touch entirely there. */
+  .bm-card::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(232,93,38,0.12), transparent 70%);
+    transition: opacity 0.3s ease; pointer-events: none;
+  }
+  .product-block.gestion .bm-card::before {
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.10), transparent 70%);
+  }
+  .bm-card:hover::before { opacity: 1; }
+  .bm-card > * { position: relative; z-index: 1; }
   .bm-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; background: var(--white); transition: transform 0.2s; }
   .bm-card:hover .bm-icon { transform: scale(1.08); }
   .product-block.gestion .bm-icon { background: rgba(255,255,255,0.08); }
@@ -397,8 +513,15 @@
 
   /* DIFFERENTIATORS */
   .diff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 48px; }
-  .diff-card { background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 28px 24px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .diff-card { position: relative; overflow: hidden; background: var(--white); border: 1px solid var(--stone); border-radius: var(--radius); padding: 28px 24px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
   .diff-card:hover { transform: translateY(-4px); border-color: var(--hold-orange); box-shadow: 0 16px 32px rgba(14,14,14,0.08); }
+  .diff-card::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(232,93,38,0.12), transparent 70%);
+    transition: opacity 0.3s ease; pointer-events: none;
+  }
+  .diff-card:hover::before { opacity: 1; }
+  .diff-card > * { position: relative; z-index: 1; }
   .diff-num { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--hold-orange); letter-spacing: -0.04em; line-height: 1; margin-bottom: 10px; display: inline-block; transition: transform 0.2s; }
   .diff-card:hover .diff-num { transform: scale(1.1); }
   .diff-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
@@ -665,6 +788,7 @@
 </script>
 </head>
 <body>
+<script>document.documentElement.classList.add('anim-ready');</script>
 
 <!-- NAV -->
 <nav>
@@ -1253,6 +1377,92 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
+
+  // HERO MOTION — staggered entrance on load, mouse-driven parallax/tilt on the phone
+  // fan and background rings, magnetic hero CTAs, and a scroll-linked "exit" transform
+  // as the hero scrolls out of view (fade/rise/scale into the next section). Entirely
+  // skipped under prefers-reduced-motion; the pointer-driven pieces additionally only
+  // run on fine-pointer/hover-capable devices, never on touch.
+  (function () {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    // Reveal one frame late so the browser doesn't coalesce the class change with the
+    // hidden state set moments earlier and skip the transition entirely.
+    requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('hero-in')));
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const heroCopy = hero.querySelector('.hero-copy');
+    const phoneWrapper = hero.querySelector('.phone-wrapper');
+    const ring1 = hero.querySelector('.phone-bg-ring');
+    const ring2 = hero.querySelector('.phone-bg-ring-2');
+    const frames = hero.querySelectorAll('.app-fan-slot .app-frame');
+
+    let mouseX = 0, mouseY = 0, scrollP = 0, ticking = false;
+
+    function apply() {
+      ticking = false;
+      if (ring1) ring1.style.transform = `translate(calc(-50% + ${mouseX * 14}px), calc(-50% + ${mouseY * 14 - scrollP * 30}px))`;
+      if (ring2) ring2.style.transform = `translate(calc(-50% + ${mouseX * 8}px), calc(-50% + ${mouseY * 8 - scrollP * 16}px))`;
+      frames.forEach((frame, i) => {
+        const depth = i === 1 ? 4 : 10; // center frame (Inicio) moves least, like it's closest
+        frame.style.transform = `translate3d(${mouseX * depth}px, ${mouseY * depth}px, 0) rotateY(${mouseX * 6}deg) rotateX(${mouseY * -6}deg)`;
+      });
+      if (heroCopy) {
+        heroCopy.style.transform = `translateY(${scrollP * -30}px)`;
+        heroCopy.style.opacity = String(1 - scrollP * 0.7);
+      }
+      if (phoneWrapper) {
+        phoneWrapper.style.transform = `translateY(${scrollP * -16}px) scale(${1 - scrollP * 0.05})`;
+        phoneWrapper.style.opacity = String(1 - scrollP * 0.55);
+      }
+    }
+
+    function requestTick() {
+      if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+    }
+
+    function updateScroll() {
+      const rect = hero.getBoundingClientRect();
+      const total = rect.height * 0.7 || 1;
+      scrollP = Math.min(Math.max(-rect.top / total, 0), 1);
+      requestTick();
+    }
+
+    window.addEventListener('scroll', updateScroll, { passive: true });
+    updateScroll();
+
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      hero.addEventListener('pointermove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+        mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+        requestTick();
+      });
+      hero.addEventListener('pointerleave', () => {
+        mouseX = 0; mouseY = 0;
+        requestTick();
+      });
+    }
+  })();
+
+  // MAGNETIC BUTTONS — every .btn-primary/.btn-ghost site-wide (hero CTAs, the
+  // closing CTA section, the mobile sticky bar) follows the cursor a few px and
+  // snaps back on leave. Fine-pointer only; touch keeps the plain CSS :hover.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('.btn-primary, .btn-ghost').forEach((magBtn) => {
+      magBtn.addEventListener('pointermove', (e) => {
+        const r = magBtn.getBoundingClientRect();
+        const bx = (e.clientX - r.left) / r.width - 0.5;
+        const by = (e.clientY - r.top) / r.height - 0.5;
+        magBtn.style.transform = `translate(${bx * 10}px, ${by * 10}px)`;
+      });
+      magBtn.addEventListener('pointerleave', () => { magBtn.style.transform = ''; });
+    });
+  })();
 const form = document.getElementById('trialForm');
 const btn = document.querySelector('.trial-cta-btn');
 const inputs = form.querySelectorAll('[required]');
@@ -1350,11 +1560,14 @@ form.addEventListener('submit', async (e) => {
     layout: "month_view",
   });
 
-  // SCROLL REVEAL — fade + rise elements marked .reveal as they enter the viewport.
-  // unobserve() after first trigger so it plays once per element, not on every scroll.
+  // SCROLL REVEAL — fade + rise elements marked .reveal (plus every section-label/
+  // section-sub, which cascade in around their .section-title via the CSS above) as
+  // they enter the viewport. unobserve() after first trigger so it plays once per
+  // element, not on every scroll.
   (function () {
+    const targets = '.reveal, .section-label, .section-sub';
     if (!('IntersectionObserver' in window)) {
-      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+      document.querySelectorAll(targets).forEach(el => el.classList.add('in-view'));
       return;
     }
     const observer = new IntersectionObserver((entries) => {
@@ -1365,7 +1578,47 @@ form.addEventListener('submit', async (e) => {
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll(targets).forEach(el => observer.observe(el));
+  })();
+
+  // CARD SPOTLIGHT — soft glow that follows the cursor over each diff-card/bm-card,
+  // via CSS custom properties consumed by their ::before (see CSS). Delegated to each
+  // grid container so it's one listener per grid, not one per card.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('.diff-grid, .block-modules-grid').forEach((grid) => {
+      grid.addEventListener('pointermove', (e) => {
+        const card = e.target.closest('.diff-card, .bm-card');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+  })();
+
+  // PHOTO BANNER PARALLAX — the banner image drifts opposite to scroll direction
+  // while its section is near the viewport, instead of sitting static once its
+  // one-time entrance zoom (see .photo-banner.in-view img) finishes.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const banners = document.querySelectorAll('.photo-banner img');
+    if (!banners.length) return;
+    let ticking = false;
+    function apply() {
+      ticking = false;
+      const winH = window.innerHeight;
+      banners.forEach((img) => {
+        const rect = img.parentElement.getBoundingClientRect();
+        const center = rect.top + rect.height / 2 - winH / 2;
+        const progress = Math.max(-1, Math.min(1, center / (winH / 2 + rect.height / 2)));
+        img.style.transform = `scale(1.08) translateY(${progress * -40}px)`;
+      });
+    }
+    function requestTick() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
+    window.addEventListener('scroll', requestTick, { passive: true });
+    requestTick();
   })();
 </script>
 <div class="mobile-sticky-cta">
