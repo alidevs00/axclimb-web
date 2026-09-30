@@ -56,6 +56,9 @@ header.site .wrap {
 .brand img { width: 36px; height: 36px; border-radius: 9px; }
 .brand span { font: 800 20px/1 ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif; letter-spacing: -0.2px; }
 
+.lang { color: var(--muted); font-size: 15px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; }
+.lang:hover { color: var(--text); }
+
 main.wrap { padding-top: 40px; padding-bottom: 64px; }
 
 h1 {
@@ -106,6 +109,7 @@ footer.site a { color: var(--muted); }
   <header class="site">
     <div class="wrap">
       <span class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiIHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0ia2YiIHgxPSIwIiB5MT0iMjIwLjAwIiB4Mj0iMCIgeTI9IjgyMC4wMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI0YyQjQ0QSIvPjxzdG9wIG9mZnNldD0iMC4yMiIgc3RvcC1jb2xvcj0iI0YwOEEzQyIvPjxzdG9wIG9mZnNldD0iMC40MiIgc3RvcC1jb2xvcj0iI0U1NDg0RCIvPjxzdG9wIG9mZnNldD0iMC42MiIgc3RvcC1jb2xvcj0iI0E3Mzc3QiIvPjxzdG9wIG9mZnNldD0iMC44MiIgc3RvcC1jb2xvcj0iIzUzMzc5NCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzM4MjU2MiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJrYyIgeDE9IjAiIHkxPSIyMjAuMDAiIHgyPSIwIiB5Mj0iODIwLjAwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjdDRTg5Ii8+PHN0b3Agb2Zmc2V0PSIwLjQiIHN0b3AtY29sb3I9IiNFRTg4OEIiLz48c3RvcCBvZmZzZXQ9IjAuNzUiIHN0b3AtY29sb3I9IiNERjdEQjgiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNCNDk1RjkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAyNCIgaGVpZ2h0PSIxMDI0IiByeD0iMjMwIiBmaWxsPSIjMUIxNzE5Ii8+PGxpbmUgeDE9IjMwIiB5MT0iODIwLjAwIiB4Mj0iOTk0IiB5Mj0iODIwLjAwIiBzdHJva2U9IiNCNDk1RjkiIHN0cm9rZS1vcGFjaXR5PSIwLjM1IiBzdHJva2Utd2lkdGg9IjguMjgiLz48cGF0aCBkPSJNMTM5LjU5LDgyMC4wMCBRMzU1LjU5LDYyOC4wMCA1MTIuMDAsMjIwLjAwIFE2NjguNDEsNjI4LjAwIDg4NC40MSw4MjAuMDAgWiIgZmlsbD0idXJsKCNrZikiLz48cGF0aCBkPSJNNDI3LjExLDQxNi41OSBMNTEyLjAwLDIyMC4wMCBMNTk2Ljg5LDQxNi41OSBMNTQ5LjM1LDM4MC4zOCBMNTE1LjQwLDQzMS4wNyBMNDc4LjA0LDM4NS44MSBaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTE0OS45Myw4MTEuOTEgTDE2MC4yOCw4MDMuNjIgTDE3MC42Miw3ODYuNTAgTDE4MC45Nyw3NzcuNjYgTDE5MS4zMSw3NjguNjIgTDIwMS42Niw3NTkuNDEgTDIxMi4wMCw3NTAuMDAgTDIyMi4zNCw3MzAuNjIgTDIzMi42OSw3MjAuNjYgTDI0My4wMyw3MTAuNTAgTDI1My4zOCw3MDAuMTYgTDI2My43Miw2NzguOTEgTDI3NC4wNyw2NjguMDAgTDI4NC40MSw2NTYuOTEgTDI5NC43Niw2NDUuNjIgTDMwNS4xMCw2MjIuNTAgTDMxNS40NSw2MTAuNjYgTDMyNS43OSw1OTguNjIgTDMzNi4xNCw1NzQuMDAgTDM0Ni40OCw1NjEuNDEgTDM1Ni44Myw1NDguNjIgTDM2Ny4xNyw1MjIuNTAgTDM3Ny41Miw1MDkuMTYgTDM4Ny44Niw0OTUuNjIgTDM5OC4yMSw0NjguMDAgTDQwOC41NSw0NTMuOTEgTDQxOC45MCw0MjUuMTYgTDQyOS4yNCw0MTAuNTAgTDQzOS41OSwzODAuNjIgTDQ0OS45MywzNjUuNDEgTDQ2MC4yOCwzMzQuNDEgTDQ3MC42MiwzMTguNjIgTDQ4MC45NywyODYuNTAgTDQ5MS4zMSwyNzAuMTYgTDUwMS42NiwyMzYuOTEgTDUxMi4wMCwyMjAuMDAgTDUyMi4zNCwyMzYuOTEgTDUzMi42OSwyNzAuMTYgTDU0My4wMywyODYuNTAgTDU1My4zOCwzMTguNjIgTDU2My43MiwzMzQuNDEgTDU3NC4wNywzNjUuNDEgTDU4NC40MSwzODAuNjIgTDU5NC43Niw0MTAuNTAgTDYwNS4xMCw0MjUuMTYgTDYxNS40NSw0NTMuOTEgTDYyNS43OSw0NjguMDAgTDYzNi4xNCw0OTUuNjIgTDY0Ni40OCw1MDkuMTYgTDY1Ni44Myw1MjIuNTAgTDY2Ny4xNyw1NDguNjIgTDY3Ny41Miw1NjEuNDEgTDY4Ny44Niw1NzQuMDAgTDY5OC4yMSw1OTguNjIgTDcwOC41NSw2MTAuNjYgTDcxOC45MCw2MjIuNTAgTDcyOS4yNCw2NDUuNjIgTDczOS41OSw2NTYuOTEgTDc0OS45Myw2NjguMDAgTDc2MC4yOCw2NzguOTEgTDc3MC42Miw3MDAuMTYgTDc4MC45Nyw3MTAuNTAgTDc5MS4zMSw3MjAuNjYgTDgwMS42Niw3MzAuNjIgTDgxMi4wMCw3NTAuMDAgTDgyMi4zNCw3NTkuNDEgTDgzMi42OSw3NjguNjIgTDg0My4wMyw3NzcuNjYgTDg1My4zOCw3ODYuNTAgTDg2My43Miw4MDMuNjIgTDg3NC4wNyw4MTEuOTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNrYykiIHN0cm9rZS13aWR0aD0iMTguNjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==" alt=""><span>Kumbra</span></span>
+      <a class="lang" href="/kumbra-privacy/en" hreflang="en" lang="en">English</a>
     </div>
   </header>
 
@@ -195,8 +199,8 @@ footer.site a { color: var(--muted); }
       Aplicación en el perfil, en el feed, en las páginas de los lugares y en las clasificaciones. La dirección de
       correo electrónico no se muestra a ningún usuario. Las fotografías y los vídeos de una sesión se muestran a
       otros usuarios salvo que el usuario elija mostrarlos solo en su propio perfil. Si el usuario comparte una sesión
-      en otras plataformas, dicha difusión se realiza por su decisión y a través de la aplicación de terceros que elija. Los usuarios bloqueados dejan de tener acceso al perfil y a la
-      actividad de quien los ha bloqueado.
+      en otras plataformas, dicha difusión se realiza por su decisión y a través de la aplicación de terceros que elija.
+      Los usuarios bloqueados dejan de tener acceso al perfil y a la actividad de quien los ha bloqueado.
     </p>
 
     <h2>4. Base jurídica del tratamiento</h2>
@@ -226,8 +230,8 @@ footer.site a { color: var(--muted); }
       Los datos se conservan mientras la cuenta permanezca activa. Cuando el usuario elimina su cuenta desde la
       Aplicación (Ajustes → Eliminar cuenta), se suprimen de inmediato la cuenta, el perfil, las sesiones, la actividad
       social, las fotografías, los vídeos y los dispositivos registrados. Los vídeos se eliminan automáticamente
-      transcurridos doce meses desde su publicación, conservándose solo su imagen de vista previa. Las copias de seguridad del proveedor se sobrescriben en un plazo máximo de
-      30 días. Los datos almacenados únicamente en el dispositivo se eliminan al desinstalar la Aplicación.
+      transcurridos doce meses desde su publicación, conservándose solo su imagen de vista previa. Las copias de seguridad del proveedor se
+      sobrescriben en un plazo máximo de 30 días. Los datos almacenados únicamente en el dispositivo se eliminan al desinstalar la Aplicación.
     </p>
 
     <h2>7. Derechos del usuario</h2>
