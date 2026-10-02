@@ -8,6 +8,13 @@
   <meta property="og:title" content="Kumbra · Algo se está levantando">
   <meta property="og:description" content="Una app de escalada. Pronto. Reserva tu @ antes que nadie.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.axclimb.com/kumbra">
+  <meta property="og:image" content="https://www.axclimb.com/kumbra/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kumbra: una montaña de noche y el texto «Algo se está levantando»">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="apple-touch-icon" href="/kumbra/apple-touch-icon.png">
   <meta name="theme-color" content="#0E0B16">
   <meta name="robots" content="noindex">
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyMCAyMDAgNzg0IDY0MCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJrZiIgeDE9IjAiIHkxPSIyMjAiIHgyPSIwIiB5Mj0iODIwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjJCNDRBIi8+PHN0b3Agb2Zmc2V0PSIwLjQyIiBzdG9wLWNvbG9yPSIjRTU0ODREIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMzgyNTYyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTEzOS42LDgyMCBRMzU1LjYsNjI4IDUxMiwyMjAgUTY2OC40LDYyOCA4ODQuNCw4MjAgWiIgZmlsbD0idXJsKCNrZikiLz48cGF0aCBkPSJNNDI3LjEsNDE2LjYgTDUxMiwyMjAgTDU5Ni45LDQxNi42IEw1NDkuNCwzODAuNCBMNTE1LjQsNDMxLjEgTDQ3OCwzODUuOCBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+">
@@ -32,6 +39,7 @@ a { color: inherit; }
 .sky { position: fixed; inset: 0; background: radial-gradient(120% 70% at 50% 100%, #6B2340 0%, #2B1531 38%, #120D1D 70%, var(--night) 100%); }
 #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
 #scene.drag { cursor: grabbing; }
+.mist { position: fixed; left: 0; right: 0; bottom: 0; height: 38vh; pointer-events: none; background: linear-gradient(to bottom, rgba(214,180,222,0), rgba(214,180,222,.07) 45%, rgba(228,190,214,.15)); }
 .grain { position: fixed; inset: -50%; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain 1s steps(4) infinite; }
 @keyframes grain { 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } }
 
@@ -148,6 +156,16 @@ body.collapsed .done > *:not(.minibar) { display: none !important; }
 body.collapsed .minibar { display: flex; }
 body.collapsed .glass { padding: 10px 14px; }
 body.collapsed .foot { display: none; }
+.explore-link { appearance: none; border: 0; background: none; cursor: pointer; color: var(--dim); font: 500 13px/1.3 var(--sans); padding: 2px 6px; }
+.explore-link b { color: var(--amber); font-weight: 800; }
+.explorebar { display: none; width: min(440px, 100%); grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: center; padding: 10px; border-radius: 22px; background: rgba(20,14,28,.6); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); box-shadow: inset 0 0 0 1px rgba(245,239,230,.1); }
+.findinfo { grid-column: 1 / -1; grid-row: 2; margin: 0 6px 2px; font-size: 12.5px; color: var(--dim); }
+.findinfo b { color: var(--amber); }
+body.exploring .glass, body.exploring .explore-link, body.exploring .foot { display: none !important; }
+body.exploring .explorebar { display: grid; }
+body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer-events: none; }
+.otag.hit { z-index: 3; }
+.otag.hit span { background: var(--amber); color: #2A1A08; box-shadow: 0 0 18px rgba(242,180,74,.7); font-size: 12px; }
 .linkish.inline { padding: 0; font-size: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .reward.mini { grid-template-columns: 44px minmax(0, 1fr); padding: 10px 12px; text-align: left; }
 .reward.mini .ringav { width: 42px; height: 42px; }
@@ -169,7 +187,7 @@ body.collapsed .foot { display: none; }
 .pvmeta { display: block; font-size: 11px; color: var(--dim); }
 .pvmeta b { color: var(--ink); font-weight: 800; }
 .call { position: absolute; z-index: 2; padding: 5px 9px; border-radius: 99px; background: rgba(245,239,230,.92); color: #1A1324; font: 800 11px/1 var(--sans); white-space: nowrap; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); }
-.perks4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.perks4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
 .perks4 div { display: grid; justify-items: center; gap: 7px; text-align: center; padding: 12px 4px 10px; border-radius: 16px; background: rgba(245,239,230,.05); box-shadow: inset 0 0 0 1px rgba(245,239,230,.08); }
 .perks4 svg { width: 40px; height: 40px; }
 .perks4 b { font: 800 11.5px/1.15 var(--sans); }
@@ -194,6 +212,7 @@ body.collapsed .foot { display: none; }
 <body>
   <div class="sky"></div>
   <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="mist"></div>
   <div class="grain"></div>
   <div class="tag" id="tag"><span id="tag-name">@tú</span></div>
   <div id="otags"></div>
@@ -233,10 +252,17 @@ body.collapsed .foot { display: none; }
           <p>Tu luz ya está en la montaña y tu <button class="linkish inline" type="button" data-pack>Pack Fundador</button>, reservado.</p>
           <div class="share"><code id="share-link"></code><button type="button" id="copy">Copiar</button></div>
           <div class="row2"><a class="wa" id="whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a><button class="ghost" type="button" id="again">Ver la montaña</button></div>
+          <button class="linkish" type="button" data-explore>Busca a tus amigos en la montaña</button>
           <div class="mystery"><span class="q">?</span><div><b>Trae a 3 amigos con tu enlace</b><small>Y descubre lo que nadie más tendrá.</small><div class="progress"><i></i><i></i><i></i></div></div></div>
           <p class="note" id="preview-note" hidden>Vista previa: no se ha enviado nada.</p>
           <button class="minibar" type="button" id="unfold"><span class="badge">▲</span><b id="mini-name">@tú</b><span class="mb-r">Invitar y compartir <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 15l6-6 6 6"/></svg></span></button>
         </div>
+      </div>
+      <button class="explore-link" type="button" data-explore>¿Ya te has unido? <b>Busca tu nombre en la montaña</b></button>
+      <div class="explorebar" id="explorebar">
+        <label class="field"><span>@</span><input id="find" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="busca un nombre" aria-label="Buscar un nombre en la montaña"></label>
+        <p class="findinfo" id="find-info"></p>
+        <button class="x" type="button" data-explore-close aria-label="Volver">×</button>
       </div>
       <div class="foot">© Kumbra · Hecho en Madrid · <a href="https://www.axclimb.com/kumbra-privacy" target="_blank" rel="noopener">Privacidad</a> · <a href="https://www.axclimb.com/kumbra-terms" target="_blank" rel="noopener">Términos</a></div>
     </section>
@@ -258,6 +284,7 @@ body.collapsed .foot { display: none; }
       <div class="perks4">
         <div><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="none" stroke="#F2B44A" stroke-width="3" stroke-dasharray="104 200" stroke-linecap="round" transform="rotate(-90 27 27)"/><path d="M22 18l14 9-14 9z" fill="#F5EFE6"/></svg><b>Entras antes</b></div>
         <div><svg viewBox="0 0 54 54"><defs><linearGradient id="pk3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B1531"/><stop offset="1" stop-color="#0E0B16"/></linearGradient><linearGradient id="pk4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4E2"/><stop offset=".45" stop-color="#E8622D"/><stop offset="1" stop-color="#382562"/></linearGradient></defs><rect x="4" y="4" width="46" height="46" rx="12" fill="url(#pk3)" stroke="rgba(242,180,74,.6)"/><path d="M10 42 Q21 34 27 13 Q33 34 44 42Z" fill="url(#pk4)"/></svg><b>Icono secreto</b></div>
+        <div><svg viewBox="0 0 54 54"><circle cx="20" cy="27" r="14" fill="#3A2558"/><circle cx="34" cy="27" r="14" fill="#F2734A"/><circle cx="27" cy="16" r="10" fill="#F2B44A"/></svg><b>Paleta Atardecer</b></div>
         <div><svg viewBox="0 0 54 54"><rect x="3" y="15" width="38" height="24" rx="12" fill="none" stroke="#F5EFE6" stroke-opacity=".6" stroke-width="2"/><text x="22" y="31.5" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="11" fill="#F5EFE6">PRO</text><circle cx="41" cy="14" r="11" fill="#F2B44A"/><text x="41" y="18" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="11" fill="#3A2108">%</text></svg><b>Descuento en Pro</b></div>
         <div><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="#E8B53A"/><circle cx="27" cy="27" r="17" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/><path d="M17 34l10-17 10 17z" fill="#3A2108"/></svg><b>Logro Fundador</b></div>
       </div>
@@ -309,17 +336,7 @@ body.collapsed .foot { display: none; }
     geo.setAttribute("color", new THREE.BufferAttribute(cols, 3)); geo.computeVertexNormals();
     var terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.92, metalness: 0 }));
     scene.add(terrain);
-    // contour lines every so often, like a topographic map drawn on the mountain
-    var lines = new THREE.Group(); scene.add(lines);
-    for (var lv = 0.6; lv < HMAX; lv += 0.6) {
-      var ptsArr = [];
-      for (var a = 0; a <= Math.PI * 2 + 0.001; a += Math.PI / 90) {
-        var r0 = 0, r1 = SIZE * 0.6;
-        for (var it = 0; it < 22; it++) { var rm = (r0 + r1) / 2; if (heightAt(peak.x + Math.sin(a) * rm, peak.z + Math.cos(a) * rm) > lv) r0 = rm; else r1 = rm; }
-        ptsArr.push(new THREE.Vector3(peak.x + Math.sin(a) * r0, lv + 0.03, peak.z + Math.cos(a) * r0));
-      }
-      lines.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ptsArr), new THREE.LineBasicMaterial({ color: "#F5EFE6", transparent: true, opacity: 0.08 + 0.1 * lv / HMAX })));
-    }
+    var lines = new THREE.Group();
     var rim = new THREE.DirectionalLight("#FF9A6C", 1.9); rim.position.set(-6, 5, -12); scene.add(rim);
     var moon = new THREE.DirectionalLight("#C9B8FF", 0.95); moon.position.set(10, 14, 8); scene.add(moon);
     scene.add(new THREE.HemisphereLight("#A98BE0", "#2A1424", 0.9));
@@ -336,6 +353,23 @@ body.collapsed .foot { display: none; }
     }
     var stars = dots(700, 160, 18, 70, 0.22, "#F5EFE6", 0.7);
     var chalk = dots(260, 26, 0, 12, 0.07, "#FFFFFF", 0.55); chalk.material.fog = true;
+    // low fog around the foot of the mountain: soft cloud banks that drift slowly round it
+    function cloudTex() {
+      var c = document.createElement("canvas"); c.width = 512; c.height = 256; var g = c.getContext("2d");
+      for (var i = 0; i < 26; i++) {
+        var r = 36 + Math.random() * 50, x = 128 + Math.random() * 256, y = 128 + (Math.random() - 0.5) * 50, gr = g.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, "rgba(255,255,255,.5)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 512, 256);
+      }
+      return new THREE.CanvasTexture(c);
+    }
+    var fogBanks = [], fogTex = [cloudTex(), cloudTex(), cloudTex()];
+    for (var fi = 0; fi < 16; fi++) {
+      var fm = new THREE.SpriteMaterial({ map: fogTex[fi % 3], color: fi % 2 ? "#E7C6E6" : "#F3D4D2", transparent: true, depthWrite: false, fog: false, opacity: 0 });
+      var fsp = new THREE.Sprite(fm), fa = fi / 16 * Math.PI * 2 + Math.random() * 0.4, fr = 6.5 + Math.random() * 5.5;
+      fsp.scale.set(10 + Math.random() * 6, 2.6 + Math.random() * 1.6, 1);
+      fogBanks.push({ sp: fsp, a: fa, r: fr, y: 0.35 + Math.random() * 0.9, speed: 0.012 + Math.random() * 0.018, o: 0.15 + Math.random() * 0.1 });
+      scene.add(fsp);
+    }
 
     // your light: a glowing point that climbs the slope and stays near the summit
     function haloTex() { var c = document.createElement("canvas"); c.width = c.height = 256; var g = c.getContext("2d"), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, "rgba(242,180,74,.55)"); gr.addColorStop(0.35, "rgba(232,98,45,.28)"); gr.addColorStop(0.7, "rgba(194,54,110,.1)"); gr.addColorStop(1, "rgba(194,54,110,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c); }
@@ -358,6 +392,15 @@ body.collapsed .foot { display: none; }
     var trailLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(trailPts), new THREE.LineBasicMaterial({ color: "#F2B44A", transparent: true, opacity: 0.85, fog: false }));
     trailLine.geometry.setDrawRange(0, 0); scene.add(trailLine);
     lit = { start: 0 };
+    lit.loaded = false;
+    lit.explore = function (on) { if (on && !exploreStart) exploreStart = performance.now(); if (!on && !lit.start) exploreStart = 0; };
+    lit.find = function (q) {
+      hitName = null; if (!q) return { total: others.length, found: null };
+      var match = others.filter(function (o) { return o.name === q; })[0] || others.filter(function (o) { return o.name.indexOf(q) === 0; })[0] || others.filter(function (o) { return o.name.indexOf(q) >= 0; })[0];
+      if (!match) return { total: others.length, found: null };
+      hitName = match.name; seekYaw = Math.atan2(match.sp.position.x - peak.x, match.sp.position.z - peak.z);
+      return { total: others.length, found: match.name };
+    };
     lit.go = function () {
       buildTrail(Math.atan2(camera.position.x - peak.x, camera.position.z - peak.z) + 0.5);
       smoothTrail(); trailLine.geometry.dispose(); trailLine.geometry = new THREE.BufferGeometry().setFromPoints(trailPts); trailLine.geometry.setDrawRange(0, 0);
@@ -369,13 +412,14 @@ body.collapsed .foot { display: none; }
     function normalAt(x, z) { var e = 0.06; return new THREE.Vector3(heightAt(x - e, z) - heightAt(x + e, z), 2 * e, heightAt(x, z - e) - heightAt(x, z + e)).normalize(); }
     function seeded(str) { var h = 2166136261; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return function () { h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; }; }
     lit.others = function (names) {
+      if (lit.loaded) return; lit.loaded = true;
       names.slice(0, 120).forEach(function (name, i) {
         var rnd = seeded(name), ang = rnd() * Math.PI * 2, f = 0.12 + rnd() * 0.66, target = peak.y * f, pt = null;
         for (var r = 0.1; r < 14; r += 0.03) { var x = peak.x + Math.sin(ang) * r, z = peak.z + Math.cos(ang) * r; if (heightAt(x, z) <= target) { pt = new THREE.Vector3(x, heightAt(x, z) + 0.08, z); break; } }
         if (!pt) return;
         var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: dimGlow, transparent: true, depthWrite: false, fog: false, opacity: 0 })); sp.position.copy(pt); sp.scale.setScalar(0.32); scene.add(sp);
         var el = document.createElement("div"); el.className = "otag"; el.innerHTML = "<span></span>"; el.firstChild.textContent = "@" + name; otagBox.appendChild(el);
-        others.push({ sp: sp, n: normalAt(pt.x, pt.z), el: el, delay: 0.6 + i * 0.12, ph: rnd() * 6 });
+        others.push({ name: name, sp: sp, n: normalAt(pt.x, pt.z), el: el, delay: (lit.start ? 0.6 : 0.2) + i * (lit.start ? 0.12 : 0.04), ph: rnd() * 6 });
       });
     };
 
@@ -394,13 +438,14 @@ body.collapsed .foot { display: none; }
     function endDrag() { drag = null; canvas.classList.remove("drag"); }
     canvas.addEventListener("pointerup", endDrag); canvas.addEventListener("pointercancel", endDrag);
 
-    var t0 = performance.now(), focus = 0, yawBase = 0.6, lastNow = t0, camTarget = null, panel = 1, CLIMB = 4.6;
+    var t0 = performance.now(), focus = 0, yawBase = 0.6, lastNow = t0, camTarget = null, panel = 1, CLIMB = 4.6, seekYaw = null, exploreStart = 0, hitName = null;
+    canvas.addEventListener("pointerdown", function () { seekYaw = null; });
     function frame(now) {
       var t = (now - t0) / 1000, dt = Math.min(0.1, (now - lastNow) / 1000); lastNow = now;
       var ease = function (rate) { return 1 - Math.exp(-dt * rate); };
       // the range rises out of the fog, with the app's little overshoot
       var g = reduceMotion ? 1 : Math.min(1, t / 3.2), c1 = 1.25, c3 = c1 + 1, e = g >= 1 ? 1 : 1 + c3 * Math.pow(g - 1, 3) + c1 * Math.pow(g - 1, 2);
-      terrain.scale.y = Math.max(0.001, e); lines.scale.y = terrain.scale.y; lines.visible = g > 0.85;
+      terrain.scale.y = Math.max(0.001, e); lines.scale.y = terrain.scale.y; lines.visible = false;
       scene.fog.density = 0.07 - 0.046 * Math.min(1, t / 3.5);
       px += (tx - px) * ease(2.4); py += (ty - py) * ease(2.4);
       var portrait = W < H; if (!lit.start || reduceMotion) yawBase = reduceMotion ? 0.6 : 0.6 + t * 0.035; else yawBase += dt * 0.012; if (!drag) { spin += spinV * dt * 60; spinV *= Math.pow(0.94, dt * 60); tilt *= Math.pow(0.985, dt * 60); } var yaw = yawBase + spin + px * 0.12;
@@ -411,9 +456,16 @@ body.collapsed .foot { display: none; }
       camera.position.set(peak.x + Math.sin(yaw) * rad, (portrait ? 6.5 : 5.5) - py * 0.8 + focus * 2 + tilt * 6, peak.z + Math.cos(yaw) * rad);
       camera.lookAt(target);
       halo.position.copy(peak).add(peak.clone().sub(camera.position).setY(0).normalize().multiplyScalar(22)).add(new THREE.Vector3(0, 1.5, 0));
-      panel += ((document.body.classList.contains("collapsed") ? 0 : 1) - panel) * ease(4);
+      var exploring = document.body.classList.contains("exploring");
+      panel += ((document.body.classList.contains("collapsed") || exploring ? 0 : 1) - panel) * ease(4);
+      if (seekYaw !== null && !drag) { var dy = Math.atan2(Math.sin(seekYaw - yaw), Math.cos(seekYaw - yaw)); spin += dy * ease(2.5); if (Math.abs(dy) < 0.01) seekYaw = null; }
       var off = (portrait ? -0.02 : 0) + Math.min(1, focus * 1.6) * (portrait ? 0.26 : 0.16) * panel;
       if (off) camera.setViewOffset(W, H, 0, H * off, W, H); else camera.clearViewOffset();
+      fogBanks.forEach(function (f) {
+        f.a += f.speed * dt;
+        f.sp.position.set(peak.x + Math.sin(f.a) * f.r, f.y * terrain.scale.y + Math.sin(t * 0.3 + f.a * 3) * 0.08, peak.z + Math.cos(f.a) * f.r);
+        f.sp.material.opacity = f.o * Math.min(1, t / 3);
+      });
       // chalk drifts up and wraps
       var cp = chalk.geometry.attributes.position;
       for (var i = 0; i < cp.count; i++) { var y = cp.getY(i) + 0.004 + Math.sin(t + i) * 0.001; cp.setY(i, y > 12 ? 0 : y); cp.setX(i, cp.getX(i) + Math.sin(t * 0.3 + i) * 0.002); }
@@ -429,17 +481,24 @@ body.collapsed .foot { display: none; }
         var sp = glow.position.clone().project(camera);
         tagEl.style.transform = "translate(" + ((sp.x + 1) / 2 * W) + "px," + ((1 - sp.y) / 2 * H) + "px) translate(-50%, -100%)";
         tagEl.classList.toggle("on", p > 0.9 && sp.z < 1);
+      }
+      if (lit.start || exploreStart) {
         // the others light up once yours has arrived; a few of them show their @
-        var since = (now - lit.start) / 1000 - CLIMB, shown = 0, camDir = new THREE.Vector3();
+        var since = lit.start ? (now - lit.start) / 1000 - CLIMB : (now - exploreStart) / 1000, shown = 0, camDir = new THREE.Vector3();
+        if (exploring && exploreStart) since = Math.max(since, (now - exploreStart) / 1000);
         others.forEach(function (o) {
           var a = Math.min(1, Math.max(0, (since - o.delay) / 0.8));
           o.sp.material.opacity = a * (0.65 + Math.sin(t * 2 + o.ph) * 0.25);
           var q = o.sp.position.clone().project(camera), facing = o.n.dot(camDir.copy(camera.position).sub(o.sp.position).normalize()) > 0.15;
-          var onScreen = q.z < 1 && Math.abs(q.x) < 0.72 && q.y > (document.body.classList.contains("collapsed") ? -0.7 : -0.1) && q.y < 0.92;
-          var show = a >= 1 && facing && onScreen && shown < (W < H ? 5 : 9);
-          if (show) { shown++; o.el.style.transform = "translate(" + ((q.x + 1) / 2 * W) + "px," + ((1 - q.y) / 2 * H) + "px)"; }
+          var onScreen = q.z < 1 && Math.abs(q.x) < 0.72 && q.y > (document.body.classList.contains("collapsed") || exploring ? -0.7 : -0.1) && q.y < 0.92;
+          var hit = o.name === hitName;
+          var show = a >= 1 && (hit ? q.z < 1 : facing && onScreen && shown < (W < H ? 5 : 9));
+          o.sp.scale.setScalar(hit ? 0.7 : 0.32); o.el.classList.toggle("hit", hit);
+          if (show) { if (!hit) shown++; o.el.style.transform = "translate(" + ((q.x + 1) / 2 * W) + "px," + ((1 - q.y) / 2 * H) + "px)"; }
           o.el.classList.toggle("on", show);
         });
+      } else if (others.length && others[0].sp.material.opacity > 0) {
+        others.forEach(function (o) { o.sp.material.opacity = 0; o.el.classList.remove("on", "hit"); });
       }
       renderer.render(scene, camera);
       requestAnimationFrame(frame);
@@ -528,6 +587,7 @@ body.collapsed .foot { display: none; }
     };
     document.getElementById("drag-hint").classList.add("gone");
     var title = document.querySelector(".title"); title.style.transition = "opacity .8s"; title.style.opacity = 0; title.style.pointerEvents = "none";
+    meName = v;
     if (lit) { lit.go(); loadFounders(v, preview); }
   }
   // Who's already in. Live: from the site's endpoint (only real sign-ups; nothing until the list has a database).
@@ -535,10 +595,33 @@ body.collapsed .foot { display: none; }
   var SAMPLE = ["lucia.boulder", "carlos_m", "marta.climbs", "javi_6c", "nuria.r", "pablo.crimp", "ines_bloque", "dani.vertical", "sara.trepa", "alex_dyno", "irene.top", "mario.flash", "lauraaa", "hugo_regleta", "ana.pies", "rober_7a", "clara.v", "diego.boulders", "paula_k", "sergio.escala", "noe.climb", "elena_6b", "adri.gecko", "bea.magnesio", "tomas_r", "julia.crux", "victor.on", "lola_bloc"];
   function loadFounders(me, preview) {
     if (!lit || !lit.others) return;
-    if (preview || !LIVE) { lit.others(SAMPLE.filter(function (n) { return n !== me; })); return; }
-    fetch("/api/kumbraFounders").then(function (r) { return r.ok ? r.json() : { names: [] }; }).then(function (b) { lit.others((b.names || []).filter(function (n) { return n !== me && /^[a-z0-9_.]{3,20}$/.test(n); })); }).catch(function () {});
+    var done = function () { if (document.body.classList.contains("exploring")) showFound(); };
+    if (preview || !LIVE) { lit.others(SAMPLE.filter(function (n) { return n !== me; })); done(); return; }
+    fetch("/api/kumbraFounders").then(function (r) { return r.ok ? r.json() : { names: [] }; }).then(function (b) { lit.others((b.names || []).filter(function (n) { return n !== me && /^[a-z0-9_.]{3,20}$/.test(n); })); done(); }).catch(done);
   }
   function selectLink() { var r = document.createRange(); r.selectNodeContents(document.getElementById("share-link")); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+  // ================= Who's on the mountain =================
+  var findEl = document.getElementById("find"), findInfo = document.getElementById("find-info"), meName = null;
+  function explore(on) {
+    document.body.classList.toggle("exploring", on);
+    document.body.classList.remove("collapsed");
+    if (!lit) return;
+    lit.explore(on);
+    if (on) { loadFounders(meName, !LIVE); setTimeout(function () { findEl.focus({ preventScroll: true }); }, 300); findInfo.textContent = ""; showFound(); }
+    else { findEl.value = ""; lit.find(""); }
+  }
+  function showFound() {
+    var q = findEl.value.toLowerCase().replace(/^@/, "").replace(/[^a-z0-9_.]/g, ""), r = lit.find(q);
+    if (findEl.value !== q) findEl.value = q;
+    if (!r.total) findInfo.textContent = LIVE ? "Todavía no se ve ninguna luz. Sé de los primeros." : "Cargando la montaña…";
+    else if (!q) findInfo.innerHTML = "<b>" + r.total + "</b> " + (r.total === 1 ? "luz" : "luces") + " en la montaña. Escribe un nombre para buscarlo.";
+    else if (r.found) findInfo.innerHTML = "<b>@" + r.found + "</b> ya está en la montaña.";
+    else findInfo.textContent = "@" + q + " aún no está. ¿Le mandas el enlace?";
+  }
+  findEl.addEventListener("input", showFound);
+  [].forEach.call(document.querySelectorAll("[data-explore]"), function (b) { b.addEventListener("click", function () { explore(true); }); });
+  document.querySelector("[data-explore-close]").addEventListener("click", function () { explore(false); });
 
   // ================= Founder pack sheet =================
   var packEl = document.getElementById("pack"), packBg = document.getElementById("packbg");
