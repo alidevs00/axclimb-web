@@ -40,7 +40,7 @@ a { color: inherit; }
 #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
 #scene.drag { cursor: grabbing; }
 .mist { position: fixed; left: 0; right: 0; bottom: 0; height: 38vh; pointer-events: none; background: linear-gradient(to bottom, rgba(214,180,222,0), rgba(214,180,222,.07) 45%, rgba(228,190,214,.15)); }
-.grain { position: fixed; inset: -50%; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain 1s steps(4) infinite; }
+.grain { position: fixed; inset: -50%; pointer-events: none; opacity: .07; -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 70%); mask-image: linear-gradient(to bottom, #000 45%, transparent 70%); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain 1s steps(4) infinite; }
 @keyframes grain { 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } }
 
 .ui { position: fixed; left: 0; right: 0; top: 0; height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; padding: calc(18px + env(safe-area-inset-top, 0px)) 20px calc(20px + env(safe-area-inset-bottom, 0px)); pointer-events: none; }
@@ -352,13 +352,14 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
       scene.add(m); return m;
     }
     var stars = dots(700, 160, 18, 70, 0.22, "#F5EFE6", 0.7);
-    var chalk = dots(260, 26, 0, 12, 0.07, "#FFFFFF", 0.55); chalk.material.fog = true;
+    var chalk = dots(220, 26, 2.2, 12, 0.07, "#FFFFFF", 0.55); chalk.material.fog = true;
     // low fog around the foot of the mountain: soft cloud banks that drift slowly round it
     function cloudTex() {
       var c = document.createElement("canvas"); c.width = 512; c.height = 256; var g = c.getContext("2d");
-      for (var i = 0; i < 26; i++) {
-        var r = 36 + Math.random() * 50, x = 128 + Math.random() * 256, y = 128 + (Math.random() - 0.5) * 50, gr = g.createRadialGradient(x, y, 0, x, y, r);
-        gr.addColorStop(0, "rgba(255,255,255,.5)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 512, 256);
+      g.filter = "blur(18px)";
+      for (var i = 0; i < 9; i++) {
+        var r = 60 + Math.random() * 40, x = 150 + Math.random() * 212, y = 128 + (Math.random() - 0.5) * 30, gr = g.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, "rgba(255,255,255,.55)"); gr.addColorStop(0.6, "rgba(255,255,255,.22)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 512, 256);
       }
       return new THREE.CanvasTexture(c);
     }
@@ -468,7 +469,7 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
       });
       // chalk drifts up and wraps
       var cp = chalk.geometry.attributes.position;
-      for (var i = 0; i < cp.count; i++) { var y = cp.getY(i) + 0.004 + Math.sin(t + i) * 0.001; cp.setY(i, y > 12 ? 0 : y); cp.setX(i, cp.getX(i) + Math.sin(t * 0.3 + i) * 0.002); }
+      for (var i = 0; i < cp.count; i++) { var y = cp.getY(i) + 0.004 + Math.sin(t + i) * 0.001; cp.setY(i, y > 12 ? 2.2 : y); cp.setX(i, cp.getX(i) + Math.sin(t * 0.3 + i) * 0.002); }
       cp.needsUpdate = true;
       stars.material.opacity = 0.55 + Math.sin(t * 0.7) * 0.1;
       // your light climbs
@@ -519,6 +520,12 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
 
   function setHint(text, kind) { hint.textContent = text; hint.className = "hint" + (kind ? " " + kind : ""); uField.classList.toggle("bad", kind === "bad"); }
   username.addEventListener("focus", function () { more.classList.add("on"); document.body.classList.add("typing"); });
+  var glassEl = document.querySelector(".glass");
+  document.addEventListener("pointerdown", function (ev) {
+    if (!more.classList.contains("on") || glassEl.contains(ev.target) || document.getElementById("form-view").hidden) return;
+    more.classList.remove("on"); errorBox.hidden = true;
+    if (form.contains(document.activeElement)) document.activeElement.blur();
+  });
   form.addEventListener("focusout", function () { setTimeout(function () { if (!form.contains(document.activeElement)) document.body.classList.remove("typing"); }, 50); });
   username.addEventListener("input", function () {
     more.classList.add("on");
