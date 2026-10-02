@@ -121,39 +121,40 @@ function welcomeHtml(username, link) {
   const rows = PACK.map(([title, detail]) => `
               <tr>
                 <td width="22" valign="top" style="padding:7px 0;font:700 15px ${font};color:#F2B44A;">▲</td>
-                <td bgcolor="#1A1324" style="padding:7px 0;font:400 14px/1.4 ${font};color:#C9BFD3;background-color:#1A1324;"><b style="color:#F5EFE6;font-weight:700;">${title}</b><br>${detail}</td>
+                <td bgcolor="#1A1324" style="padding:7px 0;font:400 14px/1.4 ${font};color:#C9BFD3;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);"><b style="color:#F5EFE6;font-weight:700;">${title}</b><br>${detail}</td>
               </tr>`).join("");
   return `<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>Ya eres Fundador de Kumbra</title></head>
-<body bgcolor="#0E0B16" style="margin:0;padding:0;background-color:#0E0B16;">
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>Ya eres Fundador de Kumbra</title>
+<style>u + .body .gs { background: #000; mix-blend-mode: screen; } u + .body .gd { background: #000; mix-blend-mode: difference; }</style></head>
+<body class="body" bgcolor="#0E0B16" style="margin:0;padding:0;background-color:#0E0B16;background-image:linear-gradient(#0E0B16,#0E0B16);">
   <div style="display:none;max-height:0;overflow:hidden;">Hemos reservado ${handle} para ti. Este es tu Pack Fundador.</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0E0B16" style="background-color:#0E0B16;">
-    <tr><td align="center" bgcolor="#0E0B16" style="padding:24px 12px;background-color:#0E0B16;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#1A1324" style="max-width:560px;background-color:#1A1324;border-radius:24px;overflow:hidden;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0E0B16" style="background-color:#0E0B16;background-image:linear-gradient(#0E0B16,#0E0B16);">
+    <tr><td align="center" bgcolor="#0E0B16" style="padding:24px 12px;background-color:#0E0B16;background-image:linear-gradient(#0E0B16,#0E0B16);">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#1A1324" style="max-width:560px;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);border-radius:24px;overflow:hidden;">
         <tr><td><img src="https://www.axclimb.com/kumbra/mail.jpg" width="560" alt="Kumbra" style="display:block;width:100%;height:auto;border:0;"></td></tr>
-        <tr><td bgcolor="#1A1324" style="padding:28px 28px 8px;background-color:#1A1324;">
-          <span style="display:inline-block;padding:5px 11px;border-radius:99px;background:#E8B53A;color:#3A2108;font:800 11px ${font};letter-spacing:1px;">▲ FUNDADOR</span>
-          <h1 style="margin:16px 0 8px;font:900 30px/1.1 ${font};letter-spacing:-0.5px;color:#F5EFE6;">Ya estás dentro, ${handle}.</h1>
-          <p style="margin:0;font:400 15px/1.55 ${font};color:#C9BFD3;">Hemos reservado <b style="color:#F5EFE6;">${handle}</b> para ti. Cuando abramos Kumbra te avisaremos antes que a nadie para que crees tu cuenta con ese nombre.</p>
+        <tr><td bgcolor="#1A1324" style="padding:28px 28px 8px;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);">
+          <span style="display:inline-block;padding:5px 11px;border-radius:99px;background-color:#E8B53A;background-image:linear-gradient(#E8B53A,#E8B53A);color:#3A2108;font:800 11px ${font};letter-spacing:1px;">▲ FUNDADOR</span>
+          <div class="gs"><div class="gd"><h1 style="margin:16px 0 8px;font:900 30px/1.1 ${font};letter-spacing:-0.5px;color:#F5EFE6;">Ya estás dentro, ${handle}.</h1>
+          <p style="margin:0;font:400 15px/1.55 ${font};color:#C9BFD3;">Hemos reservado <b style="color:#F5EFE6;">${handle}</b> para ti. Cuando abramos Kumbra te avisaremos antes que a nadie para que crees tu cuenta con ese nombre.</p></div></div>
         </td></tr>
-        <tr><td bgcolor="#1A1324" style="padding:20px 28px 4px;background-color:#1A1324;">
-          <p style="margin:0 0 6px;font:700 11px ${font};letter-spacing:2px;color:#F2B44A;">TU PACK FUNDADOR</p>
+        <tr><td bgcolor="#1A1324" style="padding:20px 28px 4px;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);">
+          <div class="gs"><div class="gd"><p style="margin:0 0 6px;font:700 11px ${font};letter-spacing:2px;color:#F2B44A;">TU PACK FUNDADOR</p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}
-          </table>
+          </table></div></div>
         </td></tr>
-        <tr><td bgcolor="#1A1324" style="padding:18px 28px 6px;background-color:#1A1324;">
+        <tr><td bgcolor="#1A1324" style="padding:18px 28px 6px;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #6B5530;border-radius:18px;">
             <tr><td style="padding:18px;">
-              <p style="margin:0 0 4px;font:800 16px ${font};color:#F5EFE6;">? &nbsp;Trae a 3 amigos</p>
+              <div class="gs"><div class="gd"><p style="margin:0 0 4px;font:800 16px ${font};color:#F5EFE6;">? &nbsp;Trae a 3 amigos</p>
               <p style="margin:0 0 14px;font:400 14px/1.5 ${font};color:#C9BFD3;">Si reservan su nombre con tu enlace, desbloquearás algo que nadie más tendrá.</p>
-              <p style="margin:0 0 14px;font:500 13px ${font};color:#F2B44A;word-break:break-all;">${link.replace("https://", "")}</p>
-              <a href="${wa}" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#25D366;color:#08210F;font:800 14px ${font};text-decoration:none;">Compartir por WhatsApp</a>
+              <p style="margin:0 0 14px;font:500 13px ${font};color:#F2B44A;word-break:break-all;">${link.replace("https://", "")}</p></div></div>
+              <a href="${wa}" style="display:inline-block;padding:12px 18px;border-radius:12px;background-color:#25D366;background-image:linear-gradient(#25D366,#25D366);color:#08210F;font:800 14px ${font};text-decoration:none;">Compartir por WhatsApp</a>
             </td></tr>
           </table>
         </td></tr>
-        <tr><td bgcolor="#1A1324" style="padding:22px 28px 28px;background-color:#1A1324;">
-          <p style="margin:0;font:400 12px/1.6 ${font};color:#8C8197;">Si no te has apuntado tú o quieres salir de la lista, responde a este email y te borramos. <a href="https://www.axclimb.com/kumbra-privacy#lista-de-espera" style="color:#C9BFD3;">Privacidad</a></p>
-          <p style="margin:10px 0 0;font:700 12px ${font};color:#8C8197;">Kumbra · Hecho en Madrid</p>
+        <tr><td bgcolor="#1A1324" style="padding:22px 28px 28px;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);">
+          <div class="gs"><div class="gd"><p style="margin:0;font:400 12px/1.6 ${font};color:#8C8197;">Si no te has apuntado tú o quieres salir de la lista, responde a este email y te borramos. <a href="https://www.axclimb.com/kumbra-privacy#lista-de-espera" style="color:#C9BFD3;">Privacidad</a></p>
+          <p style="margin:10px 0 0;font:700 12px ${font};color:#8C8197;">Kumbra · Hecho en Madrid</p></div></div>
         </td></tr>
       </table>
     </td></tr>
