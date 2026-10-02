@@ -178,18 +178,26 @@ footer.site a { color: var(--muted); }
       the person who invited them is also recorded. This data is processed on the basis of consent (Art. 6(1)(a)
       GDPR) for the sole purpose of reserving that username, confirming the sign-up, announcing the App's launch and
       recognising founder status. It is kept until the person creates their account or, at most, six months after
-      the launch, and can be deleted at any time on request. To check whether a username is available, the App's
-      database is queried without storing any sign-up data in it.
+      the launch, and can be deleted at any time on request. It is stored in the App's database (Supabase, European
+      Union) to reserve the username and, when the person creates their account with the same email, to recognise
+      them as a founder.
     </p>
 
     <h3>Data that stays on the device</h3>
     <p>The following data is processed exclusively on the user's device and is not transmitted to the Controller's servers:</p>
     <ul>
-      <li><strong>Usage metrics</strong> of the App, linked to an anonymous identifier.</li>
       <li><strong>Location</strong>, used only when the user looks for nearby places, unless the user chooses to attach it to a place they add.</li>
       <li><strong>Apple Health data</strong> (heart rate, active energy and workouts), read only if the user enables the connection and solely to show the user the data of their sessions. The App does not write data to Apple Health or use it for advertising. As an exception, the metres climbed that the user chooses to save with a session are stored together with it.</li>
       <li><strong>Reminders</strong> and the Live Activity on the lock screen.</li>
     </ul>
+
+    <h3>Usage metrics</h3>
+    <p>
+      The App sends anonymous usage events to its database (for example "session saved" or "session shared"), with
+      a random installation identifier and the App version, not linked to the account, the email or the sessions.
+      They are used to understand which parts of the App are used in order to improve it. They are kept for a
+      maximum of 24 months.
+    </p>
 
     <h3>Device permissions</h3>
     <p>
@@ -217,7 +225,7 @@ footer.site a { color: var(--muted); }
     <ul>
       <li><strong>Performance of a contract</strong> (Art. 6(1)(b) GDPR): account, sports activity and social interaction data, necessary to provide the requested service.</li>
       <li><strong>Consent</strong> (Art. 6(1)(a) GDPR): notifications, location and Apple Health. Consent may be withdrawn at any time, without affecting the lawfulness of processing carried out beforehand.</li>
-      <li><strong>Legitimate interest</strong> (Art. 6(1)(f) GDPR): handling reports, preventing abuse and keeping the service secure.</li>
+      <li><strong>Legitimate interest</strong> (Art. 6(1)(f) GDPR): handling reports, preventing abuse, keeping the service secure and anonymous usage metrics to improve it.</li>
       <li><strong>Compliance with legal obligations</strong> (Art. 6(1)(c) GDPR), where applicable.</li>
     </ul>
 
@@ -226,6 +234,7 @@ footer.site a { color: var(--muted); }
     <ul>
       <li><strong>Supabase, Inc.</strong>: database hosting, account management and sending account emails. Data is hosted in the European Union (Frankfurt, Germany).</li>
       <li><strong>Cloudflare, Inc.</strong>: storage and delivery of session photos and videos, which can only be accessed through signed, time-limited links.</li>
+      <li><strong>Resend, Inc.</strong>: sending account emails and internal report alerts.</li>
       <li><strong>Apple Inc.</strong>: delivery of notifications to the device.</li>
       <li><strong>Google LLC</strong> (Gmail) and <strong>Vercel Inc.</strong>: receiving waiting-list sign-ups and sending the confirmation email, and hosting the sign-up page, respectively.</li>
     </ul>

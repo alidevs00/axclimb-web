@@ -532,14 +532,20 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
     setHint("Comprobando…");
     checkTimer = setTimeout(function () { check(v); }, 350);
   });
-  // Checks against the app's existing accounts; waiting-list clashes are sorted out by hand for now.
-  function check(v) {
-    var id = ++checkId;
-    fetch(SUPABASE_URL + "/rest/v1/rpc/is_username_available", {
+  // Checks the app's accounts and the names already reserved here (the old check until the
+  // waitlist migration is applied in Supabase).
+  function rpc(name, body) {
+    return fetch(SUPABASE_URL + "/rest/v1/rpc/" + name, {
       method: "POST",
       headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY },
-      body: JSON.stringify({ p_username: v })
-    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (free) {
+      body: JSON.stringify(body)
+    });
+  }
+  function check(v) {
+    var id = ++checkId;
+    rpc("is_username_available_for", { p_username: v, p_email: "" })
+      .then(function (r) { return r.ok ? r : rpc("is_username_available", { p_username: v }); })
+      .then(function (r) { return r.ok ? r.json() : null; }).then(function (free) {
       if (id !== checkId) return;
       if (free === null) { availability = null; return setHint(defaultHint); }
       availability = !!free;
@@ -562,10 +568,10 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email.value.trim(), username: v, ref: ref, website: document.getElementById("website").value })
     }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (b) { return { ok: r.ok, body: b }; }); })
-      .then(function (res) { if (!res.ok) throw new Error(res.body.error === "taken" ? "taken" : "server"); showDone(v, false); })
+      .then(function (res) { if (!res.ok) throw new Error(res.body.error === "taken" || res.body.error === "exists" ? res.body.error : "server"); showDone(v, false); })
       .catch(function (err) {
-        if (!LIVE && err.message !== "taken") return showDone(v, true);
-        showError(err.message === "taken" ? "Ese nombre ya tiene dueño. Prueba otro." : "No se ha podido guardar. Revisa tu conexión e inténtalo otra vez.");
+        if (!LIVE && err.message === "server") return showDone(v, true);
+        showError(err.message === "taken" ? "Ese nombre ya tiene dueño. Prueba otro." : err.message === "exists" ? "Ese email ya tiene un nombre reservado. Mira tu correo (y la carpeta de spam)." : "No se ha podido guardar. Revisa tu conexión e inténtalo otra vez.");
         submit.disabled = false; submit.textContent = "Reservar mi nombre";
       });
   });

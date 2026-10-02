@@ -179,19 +179,26 @@ footer.site a { color: var(--muted); }
       el consentimiento del interesado (art. 6.1.a RGPD), con la única finalidad de reservar dicho nombre de usuario,
       confirmar la inscripción, comunicar el lanzamiento de la Aplicación y reconocer la condición de usuario
       fundador. Se conservan hasta que el interesado cree su cuenta o, como máximo, hasta seis meses después del
-      lanzamiento, y pueden suprimirse en cualquier momento a petición del interesado. Para comprobar la
-      disponibilidad del nombre de usuario se consulta la base de datos de la Aplicación, sin almacenar en ella
-      ningún dato de la inscripción.
+      lanzamiento, y pueden suprimirse en cualquier momento a petición del interesado. Se guardan en la base de
+      datos de la Aplicación (Supabase, Unión Europea) para reservar el nombre de usuario y, cuando el interesado
+      crea su cuenta con el mismo correo, reconocerle como usuario fundador.
     </p>
 
     <h3>Datos que permanecen en el dispositivo</h3>
     <p>Los siguientes datos se tratan exclusivamente en el dispositivo del usuario y no se transmiten a los servidores del Responsable:</p>
     <ul>
-      <li><strong>Métricas de uso</strong> de la Aplicación, asociadas a un identificador anónimo.</li>
       <li><strong>Ubicación</strong>, utilizada únicamente cuando el usuario solicita los lugares cercanos, salvo que decida asociarla a un lugar que añade.</li>
       <li><strong>Datos de Apple Salud</strong> (frecuencia cardiaca, energía activa y entrenamientos), leídos solo si el usuario activa la conexión, con la única finalidad de mostrarle los datos de sus sesiones. La Aplicación no escribe datos en Apple Salud ni los utiliza con fines publicitarios. Como excepción, los metros escalados que el usuario decida guardar con una sesión se almacenan junto a esta.</li>
       <li><strong>Recordatorios</strong> y actividad en directo de la pantalla de bloqueo.</li>
     </ul>
+
+    <h3>Métricas de uso</h3>
+    <p>
+      La Aplicación envía a su base de datos eventos de uso anónimos (por ejemplo, «sesión guardada» o «sesión
+      compartida»), con un identificador aleatorio de instalación y la versión de la Aplicación, sin vincularlos a
+      la cuenta, al correo ni a las sesiones. Su finalidad es entender qué partes de la Aplicación se usan para
+      mejorarla. Se conservan como máximo 24 meses.
+    </p>
 
     <h3>Permisos del dispositivo</h3>
     <p>
@@ -220,7 +227,7 @@ footer.site a { color: var(--muted); }
     <ul>
       <li><strong>Ejecución de un contrato</strong> (art. 6.1.b RGPD): datos de la cuenta, de actividad deportiva y de interacción social, necesarios para prestar el servicio solicitado.</li>
       <li><strong>Consentimiento</strong> (art. 6.1.a RGPD): notificaciones, ubicación y Apple Salud. El consentimiento puede retirarse en cualquier momento, sin que ello afecte a la licitud del tratamiento previo.</li>
-      <li><strong>Interés legítimo</strong> (art. 6.1.f RGPD): gestión de denuncias, prevención de abusos y seguridad del servicio.</li>
+      <li><strong>Interés legítimo</strong> (art. 6.1.f RGPD): gestión de denuncias, prevención de abusos, seguridad del servicio y métricas de uso anónimas para mejorarlo.</li>
       <li><strong>Cumplimiento de obligaciones legales</strong> (art. 6.1.c RGPD), cuando proceda.</li>
     </ul>
 
@@ -229,6 +236,7 @@ footer.site a { color: var(--muted); }
     <ul>
       <li><strong>Supabase, Inc.</strong>: alojamiento de la base de datos, gestión de cuentas y envío de los correos electrónicos de la cuenta. Los datos se alojan en la Unión Europea (Fráncfort, Alemania).</li>
       <li><strong>Cloudflare, Inc.</strong>: almacenamiento y distribución de las fotografías y los vídeos de las sesiones, a los que solo se accede mediante enlaces firmados y de validez limitada.</li>
+      <li><strong>Resend, Inc.</strong>: envío de los correos electrónicos de la cuenta y de los avisos internos de denuncias.</li>
       <li><strong>Apple Inc.</strong>: entrega de las notificaciones en el dispositivo.</li>
       <li><strong>Google LLC</strong> (Gmail) y <strong>Vercel Inc.</strong>: recepción de las inscripciones en la lista de espera y envío del correo de confirmación, y alojamiento de la página de inscripción, respectivamente.</li>
     </ul>

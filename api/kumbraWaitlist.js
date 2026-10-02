@@ -1,14 +1,36 @@
 import nodemailer from "nodemailer";
 
-// Kumbra waiting list (www.axclimb.com/kumbra). There is no database for it yet: each sign-up is
-// emailed to axclimb@gmail.com (with who invited them) and the person gets a confirmation email.
-// Usernames are checked against the accounts that already exist in the app; clashes between
-// waiting-list sign-ups are sorted out by hand until the list moves to Supabase.
+// Kumbra waiting list (www.axclimb.com/kumbra). Each sign-up is saved in Supabase (join_waitlist,
+// which also keeps the @ for that email; only callable with the service-role key, set in Vercel as
+// SUPABASE_SERVICE_ROLE_KEY) and emailed to axclimb@gmail.com (with who invited them); the person
+// gets a welcome email. Without the key or the migration, the @ is only checked against the app's
+// accounts, as before.
 
 const USERNAME_RE = /^[a-z0-9_.]{3,20}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUPABASE_URL = "https://raaokvljxioaxaoqcjxa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_TFiQYiyqkaHv9mEvGR2rgw_hG7sHMU9";
+
+/// "ok" | "exists" | "taken" | "invalid", or null when the list isn't in Supabase yet (or is down).
+async function joinWaitlist(email, username, ref) {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!key) return null;
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/join_waitlist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: key, Authorization: `Bearer ${key}` },
+      body: JSON.stringify({ p_email: email, p_username: username, p_ref: ref, p_avatar: "" }),
+    });
+    if (!response.ok) {
+      console.error("join_waitlist", response.status, await response.text().catch(() => ""));
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("join_waitlist", error);
+    return null;
+  }
+}
 
 async function isUsernameFree(username) {
   try {
@@ -39,7 +61,10 @@ export default async function handler(req, res) {
   if (!EMAIL_RE.test(email) || !USERNAME_RE.test(username)) {
     return res.status(400).json({ error: "invalid" });
   }
-  if (!(await isUsernameFree(username))) {
+  const saved = await joinWaitlist(email, username, ref);
+  if (saved === "taken" || saved === "exists") return res.status(409).json({ error: saved });
+  if (saved === "invalid") return res.status(400).json({ error: "invalid" });
+  if (saved === null && !(await isUsernameFree(username))) {
     return res.status(409).json({ error: "taken" });
   }
 
@@ -58,11 +83,14 @@ export default async function handler(req, res) {
         `Email: ${email}`,
         `Usuario: @${username}`,
         `Invitado por: ${ref ? "@" + ref : "(nadie)"}`,
+        `Guardado en Supabase: ${saved === "ok" ? "sí" : "no (apúntalo a mano)"}`,
         `Fecha: ${new Date().toISOString()}`,
       ].join("\n"),
     });
   } catch (error) {
-    return res.status(500).json({ error: "server" });
+    console.error("kumbraWaitlist team email failed:", error && error.message);
+    // Already saved in Supabase: the sign-up counts even if our copy didn't go.
+    if (saved !== "ok") return res.status(500).json({ error: "server" });
   }
 
   // The welcome email is a courtesy: if it fails, the sign-up is already recorded above.

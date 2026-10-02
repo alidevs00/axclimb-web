@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Te invitan a Kumbra</title>
+  <meta name="description" content="Un amigo te invita a Kumbra, una app de escalada que está a punto de salir.">
+  <meta property="og:title" content="Te invitan a Kumbra">
+  <meta property="og:description" content="Una app de escalada. Pronto. Reserva tu nombre antes que nadie.">
+  <meta property="og:image" content="https://www.axclimb.com/kumbra/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0E0B16">
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyMCAyMDAgNzg0IDY0MCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJrZiIgeDE9IjAiIHkxPSIyMjAiIHgyPSIwIiB5Mj0iODIwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRjJCNDRBIi8+PHN0b3Agb2Zmc2V0PSIwLjQyIiBzdG9wLWNvbG9yPSIjRTU0ODREIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMzgyNTYyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTEzOS42LDgyMCBRMzU1LjYsNjI4IDUxMiwyMjAgUTY2OC40LDYyOCA4ODQuNCw4MjAgWiIgZmlsbD0idXJsKCNrZikiLz48cGF0aCBkPSJNNDI3LjEsNDE2LjYgTDUxMiwyMjAgTDU5Ni45LDQxNi42IEw1NDkuNCwzODAuNCBMNTE1LjQsNDMxLjEgTDQ3OCwzODUuOCBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+">
+  <link rel="apple-touch-icon" href="/kumbra/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap">
+  <style>
+/* Landing for invite links shared from the app (www.axclimb.com/invita?u=<handle>). Opens the app
+   with the invite (axclimb://invite/<handle>) or, without it, sends to the waiting list with the ref.
+   Same night look as the teaser (/kumbra). */
+:root {
+  --night: #0E0B16; --ink: #F5EFE6; --dim: rgba(245,239,230,.62); --faint: rgba(245,239,230,.14);
+  --amber: #F2B44A; --coral: #E8622D; --rose: #E5484D;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; display: grid; place-items: center; color: var(--ink); font: 400 16px/1.45 var(--sans); -webkit-font-smoothing: antialiased;
+  background: radial-gradient(120% 70% at 50% 100%, #6B2340 0%, #2B1531 38%, #120D1D 70%, var(--night) 100%) var(--night);
+  padding: calc(28px + env(safe-area-inset-top, 0px)) 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
+main { width: 100%; max-width: 420px; display: grid; gap: 20px; text-align: center; }
+.logo { display: flex; justify-content: center; align-items: center; gap: 9px; font: 800 19px/1 var(--sans); letter-spacing: -0.02em; }
+.logo svg { width: 30px; height: 25px; }
+svg.peak { width: 100%; max-width: 100%; height: auto; }
+h1 { margin: 0; font: 900 clamp(32px, 9vw, 44px)/1.04 var(--sans); letter-spacing: -0.04em; text-wrap: balance; }
+h1 b { color: var(--amber); font-weight: 900; }
+p { margin: 0; color: var(--dim); }
+.actions { display: grid; gap: 10px; }
+.btn { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px; font: 800 16px/1 var(--sans); text-decoration: none; padding: 0 18px; }
+.go { color: #1A1012; background: linear-gradient(100deg, var(--amber), var(--coral) 55%, var(--rose)); box-shadow: 0 10px 30px -10px rgba(232,98,45,.7); }
+.ghost { color: var(--ink); background: var(--faint); }
+small { color: var(--dim); font-size: 13px; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="logo"><svg viewBox="120 200 784 640" aria-hidden="true"><defs><linearGradient id="kf" x1="0" y1="220" x2="0" y2="820" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F2B44A"/><stop offset=".42" stop-color="#E5484D"/><stop offset="1" stop-color="#382562"/></linearGradient></defs><path d="M139.6,820 Q355.6,628 512,220 Q668.4,628 884.4,820 Z" fill="url(#kf)"/><path d="M427.1,416.6 L512,220 L596.9,416.6 L549.4,380.4 L515.4,431.1 L478,385.8 Z" fill="#fff"/></svg>Kumbra</div>
+  <h1 id="title">Te invitan a <b>Kumbra</b></h1>
+  <p>Una app de escalada que está a punto de salir. Cada sesión que apuntas se convierte en una montaña.</p>
+  <div class="actions">
+    <a class="btn go" id="join" href="/kumbra">Reservar mi nombre</a>
+    <a class="btn ghost" id="open" href="axclimb://invite">Ya tengo Kumbra: abrir</a>
+  </div>
+  <small id="note">Al crear tu cuenta, pon su @ en «¿Quién te ha invitado?» y le seguirás desde el primer día.</small>
+</main>
+<script>
+  var u = (new URLSearchParams(location.search).get("u") || "").toLowerCase().replace(/^@/, "").replace(/[^a-z0-9_.]/g, "").slice(0, 20);
+  if (u) {
+    var t = document.getElementById("title");
+    t.textContent = "";
+    var b = document.createElement("b"); b.textContent = "@" + u;
+    t.append(b, " te invita a Kumbra");
+    document.getElementById("open").href = "axclimb://invite/" + encodeURIComponent(u);
+    document.getElementById("join").href = "/kumbra?ref=" + encodeURIComponent(u);
+  } else {
+    document.getElementById("note").hidden = true;
+  }
+</script>
+</body>
+</html>
