@@ -121,7 +121,7 @@ function welcomeHtml(username, link) {
   const rows = PACK.map(([title, detail]) => `
               <tr>
                 <td width="22" valign="top" style="padding:7px 0;font:700 15px ${font};color:#F2B44A;">▲</td>
-                <td bgcolor="#1A1324" style="padding:7px 0;font:400 14px/1.4 ${font};color:#C9BFD3;background-color:#1A1324;background-image:linear-gradient(#1A1324,#1A1324);"><b style="color:#F5EFE6;font-weight:700;">${title}</b><br>${detail}</td>
+                <td style="padding:7px 0;font:400 14px/1.4 ${font};color:#C9BFD3;"><b style="color:#F5EFE6;font-weight:700;">${title}</b><br>${detail}</td>
               </tr>`).join("");
   return `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>Ya eres Fundador de Kumbra</title>
