@@ -244,7 +244,7 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
               <p class="hint" id="username-hint">De 3 a 20: letras, números, punto y guion bajo.</p>
               <label class="field"><input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" aria-label="Email"></label>
               <span class="trap" aria-hidden="true"><label for="website">No rellenar</label><input id="website" name="website" tabindex="-1" autocomplete="off"></span>
-              <label class="consent" for="consent"><input id="consent" type="checkbox"><span>Acepto la <a href="https://www.axclimb.com/kumbra-privacy#lista-de-espera" target="_blank" rel="noopener">política de privacidad</a>. Solo te escribiremos para avisarte.</span></label>
+              <label class="consent" for="consent"><input id="consent" type="checkbox"><span>Acepto la <a href="https://www.axclimb.com/kumbra-privacy#lista-de-espera" target="_blank" rel="noopener">política de privacidad</a>. Tu @ saldrá en la montaña; tu email, nunca. Solo te escribiremos para avisarte.</span></label>
             </div>
             <p class="err" id="form-error" role="alert" hidden></p>
             <button class="go" id="submit" type="submit">Reservar mi nombre</button>
@@ -312,6 +312,8 @@ body.exploring .title, body.exploring .draghint { opacity: 0 !important; pointer
   function whisper() { wEl.classList.add("out"); setTimeout(function () { wEl.textContent = WHISPERS[wi++ % WHISPERS.length]; wEl.classList.remove("out"); }, 600); }
   setTimeout(function () { whisper(); setInterval(whisper, 4200); }, 1700);
   setTimeout(function () { h1.classList.add("in"); }, 2600);
+  // Everyone who has reserved their @ lights up on the mountain once it has risen, for every visitor.
+  setTimeout(function () { if (LIVE) loadFounders(null, false); }, 3600);
 
   // ================= The mountain =================
   var canvas = document.getElementById("scene"), gl = true, renderer;

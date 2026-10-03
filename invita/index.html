@@ -17,7 +17,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap">
   <style>
-/* Landing for invite links shared from the app (www.axclimb.com/invita?u=<handle>). Opens the app
+/* Landing for invite links shared from the app (www.axclimb.com/invita?u=<handle>, and
+   axclimb.com/u/<handle> from the link on shared sessions, rewritten here by vercel.json). Opens the app
    with the invite (axclimb://invite/<handle>) or, without it, sends to the waiting list with the ref.
    Same night look as the teaser (/kumbra). */
 :root {
@@ -56,17 +57,25 @@ small { color: var(--dim); font-size: 13px; }
   <small id="note">Al crear tu cuenta, pon su @ en «¿Quién te ha invitado?» y le seguirás desde el primer día.</small>
 </main>
 <script>
+  // App Store link once Kumbra is published; until then the first button goes to the waiting list.
+  var APP_STORE_URL = "";
   var u = (new URLSearchParams(location.search).get("u") || "").toLowerCase().replace(/^@/, "").replace(/[^a-z0-9_.]/g, "").slice(0, 20);
   if (u) {
     var t = document.getElementById("title");
     t.textContent = "";
     var b = document.createElement("b"); b.textContent = "@" + u;
     t.append(b, " te invita a Kumbra");
-    document.getElementById("open").href = "axclimb://invite/" + encodeURIComponent(u);
-    document.getElementById("join").href = "/kumbra?ref=" + encodeURIComponent(u);
+    var appLink = "axclimb://invite/" + encodeURIComponent(u);
+    document.getElementById("open").href = appLink;
+    document.getElementById("open").textContent = "Ya tengo Kumbra: ver su perfil";
+    document.getElementById("join").href = APP_STORE_URL || ("/kumbra?ref=" + encodeURIComponent(u));
+    // No automatic jump to the app: without it installed, Safari shows "invalid address". Opening
+    // it by itself needs Universal Links (apple-app-site-association + Associated Domains).
   } else {
     document.getElementById("note").hidden = true;
+    document.getElementById("open").style.display = "none";
   }
+  if (APP_STORE_URL) document.getElementById("join").textContent = "Descargar en la App Store";
 </script>
 </body>
 </html>
