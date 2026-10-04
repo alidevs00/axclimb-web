@@ -116,11 +116,9 @@ const PACK = [
   ["Tu @, antes que nadie", "Nadie más podrá usarlo."],
   ["Insignia Fundador", "Junto a tu nombre en el feed, tu perfil y el ranking."],
   ["Fondo de perfil «Cumbre»", "La montaña de noche como cabecera de tu perfil."],
-  ["Paleta «Atardecer»", "Los colores de esta noche para toda la app."],
-  ["Icono secreto", "La montaña de noche en tu pantalla de inicio."],
-  ["Logro «Fundador»", "Desbloqueado desde el primer día."],
-  ["Entras antes", "Beta privada antes del lanzamiento."],
-  ["Descuento en Pro", "Precio de fundador si te suscribes en el lanzamiento."],
+  ["Precio Fundador en Pro", "Para siempre, si te suscribes en el lanzamiento."],
+  ["Entras antes", "La beta privada, antes que nadie."],
+  ["Y detalles solo para fundadores", "Icono secreto, paleta Atardecer, avatares y logro Fundador."],
 ];
 
 function welcomeText(username, link) {
@@ -132,7 +130,7 @@ function welcomeText(username, link) {
     `Tu Pack Fundador:`,
     ...PACK.map(([title, detail]) => `- ${title}: ${detail}`),
     ``,
-    `Trae a 3 amigos con tu enlace y desbloquearás algo que nadie más tendrá:`,
+    `Trae a 3 amigos con tu enlace y descubre la recompensa que solo tiene quien invita:`,
     link,
     ``,
     `Si no te has apuntado tú o quieres salir de la lista, responde a este email y te borramos.`,
@@ -144,7 +142,7 @@ function welcomeText(username, link) {
 // Table layout and inline styles: what email clients (Gmail, Outlook, Apple Mail) render reliably.
 function welcomeHtml(username, link) {
   const handle = `@${username}`;
-  const wa = `https://wa.me/?text=${encodeURIComponent(`Me he apuntado a Kumbra, una app de escalada que está a punto de salir. Si reservas tu nombre con mi enlace entras con el Pack Fundador: ${link}`)}`;
+  const wa = `https://wa.me/?text=${encodeURIComponent(`Me he apuntado a Kumbra, la red social de la escalada, que está a punto de salir. Si reservas tu nombre con mi enlace entras con el Pack Fundador: ${link}`)}`;
   const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
   const rows = PACK.map(([title, detail]) => `
               <tr>
@@ -174,7 +172,7 @@ function welcomeHtml(username, link) {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #6B5530;border-radius:18px;">
             <tr><td style="padding:18px;">
               <div class="gs"><div class="gd"><p style="margin:0 0 4px;font:800 16px ${font};color:#F5EFE6;">? &nbsp;Trae a 3 amigos</p>
-              <p style="margin:0 0 14px;font:400 14px/1.5 ${font};color:#C9BFD3;">Si reservan su nombre con tu enlace, desbloquearás algo que nadie más tendrá.</p>
+              <p style="margin:0 0 14px;font:400 14px/1.5 ${font};color:#C9BFD3;">Cuando 3 amigos reserven su nombre con tu enlace y creen su cuenta, desbloquearás la recompensa que solo tiene quien invita.</p>
               <p style="margin:0 0 14px;font:500 13px ${font};color:#F2B44A;word-break:break-all;">${link.replace("https://", "")}</p></div></div>
               <a href="${wa}" style="display:inline-block;padding:12px 18px;border-radius:12px;background-color:#25D366;background-image:linear-gradient(#25D366,#25D366);color:#08210F;font:800 14px ${font};text-decoration:none;">Compartir por WhatsApp</a>
             </td></tr>
