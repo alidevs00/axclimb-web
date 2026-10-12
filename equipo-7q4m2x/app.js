@@ -579,7 +579,7 @@ async function save() {
   if (json === lastSavedJson) { dirty = false; $('#saveState').textContent = 'Guardado'; return; }
   saving = true; dirty = false;
   try { const isNew = !designs.some(x => x.id === doc.id); await db.collection('designs').doc(doc.id).set(body); lastSavedJson = json; $('#saveState').textContent = 'Guardado'; isNew ? (lastEdit[doc.id] = Date.now(), logAct('creó', doc)) : logEdit(doc); }
-  catch (e) { dirty = true; $('#saveState').textContent = e?.code === 'invalid_argument' ? 'Solo lectura' : 'No se pudo guardar'; }
+  catch (e) { dirty = true; $('#saveState').textContent = e?.code === 'invalid_argument' ? 'Solo lectura' : 'No se pudo guardar'; $('#saveState').title = e?.message || ''; console.error('Guardar', e); if (!window.__saveErrShown) { window.__saveErrShown = 1; toast('No se pudo guardar: ' + (e?.message || e)); } }
   saving = false;
 }
 async function openDesign(id) {

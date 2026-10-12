@@ -59,7 +59,7 @@
   // ---------- db: documentos en la tabla studio_docs ----------
   const collOf = path => path.split('/').slice(0, -1).join('/');
   const snapDoc = (path, row) => ({ id: path.split('/').pop(), exists: !!row, data: () => (row ? JSON.parse(JSON.stringify(row.data)) : undefined) });
-  const err = e => Object.assign(new Error(e?.message || 'error'), { code: e?.code === '42501' ? 'permission_denied' : 'unavailable' });
+  const err = e => Object.assign(new Error([e?.message, e?.details, e?.hint, e?.code].filter(Boolean).join(' · ') || 'error'), { code: e?.code === '42501' ? 'permission_denied' : 'unavailable' });
 
   // Un único canal en directo; cada suscripción filtra lo suyo.
   const listeners = new Set();
