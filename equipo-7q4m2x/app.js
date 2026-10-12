@@ -527,11 +527,20 @@ $('#fmtSeg').addEventListener('click', e => {
 });
 $('#newBtn').onclick = () => { doc = newDesign('texto', doc?.format || 'post'); slideIx = 0; selId = null; history.length = 0; renderAll(); changed(true); toast('Diseño nuevo'); };
 $('#undoBtn').onclick = undo; $('#redoBtn').onclick = redo;
+// Desplegables de la barra (Descargar y «Más»): se cierran al elegir, al pulsar fuera o con Esc.
+function closeMenus(except) { document.querySelectorAll('.dd').forEach(d => { if (d === except) return; const m = d.querySelector('.menu'), b = d.querySelector('[aria-haspopup]'); if (m) m.hidden = true; if (b) b.setAttribute('aria-expanded', 'false'); }); }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[aria-haspopup=menu]');
+  if (t) { const d = t.closest('.dd'), m = d.querySelector('.menu'), open = m.hidden; closeMenus(d); m.hidden = !open; t.setAttribute('aria-expanded', String(open)); return; }
+  if (e.target.closest('.menu button') && !e.target.closest('[aria-pressed]')) { closeMenus(); return; }
+  if (!e.target.closest('.menu')) closeMenus();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenus(); });
 let showGuides = true;
 $('#guideBtn').onclick = e => { showGuides = !showGuides; e.currentTarget.setAttribute('aria-pressed', showGuides); renderCanvas(); };
 
 // ---------------- modo claro / oscuro del editor ----------------
-function setUI(m) { document.documentElement.dataset.ui = m; try { localStorage.setItem('kstudio-ui', m); } catch (e) {} const b = $('#uiBtn'); if (b) { b.textContent = m === 'dark' ? '☀' : '☾'; b.title = m === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'; } }
+function setUI(m) { document.documentElement.dataset.ui = m; try { localStorage.setItem('kstudio-ui', m); } catch (e) {} const b = $('#uiBtn'); if (b) { b.textContent = m === 'dark' ? 'Modo claro' : 'Modo oscuro'; b.title = m === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'; } }
 let uiPref = 'light'; try { uiPref = localStorage.getItem('kstudio-ui') || 'light'; } catch (e) {}
 setUI(uiPref);
 $('#uiBtn').onclick = () => setUI(document.documentElement.dataset.ui === 'dark' ? 'light' : 'dark');
@@ -674,7 +683,7 @@ const initials = n => (n || '?').split(/\s+/).map(w => w[0]).join('').slice(0, 2
 const PCOL = ['#7B5CFA', '#E0336F', '#14A085', '#E8622D', '#1E6FBF', '#A67C00'];
 const colOf = id => PCOL[[...String(id)].reduce((a, c) => a + c.charCodeAt(0), 0) % PCOL.length];
 function renderComments() {
-  const btn = $('#cmBtn'); if (btn) { const n = cmOpenCount(doc.id); btn.innerHTML = `Comentarios${n ? ` <b class="cmn">${n}</b>` : ''}`; }
+  const btn = $('#cmBtn'), cnt = $('#cmCount'); if (btn) { const n = cmOpenCount(doc.id); if (cnt) { cnt.textContent = n; cnt.hidden = !n; } btn.classList.toggle('on', cmOpen); }
   const box = $('#cmPanel'); if (!box) return; box.hidden = !cmOpen; if (!cmOpen) return;
   const list = cmFor(doc.id);
   box.innerHTML = `<div class="cmhead"><b>Comentarios de «${esc(doc.name)}»</b><button class="ghost sm" id="cmClose">Cerrar</button></div>

@@ -14,7 +14,7 @@
 @font-face{font-family:ID;src:url(f/Inter-DisplayExtraBold.ttf);font-weight:800}
 @font-face{font-family:ID;src:url(f/Inter-DisplayBlack.ttf);font-weight:900}
 </style>
-<link rel="stylesheet" href="lib.css?v=25">
+<link rel="stylesheet" href="lib.css?v=26">
 <style>
 :root{
   --bg:#F6F1EA;--panel:#FFFFFF;--panel2:#F7F2EC;--line:#E6DDD3;--fg:#1D1A1C;--mut:#6F6670;--dim:#9A9097;
@@ -321,27 +321,54 @@ details.pz summary{cursor:pointer;font-weight:700;font-size:12.5px;padding:8px 0
   .top{flex-wrap:wrap}
   .igwrap{grid-template-columns:minmax(0,380px)}
 }
+
+/* top bar, simplified: name · format · undo | comments · planner · download · more */
+.top{gap:10px;padding:10px 14px}
+.tdiv{width:1px;height:22px;background:var(--line);flex:none}
+.docmeta{display:flex;flex-direction:column;min-width:0;flex:0 1 300px}
+.docmeta #nameIn{max-width:none;padding:3px 8px;font-size:14px}
+.docmeta #saveState{padding:0 9px;font-size:11px;line-height:1.2}
+#fmtSeg{flex-wrap:nowrap;flex:none}
+#fmtSeg button{white-space:nowrap}
+.tgrp{display:flex;gap:2px;flex:none}
+.tb{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border:1px solid transparent;background:transparent;border-radius:9px;font-weight:600;font-size:12.5px;color:var(--fg);white-space:nowrap;flex:none}
+.tb:hover{background:var(--panel2);border-color:var(--line)}
+.tb:disabled{opacity:.35;cursor:default;background:transparent;border-color:transparent}
+.tb.ico{width:34px;padding:0;justify-content:center}
+.tb[aria-expanded=true],#cmBtn.on{background:var(--panel2);border-color:var(--line)}
+.tb svg,.pri svg{flex:none}
+#dlBtn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px}
+.cmn{min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:99px;background:var(--acc);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.dd{position:relative;flex:none}
+.menu{position:absolute;right:0;top:calc(100% + 6px);min-width:220px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px -12px rgba(20,12,40,.28);padding:6px;z-index:60;display:flex;flex-direction:column;gap:2px}
+.menu button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;text-align:left;border:0;background:transparent;border-radius:8px;padding:8px 10px;font-weight:600;font-size:13px}
+.menu button:hover{background:var(--panel2)}
+.menu button:disabled{opacity:.4;cursor:default}
+.menu small{font-weight:500;font-size:11.5px;color:var(--mut)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:4px 2px}
+.menu [aria-pressed]{flex-direction:row;justify-content:space-between;align-items:center}
+.menu [aria-pressed]::after{content:"";flex:none;width:30px;height:18px;border-radius:99px;background:radial-gradient(circle at 9px 50%,#fff 6px,transparent 6.5px),var(--line)}
+.menu [aria-pressed=true]::after{background:radial-gradient(circle at 21px 50%,#fff 6px,transparent 6.5px),var(--acc)}
+@media (max-width:1180px){.tb:not(.ico) span{display:none}.tb:not(.ico){padding:0 9px}.logo small{display:none}}
 </style>
 
 </head><body>
 <div class="app">
   <header class="top">
     <div class="logo"><img src="logo/kumbra-logo.svg" alt="" width="30" height="24">Kumbra <small>Studio</small></div>
-    <input id="nameIn" aria-label="Nombre del diseño" value="">
-    <span id="saveState">…</span>
+    <span class="tdiv"></span>
+    <div class="docmeta"><input id="nameIn" aria-label="Nombre del diseño" value=""><span id="saveState">…</span></div>
     <span id="online" hidden aria-label="Conectados ahora"></span>
     <span class="sp"></span>
     <div class="seg" id="fmtSeg" role="group" aria-label="Formato"><button data-fmt="post" aria-pressed="true">Post 4:5</button><button data-fmt="story" aria-pressed="false">Story 9:16</button></div>
-    <button class="ghost ico-b" id="undoBtn" title="Deshacer (⌘Z)" aria-label="Deshacer">↶</button>
-    <button class="ghost ico-b" id="redoBtn" title="Rehacer (⇧⌘Z)" aria-label="Rehacer">↷</button>
-    <button class="ghost" id="guideBtn" aria-pressed="true">Guías</button>
-    <button class="ghost ico-b" id="uiBtn" title="Cambiar a modo oscuro" aria-label="Cambiar entre modo claro y oscuro">☾</button>
-    <button class="ghost" id="newBtn">Nuevo</button>
-    <button class="ghost ico-b" id="outBtn" title="Salir" aria-label="Cerrar sesión" onclick="window.studioSignOut&&studioSignOut()">⎋</button>
-    <button class="ghost" id="cmBtn">Comentarios</button>
-    <button class="ghost" id="igBtn">Planificador</button>
-    <button class="ghost" id="expOne">Descargar lámina</button>
-    <button class="pri" id="expAll">Descargar todo</button>
+    <div class="tgrp"><button class="tb ico" id="undoBtn" title="Deshacer (⌘Z)" aria-label="Deshacer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button><button class="tb ico" id="redoBtn" title="Rehacer (⇧⌘Z)" aria-label="Rehacer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button></div>
+    <span class="sp"></span>
+    <button class="tb" id="cmBtn" title="Comentarios de este diseño"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Comentarios</span><b class="cmn" id="cmCount" hidden></b></button>
+    <button class="tb" id="igBtn" title="Planificador y vista del perfil"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>Planificador</span></button>
+    <div class="dd"><button class="pri" id="dlBtn" aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Descargar</span></button>
+      <div class="menu" id="dlMenu" role="menu" hidden><button id="expOne" role="menuitem"><b>Esta lámina</b><small>PNG en alta calidad</small></button><button id="expAll" role="menuitem"><b>Todas las láminas</b><small>Un ZIP con todas, listas para Instagram</small></button></div></div>
+    <div class="dd"><button class="tb ico" id="moreBtn" title="Más opciones" aria-label="Más opciones" aria-haspopup="menu" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button>
+      <div class="menu" id="moreMenu" role="menu" hidden><button id="newBtn" role="menuitem">Diseño nuevo</button><button id="guideBtn" role="menuitemcheckbox" aria-pressed="true">Guías de márgenes</button><button id="uiBtn" role="menuitem">Modo oscuro</button><hr><button id="outBtn" role="menuitem" onclick="window.studioSignOut&&studioSignOut()">Cerrar sesión</button></div></div>
   </header>
   <aside class="left">
     <div class="search"><input id="searchIn" type="search" placeholder="Buscar fondos, piezas, pantallas…" aria-label="Buscar recursos" autocomplete="off"></div>
@@ -403,6 +430,6 @@ details.pz summary{cursor:pointer;font-weight:700;font-size:12.5px;padding:8px 0
 <script src="lib.js?v=24" charset="utf-8"></script>
 <script src="replicas.js?v=24" charset="utf-8"></script>
 <script src="catalog.js?v=24" charset="utf-8"></script>
-<script src="app.js?v=25" charset="utf-8"></script>
+<script src="app.js?v=26" charset="utf-8"></script>
 
 </body></html>
