@@ -506,7 +506,7 @@ $('#slPrev').onclick = () => { if (slideIx > 0) { snapshot(); const s = doc.slid
 $('#slNext').onclick = () => { if (slideIx < doc.slides.length - 1) { snapshot(); const s = doc.slides; [s[slideIx + 1], s[slideIx]] = [s[slideIx], s[slideIx + 1]]; setSlide(slideIx + 1); changed(); } };
 
 // ---------------- top bar ----------------
-$('#nameIn').addEventListener('input', e => { doc.name = e.target.value || 'Diseño sin título'; changed(); });
+$('#nameIn').addEventListener('input', e => { doc.name = e.target.value || 'Diseño sin título'; changed(); trackPresence(); });
 $('#fmtSeg').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || b.dataset.fmt === doc.format) return; snapshot();
   const dy = b.dataset.fmt === 'story' ? 285 : -285;
@@ -526,6 +526,7 @@ $('#uiBtn').onclick = () => setUI(document.documentElement.dataset.ui === 'dark'
 
 // ---------------- render all ----------------
 function renderAll() {
+  setTimeout(() => { renderComments(); renderOnline(); trackPresence(); }, 0);
   $('#nameIn').value = doc.name;
   $$('#fmtSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.fmt === doc.format));
   fit(); renderCanvas(); renderStrip(); renderProps(); renderLeft();
@@ -578,7 +579,7 @@ async function save() {
   if (saving) { clearTimeout(saveTimer); saveTimer = setTimeout(save, 600); return; }
   if (json === lastSavedJson) { dirty = false; $('#saveState').textContent = 'Guardado'; return; }
   saving = true; dirty = false;
-  try { const isNew = !designs.some(x => x.id === doc.id); await db.collection('designs').doc(doc.id).set(body); lastSavedJson = json; $('#saveState').textContent = 'Guardado'; isNew ? (lastEdit[doc.id] = Date.now(), logAct('creó', doc)) : logEdit(doc); }
+  try { const isNew = !designs.some(x => x.id === doc.id) && !created.has(doc.id); if (isNew) created.add(doc.id); await db.collection('designs').doc(doc.id).set(body); lastSavedJson = json; $('#saveState').textContent = 'Guardado'; isNew ? (savedSnap[doc.id] = clone(doc), logAct('creó', doc)) : logEdit(doc); }
   catch (e) { dirty = true; $('#saveState').textContent = e?.code === 'invalid_argument' ? 'Solo lectura' : 'No se pudo guardar'; $('#saveState').title = e?.message || ''; console.error('Guardar', e); if (!window.__saveErrShown) { window.__saveErrShown = 1; toast('No se pudo guardar: ' + (e?.message || e)); } }
   saving = false;
 }
@@ -586,7 +587,7 @@ async function openDesign(id) {
   await save();
   const d = designs.find(x => x.id === id); if (!d) return;
   doc = clone(d); slideIx = 0; selId = null; history.length = 0; future = [];
-  lastSavedJson = sig(doc);
+  lastSavedJson = sig(doc); savedSnap[doc.id] = clone(doc);
   renderAll(); renderLeft('disenos'); toast('Abierto: ' + doc.name);
 }
 async function deleteDesign(id) {
@@ -599,12 +600,43 @@ async function deleteDesign(id) {
 }
 let profiles = {}, activity = [];
 // Historial: quién hizo qué. Las ediciones seguidas de la misma persona en el mismo diseño cuentan como una (10 min).
-const lastEdit = {};
+// Historial concreto: una línea por persona y diseño cada 15 min, con lo que ha cambiado.
+const lastEdit = {}, created = new Set(), savedSnap = {};
 async function logAct(text, design) {
-  if (!db || !me) return;
-  try { await db.collection('activity').doc(Date.now().toString(36) + uid()).set({ by: me, at: Date.now(), text, design: design?.id || '', name: design?.name || '' }); } catch (e) {}
+  if (!db || !me) return null;
+  const id = Date.now().toString(36) + uid();
+  try { await db.collection('activity').doc(id).set({ by: me, at: Date.now(), text, design: design?.id || '', name: design?.name || '' }); } catch (e) {}
+  return id;
 }
-function logEdit(d) { const k = d.id, now = Date.now(); if (lastEdit[k] && now - lastEdit[k] < 600000) return; lastEdit[k] = now; logAct(d.createdBy ? 'editó' : 'creó', d); }
+function describeChanges(a, b) {
+  if (!a) return [];
+  const out = new Set(), N = x => JSON.stringify(x ?? null);
+  if (a.name !== b.name) out.add('nombre');
+  if ((a.caption || '') !== (b.caption || '')) out.add('texto del post');
+  if ((a.date || '') !== (b.date || '')) out.add('fecha');
+  if (a.format !== b.format) out.add('formato');
+  if (a.slides.length !== b.slides.length) out.add(b.slides.length > a.slides.length ? 'láminas añadidas' : 'láminas quitadas');
+  b.slides.forEach((s, i) => { const o = a.slides.find(x => x.id === s.id); if (!o) return;
+    if (o.bg !== s.bg || o.ink !== s.ink) out.add('fondo');
+    if (N(o.wm) !== N(s.wm) || N(o.num) !== N(s.num)) out.add('logo');
+    const ol = Object.fromEntries(o.layers.map(l => [l.id, l])), nl = Object.fromEntries(s.layers.map(l => [l.id, l]));
+    for (const id in nl) { const l = nl[id], p = ol[id], kind = l.t === 'text' ? 'textos' : l.t === 'img' ? 'fotos' : (elById(l.el)?.name || 'elementos');
+      if (!p) out.add('añadió ' + kind.toLowerCase());
+      else if (l.t === 'text' && p.text !== l.text) out.add('textos');
+      else if (N(p.p) !== N(l.p) || p.style !== l.style || p.hl !== l.hl || p.size !== l.size) out.add(l.t === 'text' ? 'estilo de textos' : kind.toLowerCase());
+      else if (p.x !== l.x || p.y !== l.y || p.s !== l.s || p.r !== l.r || p.w !== l.w) out.add('posiciones'); }
+    for (const id in ol) if (!nl[id]) out.add('quitó elementos'); });
+  return [...out];
+}
+async function logEdit(d) {
+  const k = d.id, now = Date.now(), ch = describeChanges(savedSnap[k], d); savedSnap[k] = clone(d);
+  if (!ch.length) return;
+  const L = lastEdit[k];
+  if (L && now - L.at < 900000 && L.id) {
+    L.changes = [...new Set([...L.changes, ...ch])]; L.at = now;
+    try { await db.collection('activity').doc(L.id).update({ text: 'cambió ' + L.changes.join(', ') + ' en', at: now, name: d.name }); } catch (e) {}
+  } else { lastEdit[k] = { at: now, changes: ch, id: null }; lastEdit[k].id = await logAct('cambió ' + ch.join(', ') + ' en', d); }
+}
 const nameOf = id => id ? (id === me ? 'Tú' : (profiles[id]?.name || 'Alguien del equipo')) : '';
 async function loadProfiles(ids) { if (!user) return; const need = [...new Set(ids.filter(Boolean))].filter(i => !(i in profiles)); if (!need.length) return; try { Object.assign(profiles, await user.profiles(need)); } catch (e) {} }
 function renderDesignList(box) {
@@ -621,6 +653,83 @@ function whoLine(d) {
   const n = d.by ? nameOf(d.by) : '', c = d.createdBy && d.createdBy !== d.by ? nameOf(d.createdBy) : '';
   return esc([c && 'Creado por ' + c, n && 'último cambio: ' + n, t].filter(Boolean).join(' · '));
 }
+
+// ---------------- Comentarios (revisión) y quién está conectado ----------------
+let comments = [], online = {}, cmOpen = false;
+const cmFor = id => comments.filter(c => c.design === id).sort((a, b) => a.at - b.at);
+const cmOpenCount = id => comments.filter(c => c.design === id && !c.done).length;
+const initials = n => (n || '?').split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+const PCOL = ['#7B5CFA', '#E0336F', '#14A085', '#E8622D', '#1E6FBF', '#A67C00'];
+const colOf = id => PCOL[[...String(id)].reduce((a, c) => a + c.charCodeAt(0), 0) % PCOL.length];
+function renderComments() {
+  const btn = $('#cmBtn'); if (btn) { const n = cmOpenCount(doc.id); btn.innerHTML = `Comentarios${n ? ` <b class="cmn">${n}</b>` : ''}`; }
+  const box = $('#cmPanel'); if (!box) return; box.hidden = !cmOpen; if (!cmOpen) return;
+  const list = cmFor(doc.id);
+  box.innerHTML = `<div class="cmhead"><b>Comentarios de «${esc(doc.name)}»</b><button class="ghost sm" id="cmClose">Cerrar</button></div>
+    <div class="cmlist">${list.map(c => `<div class="cm${c.done ? ' done' : ''}"><div class="cmtop"><span class="av0" style="background:${colOf(c.by)}">${esc(initials(nameOf(c.by)))}</span><b>${esc(nameOf(c.by))}</b>${c.slide ? `<button class="lnk" data-cmslide="${c.slide}">lámina ${c.slide}</button>` : ''}<span class="cmt">${new Date(c.at).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span></div>
+      <p>${esc(c.text).replace(/\n/g, '<br>')}</p><div class="cmacts"><label class="chk"><input type="checkbox" data-cmdone="${c.id}" ${c.done ? 'checked' : ''}> Resuelto</label>${c.by === me ? `<button class="ghost sm danger" data-cmdel="${c.id}">Borrar</button>` : ''}</div></div>`).join('') || '<p class="empty">Sin comentarios. Escribe aquí lo que hay que cambiar: se quedará pegado a esta lámina.</p>'}</div>
+    <form id="cmForm"><textarea id="cmText" rows="3" placeholder="Ej.: el titular no se lee bien sobre este fondo" required></textarea>
+    <div class="row"><select id="cmSlide"><option value="${slideIx + 1}">En la lámina ${slideIx + 1}</option><option value="0">En todo el diseño</option></select><button class="pri" type="submit">Comentar</button></div></form>`;
+}
+async function addComment(text, slideN) {
+  if (!db) { toast('Los comentarios necesitan el guardado compartido'); return; }
+  await save();
+  const id = Date.now().toString(36) + uid();
+  const c = { id, design: doc.id, slide: slideN, text, by: me, at: Date.now(), done: false };
+  comments.push(c); renderComments();
+  try { await db.collection('comments').doc(id).set(c); logAct('comentó en', doc); } catch (e) { toast('No se pudo guardar el comentario'); }
+}
+document.addEventListener('submit', e => { if (e.target.id !== 'cmForm') return; e.preventDefault(); const t = $('#cmText').value.trim(); if (t) addComment(t, +$('#cmSlide').value); });
+document.addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'cmBtn') { cmOpen = !cmOpen; renderComments(); }
+  else if (b.id === 'cmClose') { cmOpen = false; renderComments(); }
+  else if (b.dataset.cmslide) { setSlide(+b.dataset.cmslide - 1); }
+  else if (b.dataset.cmdel) { const id = b.dataset.cmdel; comments = comments.filter(c => c.id !== id); renderComments(); try { await db.collection('comments').doc(id).delete(); } catch (x) {} }
+});
+document.addEventListener('change', async e => { const id = e.target.dataset?.cmdone; if (!id) return; const c = comments.find(x => x.id === id); if (!c) return; c.done = e.target.checked; renderComments(); try { await db.collection('comments').doc(id).update({ done: c.done, doneBy: me }); if (c.done) logAct('resolvió un comentario de', doc); } catch (x) {} });
+
+function renderOnline() {
+  const box = $('#online'); if (!box) return;
+  const others = Object.entries(online).filter(([id]) => id !== me);
+  box.innerHTML = others.map(([id, st]) => { const s0 = st[0] || {}; const where = s0.design === doc.id ? 'en este diseño' : s0.dname ? `en «${s0.dname}»` : 'en el Studio';
+    return `<span class="av0 on${s0.design === doc.id ? ' here' : ''}" style="background:${colOf(id)}" title="${esc(nameOf(id))} · ${esc(where)}">${esc(initials(nameOf(id)))}</span>`; }).join('');
+  box.hidden = !others.length;
+}
+let presT;
+function trackPresence() { clearTimeout(presT); presT = setTimeout(() => window.studioPresence?.track({ design: doc.id, dname: doc.name, slide: slideIx + 1, at: Date.now() }), 400); }
+const whoHere = id => Object.entries(online).filter(([u, st]) => u !== me && st[0]?.design === id).map(([u]) => nameOf(u));
+
+// ---------------- Bienvenida al entrar ----------------
+function showWelcome() {
+  const w = $('#welcome'); if (!w) return;
+  const first = (profiles[me]?.name || '').split(' ')[0];
+  const h = new Date().getHours(), saludo = h < 6 ? 'Buenas noches' : h < 14 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches';
+  const byRecent = (a, b) => (b.updatedAt || 0) - (a.updatedAt || 0);
+  const mine = designs.filter(d => d.by === me || d.createdBy === me).sort(byRecent);
+  const team = designs.filter(d => !mine.includes(d)).sort(byRecent).slice(0, 3);
+  const pending = designs.filter(d => cmOpenCount(d.id)).length, review = designs.filter(d => d.status === 'En revisión').length;
+  const card = d => { const keep = doc; doc = d; const f = fmt(), k = 64 / 1080; const th = `<div class="mini" style="width:64px;height:${f.h * k}px"><div class="minii" style="width:1080px;height:${f.h}px;transform:scale(${k})">${slideHTML(d.slides[0], 0, d.slides.length)}</div></div>`; doc = keep;
+    return `<button class="wcard" data-wopen="${d.id}">${th}<span><b>${esc(d.name)}</b><small>${esc(d.status || 'Borrador')} · ${whoLine(d)}</small></span></button>`; };
+  w.innerHTML = `<div class="wbox">
+    <img class="wlogo" src="logo/kumbra-logo.svg" alt="" width="72" height="58">
+    <div class="wk">Kumbra Studio</div>
+    <h1 class="wh">Hola${first ? `, <em>${esc(first)}</em>` : ''}.</h1>
+    <p class="wsub">${saludo}. ${mine.length ? '¿Quieres seguir trabajando en lo tuyo?' : '¿Por dónde empezamos hoy?'}${review || pending ? ` <span class="wnote">${[review && `${review} en revisión`, pending && `${pending} con comentarios pendientes`].filter(Boolean).join(' · ')}</span>` : ''}</p>
+    ${mine[0] ? `<button class="wmain" data-wopen="${mine[0].id}"><span>Seguir trabajando en</span><b>«${esc(mine[0].name)}»</b></button>` : ''}
+    ${mine.length > 1 ? `<h4>Lo tuyo</h4><div class="wlist">${mine.slice(1, 4).map(card).join('')}</div>` : ''}
+    ${team.length ? `<h4>Lo último del equipo</h4><div class="wlist">${team.map(card).join('')}</div>` : ''}
+    <div class="wacts"><button class="pri" id="wNew">Diseño nuevo</button><button class="ghost" id="wPlan">Ver el planificador</button></div>
+  </div>`;
+  w.hidden = false; requestAnimationFrame(() => w.classList.add('in'));
+}
+function closeWelcome() { const w = $('#welcome'); w.classList.remove('in'); setTimeout(() => { w.hidden = true; }, 350); }
+document.addEventListener('click', async e => {
+  const b = e.target.closest('#welcome button'); if (!b) return;
+  if (b.dataset.wopen) { await openDesign(b.dataset.wopen); closeWelcome(); }
+  else if (b.id === 'wNew') { closeWelcome(); }
+  else if (b.id === 'wPlan') { closeWelcome(); openPlanner(); }
+});
 
 // ---------------- Planificador + vista de Instagram ----------------
 const STATUSES = ['Idea', 'Borrador', 'En revisión', 'Listo', 'Programado', 'Publicado'];
@@ -653,7 +762,7 @@ function renderPlanner() {
   const ds = allDesigns().slice().sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999'));
   $('#pBoard').innerHTML = STATUSES.map(st => { const col = ds.filter(d => (d.status || 'Borrador') === st);
     return `<section class="pcol" data-col="${st}"><h4>${st} <span>${col.length}</span></h4>${col.map(d => `<div class="pcard${planSel === d.id ? ' cur' : ''}" data-pid="${d.id}" draggable="true"><button class="pth" data-popen="${d.id}" title="Abrir en el editor"><div class="mini" style="width:64px;height:${d.format === 'story' ? 114 : 80}px">${thumbHTML(d, 64)}</div></button>
-      <div class="pinfo"><b>${esc(d.name)}</b><span>${d.format === 'story' ? 'Story' : d.slides.length > 1 ? `Carrusel · ${d.slides.length}` : 'Post'} · ${whoLine(d)}</span>
+      <div class="pinfo"><b>${esc(d.name)}${cmOpenCount(d.id) ? ` <span class="cmn" title="Comentarios sin resolver">💬 ${cmOpenCount(d.id)}</span>` : ''}${whoHere(d.id).length ? ` <span class="here" title="Ahora mismo dentro">● ${esc(whoHere(d.id).join(', '))}</span>` : ''}</b><span>${d.format === 'story' ? 'Story' : d.slides.length > 1 ? `Carrusel · ${d.slides.length}` : 'Post'} · ${whoLine(d)}</span>
       <div class="prow"><input type="date" data-pdate="${d.id}" value="${esc(d.date || '')}" aria-label="Fecha"><select data-pstat="${d.id}" aria-label="Estado">${STATUSES.map(x => `<option ${x === (d.status || 'Borrador') ? 'selected' : ''}>${x}</option>`).join('')}</select><button class="ghost sm danger pdel" data-pdelask="${d.id}" title="Eliminar este diseño">Eliminar</button></div>
       <div class="pconfirm">¿Eliminar «${esc(d.name)}»? No se puede deshacer. <button class="ghost sm danger" data-pdel="${d.id}">Sí, eliminar</button><button class="ghost sm" data-pdelno="1">No</button></div></div></div>`).join('') || '<p class="empty">Arrastra aquí</p>'}</section>`; }).join('');
   // publicados de verdad
@@ -748,19 +857,21 @@ document.fonts.ready.then(() => renderAll());
     designs = snap.docs.map(x => ({ id: x.id, ...x.data() }));
     if (first) {
       first = false;
-      const latest = designs.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
-      if (latest && !dirty && history.length === 0) { doc = clone(latest); lastSavedJson = sig(doc); slideIx = 0; renderAll(); }
+      if (!dirty && history.length === 0) { await loadProfiles([me, ...designs.map(d => d.by)]); showWelcome(); }
     } else {
       // someone else changed the design we have open and we have nothing pending: take theirs
       const mine = designs.find(x => x.id === doc.id);
       if (mine && !dirty && !saving && !drag && sig(mine) !== lastSavedJson && mine.by && me && mine.by !== me && (mine.updatedAt || 0) > (doc.updatedAt || 0)) {
-        doc = clone(mine); lastSavedJson = sig(doc); slideIx = Math.min(slideIx, doc.slides.length - 1); renderAll(); toast('Actualizado con los cambios de otra persona');
+        doc = clone(mine); lastSavedJson = sig(doc); savedSnap[doc.id] = clone(doc); slideIx = Math.min(slideIx, doc.slides.length - 1); renderAll(); toast('Actualizado con los cambios de otra persona');
       }
     }
     await loadProfiles(designs.flatMap(x => [x.by, x.createdBy]));
     if (currentTab === 'disenos') renderLeft('disenos');
     if (!$('#plan').hidden) renderPlanner();
   }, err => { $('#saveState').textContent = 'Sin conexión con el guardado'; });
+  db.collection('comments').onSnapshot(async snap => { comments = snap.docs.map(x => x.data()); await loadProfiles(comments.map(c => c.by)); renderComments(); if (!$('#plan').hidden) renderPlanner(); }, () => {});
+  window.studioPresence?.onChange(async st => { online = st || {}; await loadProfiles(Object.keys(online)); renderOnline(); if (!$('#plan').hidden) renderPlanner(); });
+  trackPresence();
   db.collection('activity').orderBy('at', 'desc').limit(80).onSnapshot(async snap => { activity = snap.docs.map(x => x.data()); await loadProfiles(activity.map(a => a.by)); if (!$('#plan').hidden) renderActivity(); }, () => {});
   db.doc('library/published').onSnapshot(s => { published = s.exists ? (s.data().items || []) : []; if (!$('#plan').hidden) renderPlanner(); });
   db.doc('library/uploads').onSnapshot(s => { uploads = s.exists ? (s.data().items || []) : []; if (currentTab === 'fotos' || currentTab === 'fondos') renderLeft(); });

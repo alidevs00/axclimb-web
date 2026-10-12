@@ -162,6 +162,23 @@
     },
   };
 
+  // ---------- quién está conectado (Realtime Presence) ----------
+  let pres = null, presState = {}, presFns = new Set(), lastTrack = null;
+  window.studioPresence = {
+    async track(state) {
+      lastTrack = state;
+      if (!pres) {
+        const me = session?.user?.id; if (!me) return;
+        pres = sb.channel('studio-presence', { config: { presence: { key: me } } });
+        pres.on('presence', { event: 'sync' }, () => { presState = pres.presenceState(); presFns.forEach(fn => fn(presState)); })
+          .subscribe(async st => { if (st === 'SUBSCRIBED' && lastTrack) await pres.track(lastTrack); });
+        return;
+      }
+      try { await pres.track(state); } catch (e) {}
+    },
+    onChange(fn) { presFns.add(fn); fn(presState); return () => presFns.delete(fn); },
+  };
+
   window.claude = {
     use: async name => {
       session = await ready;
