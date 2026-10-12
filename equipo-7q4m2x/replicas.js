@@ -163,7 +163,7 @@ const REPLICAS = [
       bloques: { label: 'Bloques en orden (6B? = proyecto, 6B* = ese pico con nieve)', area: true, def: '4 4+ 5 4+ 5 5+ 5+ 6A 5+ 6A 6A+ 6B 6A+ 6B 6C+? 6C+ 6B 6B+ 6C 6B+ 6B 6C 6B+ 6B 6A+ 6B 6B+ 6B' },
       nieve: { label: 'Nieve (además de los picos con *)', options: ['Ninguna', 'En el más alto', 'En todos los picos'], def: 'Ninguna' },
       tops: { label: 'Tops', text: true, def: '20' }, flash: { label: 'Flash', text: true, def: '17' }, max: { label: 'Máx (vacío = el más alto)', text: true, def: '' },
-      titulo: { label: 'Tipo de sesión', text: true, def: 'Maratón' }, nota: { label: 'Nota', text: true, def: '' },
+      titulo: { label: 'Logro conseguido en la sesión (vacío = ninguno). Ej.: Maratón, Sin prisa, Madrugador, Nocturno, Primer flash, Primer 7A', text: true, def: 'Maratón' }, nota: { label: 'Nota de la sesión (lo que escribe quien la sube)', text: true, def: '' },
       tiempo: { label: 'Duración', text: true, def: '1 h 8 min' }, proyectos: { label: 'Proyectos', text: true, def: '1 proyecto' },
       xp: { label: 'XP', text: true, def: '+238 XP' }, comentarios: { label: 'Comentarios', text: true, def: '1' }, kudos: { label: 'Kudos', text: true, def: '2' },
       pie: { label: 'Mostrar la parte de abajo', bool: true, def: true },
