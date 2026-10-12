@@ -591,6 +591,47 @@ function changed(force) {
   if (!force) { renderStripSoon(); }
 }
 const renderStripSoon = debounce(() => renderStrip(), 500);
+// ---------- Edición a la vez: mezcla a tres bandas ----------
+// base = la última versión en la que estábamos de acuerdo con el servidor. Al guardar (o al llegar cambios de otra
+// persona) se junta lo mío y lo suyo: por lámina y por capa, gana quien la haya tocado; si las dos la tocaron, la mía.
+const syncBase = {};
+const J = x => canon(x ?? null);   // sin importar el orden de las claves (la base de datos lo cambia)
+const FIELDS = ['name', 'format', 'caption', 'date', 'status'];
+const pickDoc = d => ({ name: d.name, format: d.format, caption: d.caption || '', date: d.date || '', status: d.status || 'Borrador', slides: clone(d.slides) });
+function mergeList(b, m, t, item) {
+  const B = new Map(b.map(x => [x.id, x])), M = new Map(m.map(x => [x.id, x])), T = new Map(t.map(x => [x.id, x]));
+  const reordered = J(m.map(x => x.id).filter(id => B.has(id) && T.has(id))) !== J(b.map(x => x.id).filter(id => M.has(id) && T.has(id)));
+  const [P, S] = reordered ? [m, t] : [t, m], ids = P.map(x => x.id);
+  S.forEach((x, i) => { if (ids.includes(x.id)) return; const prev = S[i - 1]?.id, at = prev ? ids.indexOf(prev) : -1; ids.splice(at + 1, 0, x.id); });
+  const out = [];
+  for (const id of ids) {
+    const bx = B.get(id), mx = M.get(id), tx = T.get(id);
+    if (mx && tx) out.push(bx ? item(bx, mx, tx) : mx);
+    else if (mx) { if (!bx || J(mx) !== J(bx)) out.push(mx); }      // nuevo mío, o lo borraron pero yo lo había cambiado
+    else if (tx) { if (!bx || J(tx) !== J(bx)) out.push(tx); }      // nuevo suyo, o lo borré yo pero lo habían cambiado
+  }
+  return out;
+}
+function merge3(base, mine, theirs) {
+  const out = {};
+  FIELDS.forEach(k => { out[k] = J(mine[k]) !== J(base[k]) ? mine[k] : theirs[k]; });
+  out.slides = mergeList(base.slides, mine.slides, theirs.slides, (b, m, t) => {
+    const sl = {};
+    new Set([...Object.keys(m), ...Object.keys(t)]).forEach(k => { if (k !== 'layers') sl[k] = J(m[k]) !== J(b[k]) ? m[k] : t[k]; });
+    sl.layers = mergeList(b.layers || [], m.layers || [], t.layers || [], (bl, ml, tl) => J(ml) !== J(bl) ? ml : tl);
+    return sl;
+  });
+  return out;
+}
+// Pone en pantalla una versión mezclada sin quitarte el texto que estás escribiendo.
+function applyMerged(m) {
+  FIELDS.forEach(k => { doc[k] = m[k]; }); doc.slides = m.slides;
+  slideIx = Math.min(slideIx, doc.slides.length - 1);
+  if (selId && !slide().layers.some(l => l.id === selId)) selId = null;
+  const typing = document.activeElement && document.activeElement.closest('#props, #nameIn') && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+  if (typing) { renderCanvas(); renderStripSoon(); } else renderAll();
+}
+
 async function save() {
   if (!dirty) return;
   if (!doc.createdBy && me) doc.createdBy = me;
@@ -600,7 +641,12 @@ async function save() {
   if (saving) { clearTimeout(saveTimer); saveTimer = setTimeout(save, 600); return; }
   if (json === lastSavedJson) { dirty = false; $('#saveState').textContent = 'Guardado'; return; }
   saving = true; dirty = false;
-  try { const isNew = !designs.some(x => x.id === doc.id) && !created.has(doc.id); if (isNew) created.add(doc.id); await db.collection('designs').doc(doc.id).set(body); lastSavedJson = json; $('#saveState').textContent = 'Guardado'; isNew ? (savedSnap[doc.id] = clone(doc), logAct('creó', doc)) : logEdit(doc); }
+  const remote = designs.find(x => x.id === doc.id), base = syncBase[doc.id];
+  if (remote && base && J(pickDoc(remote)) !== J(base)) {
+    const m = merge3(base, pickDoc(doc), pickDoc(remote));
+    applyMerged(m); Object.assign(body, m);
+  }
+  try { const isNew = !designs.some(x => x.id === doc.id) && !created.has(doc.id); if (isNew) created.add(doc.id); await db.collection('designs').doc(doc.id).set(body); syncBase[doc.id] = pickDoc(body); lastSavedJson = sig(body); $('#saveState').textContent = 'Guardado'; isNew ? (savedSnap[doc.id] = clone(doc), logAct('creó', doc)) : logEdit(doc); }
   catch (e) { dirty = true; $('#saveState').textContent = e?.code === 'invalid_argument' ? 'Solo lectura' : 'No se pudo guardar'; $('#saveState').title = e?.message || ''; console.error('Guardar', e); if (!window.__saveErrShown) { window.__saveErrShown = 1; toast('No se pudo guardar: ' + (e?.message || e)); } }
   saving = false;
 }
@@ -608,7 +654,7 @@ async function openDesign(id) {
   await save();
   const d = designs.find(x => x.id === id); if (!d) return;
   doc = clone(d); slideIx = 0; selId = null; history.length = 0; future = [];
-  lastSavedJson = sig(doc); savedSnap[doc.id] = clone(doc);
+  lastSavedJson = sig(doc); savedSnap[doc.id] = clone(doc); syncBase[doc.id] = pickDoc(d);
   renderAll(); renderLeft('disenos'); toast('Abierto: ' + doc.name);
 }
 async function deleteDesign(id) {
@@ -882,10 +928,14 @@ document.fonts.ready.then(() => renderAll());
       first = false;
       if (!dirty && history.length === 0) { await loadProfiles([me, ...designs.map(d => d.by)]); showWelcome(); }
     } else {
-      // someone else changed the design we have open and we have nothing pending: take theirs
-      const mine = designs.find(x => x.id === doc.id);
-      if (mine && !dirty && !saving && !drag && sig(mine) !== lastSavedJson && mine.by && me && mine.by !== me && (mine.updatedAt || 0) > (doc.updatedAt || 0)) {
-        doc = clone(mine); lastSavedJson = sig(doc); savedSnap[doc.id] = clone(doc); slideIx = Math.min(slideIx, doc.slides.length - 1); renderAll(); toast('Actualizado con los cambios de otra persona');
+      // someone else changed the design we have open: mix their changes in (ours stay; if we have unsaved ones, they go up merged)
+      const mine = designs.find(x => x.id === doc.id), base = syncBase[doc.id];
+      if (mine && base && !saving && !drag && mine.by && me && mine.by !== me && J(pickDoc(mine)) !== J(base)) {
+        const m = merge3(base, pickDoc(doc), pickDoc(mine));
+        syncBase[doc.id] = pickDoc(mine); savedSnap[doc.id] = clone(mine);
+        applyMerged(m);
+        if (J(m) !== J(pickDoc(mine))) changed(true); else { lastSavedJson = sig(mine); }
+        toast(`${nameOf(mine.by)} ha cambiado este diseño: ya lo ves aquí`);
       }
     }
     await loadProfiles(designs.flatMap(x => [x.by, x.createdBy]));
