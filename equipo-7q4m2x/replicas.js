@@ -93,31 +93,60 @@ function snowCap(side, depth) {
 }
 const cub = (p0, p1, p2, p3, t) => { const u = 1 - t; return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3; };
 function ridgeSVG(blocks, w, h, { labels = true, pill = true, grid = true, bottom = true, snow = 'Ninguna' } = {}) {
-  // Igual que en la app: cada pico sube de forma proporcional al grado; los lados son curvos y los picos se solapan.
+  // Copia de AXSessionRidge.swift (la cordillera de la app):
+  // · picos repartidos a partes iguales (como mucho 0,16 del ancho), base = un paso a cada lado, lados en curva cuadrática;
+  // · altura = 0,16 + 0,84 × posición del grado en la escala 4…8C (con las guías de grados); sin guías, el más alto llega arriba;
+  // · relleno del color del grado que oscurece hacia el suelo (35 % negro a ¾, 55 % abajo), los más altos detrás;
+  // · flash = nieve blanca en la cima (como mucho 15 pt o el 30 % del pico) con el borde dentado;
+  // · línea de cresta por encima de todo, en el color de cada pico aclarado un 35 %;
+  // · proyectos detrás, del color del grado, 10 % más anchos.
   const id = 'rg' + (RID++); if (!blocks.length) blocks = [{ g: '5' }];
-  const n = blocks.length, real = blocks.filter(b => !b.ghost), maxI = Math.max(...blocks.map(b => gIx(b.g))), realMax = real.length ? Math.max(...real.map(b => gIx(b.g))) : maxI;
-  const many = n > 15, topI = maxI + (many ? 1 : 6), unit = (h - 6) / (topI + 4.1), y0 = h - 2, gw = labels ? w - 62 : w;
-  const yOf = i => y0 - unit * (i + 4.1);
-  const step = gw / (n + .2), half = step * (many ? 1.35 : 1.12);
-  let defs = '', body = '';
-  const cols = [...new Set(blocks.map(b => gCol(b.g)))];
-  cols.forEach((c, k) => { defs += `<linearGradient id="${id}c${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${kmix(c, '#000', .08)}"/><stop offset=".55" stop-color="${kmix(c, '#140c06', .38)}"/><stop offset="1" stop-color="${kmix(c, '#0e0a06', .62)}"/></linearGradient>`; });
-  let gl = '';
-  if (grid) (many ? [4, 10, 16] : [4, 8, 12]).filter(i => i <= topI).forEach(i => { const yy = yOf(i);
-    gl += `<line x1="0" x2="${gw}" y1="${yy}" y2="${yy}" stroke="${K.grid}" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>${labels ? `<text x="${w - 4}" y="${yy + 8}" text-anchor="end" style="font:500 22px I,sans-serif;fill:${K.lab}">${GRADES[i]}</text>` : ''}`; });
-  const shape = (cx, top, hw) => `M${cx - hw},${y0} C${cx - hw * .62},${y0 - (y0 - top) * .3} ${cx - hw * .18},${top + (y0 - top) * .1} ${cx},${top} C${cx + hw * .18},${top + (y0 - top) * .1} ${cx + hw * .62},${y0 - (y0 - top) * .3} ${cx + hw},${y0}`;
-  let maxPos = null, ghosts = '';
-  blocks.forEach((b, i) => {
-    const cx = step * (i + .6), top = yOf(gIx(b.g)), c = gCol(b.g), k = cols.indexOf(c), d = shape(cx, top, half);
-    if (b.ghost) { const ph = y0 - top, gh = Math.min(Math.max(half * 1.6, 60), Math.max(ph * .62, 40)); ghosts += `<path d="M${cx - gh},${y0} C${cx - gh * .42},${y0 - ph * .04} ${cx - gh * .1},${top + ph * .38} ${cx},${top} C${cx + gh * .1},${top + ph * .38} ${cx + gh * .42},${y0 - ph * .04} ${cx + gh},${y0} Z" fill="${kmix(c, '#fff', .55)}" fill-opacity=".9"/>`; }
-    else body += `<path d="${d} Z" fill="url(#${id}c${k})"/><path d="${d}" fill="none" stroke="${kmix(c, '#fff', .4)}" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>`;
-    const want = !b.ghost && (b.star || snow === 'En todos los picos' || (snow === 'En el más alto' && gIx(b.g) === realMax));
-    if (want) { const ph = y0 - top, side = (t, left) => { const sg = left ? -1 : 1; return [cub(cx + sg * half, cx + sg * half * .62, cx + sg * half * .18, cx, t), cub(y0, y0 - ph * .3, top + ph * .1, top, t)]; }; body += snowCap(side, Math.max(ph * .5, 22)); }
-    if (!b.ghost && gIx(b.g) === realMax) maxPos = { x: cx, y: top, g: b.g };
+  const s = w / 323, gw = labels ? w - 22 * s : w;                      // s: puntos de la app → píxeles de aquí (756 px = 323 pt, como las capturas)
+  const top0 = pill ? Math.min(26 * s, h * .3) : 2 * s, y0 = h - 1, ah = y0 - top0;
+  const n = blocks.length, step = Math.min(1 / n, .16), start = (1 - step * n) / 2;
+  const norm = g => .16 + .84 * gIx(g) / (GRADES.length - 1);
+  const sends = blocks.filter(b => !b.ghost);
+  const fit = grid ? 1 : Math.max(...blocks.map(b => norm(b.g)), .01);
+  const P = blocks.map((b, i) => { const x = (start + step * (i + .5)) * gw, hw = step * gw, ht = Math.max(.12, norm(b.g) / fit) * ah; return { ...b, x, hw, ht, top: y0 - ht, c: gCol(b.g) }; });
+  const realMax = sends.length ? Math.max(...sends.map(b => gIx(b.g))) : -1;
+  const flank = (p, t, left, f = 1) => { const hw = p.hw * f, sx = p.x + (left ? -hw : hw), cx = p.x + (left ? -hw : hw) * .42, cy = y0 - p.ht * .32, u = 1 - t;
+    return [u * u * sx + 2 * u * t * cx + t * t * p.x, u * u * y0 + 2 * u * t * cy + t * t * p.top]; };
+  const mtn = (p, f = 1) => { const hw = p.hw * f; return `M${p.x - hw},${y0} Q${p.x - hw * .42},${y0 - p.ht * .32} ${p.x},${p.top} Q${p.x + hw * .42},${y0 - p.ht * .32} ${p.x + hw},${y0} Z`; };
+  let defs = '', gl = '', ghosts = '', body = '', crest = '', pl = '';
+  // guías: el comienzo de 6A, 6C y 7B, como en la app
+  if (grid) ['6A', '6C', '7B'].forEach(g => { const yy = y0 - norm(g) * ah; if (yy < top0 - 4) return;
+    gl += `<line x1="0" x2="${gw}" y1="${yy}" y2="${yy}" stroke="${K.grid}" stroke-width="${Math.max(1, s)}" stroke-dasharray="${2 * s} ${4 * s}"/>${labels ? `<text x="${w - 1}" y="${yy + 3.6 * s}" text-anchor="end" style="font:500 ${10 * s}px I,sans-serif;fill:${K.lab}">${g}</text>` : ''}`; });
+  // 1. proyectos
+  P.filter(p => p.ghost).forEach(p => { ghosts += `<path d="${mtn(p, 1.1)}" fill="${p.c}" fill-opacity=".2"/>`; });
+  // 2. encadenados, los más altos primero
+  P.filter(p => !p.ghost).sort((a, b) => b.ht - a.ht).forEach(p => {
+    // el degradado va de la cima al suelo de cada pico
+    const gid = `${id}m${P.indexOf(p)}`; defs += `<linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="0" y1="${p.top}" x2="0" y2="${y0}"><stop offset="0" stop-color="${p.c}"/><stop offset=".75" stop-color="${kmix(p.c, '#000', .35)}"/><stop offset="1" stop-color="${kmix(p.c, '#000', .55)}"/></linearGradient>`;
+    body += `<path d="${mtn(p)}" fill="url(#${gid})"/>`;
+    const wantSnow = p.star || snow === 'En todos los picos' || (snow === 'En el más alto' && gIx(p.g) === realMax);
+    if (wantSnow && p.ht > 4 * s) {
+      const depth = Math.min(15 * s, p.ht * .3), t = 1 - depth / p.ht, A = flank(p, t, true), B = flank(p, t, false), wd = B[0] - A[0], j = Math.min(3.5 * s, depth * .25);
+      body += `<path d="M${A} L${p.x},${p.top} L${B} L${A[0] + wd * .72},${A[1] - j} L${A[0] + wd * .52},${A[1] + j * .4} L${A[0] + wd * .3},${A[1] - j * .85} Z" fill="#fff"/>`;
+    }
   });
-  let pl = '';
-  if (pill && maxPos) { const pw = 32 + maxPos.g.length * 19; pl = `<g transform="translate(${Math.min(Math.max(maxPos.x - pw / 2, 0), gw - pw)},${maxPos.y - 54})"><rect width="${pw}" height="40" rx="20" fill="${gCol(maxPos.g)}"/><text x="${pw / 2}" y="28" text-anchor="middle" style="font:800 25px ID,sans-serif;fill:#fff">${ex(maxPos.g)}</text></g>`; }
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;overflow:visible"><defs>${defs}<clipPath id="${id}k"><rect x="0" y="-80" width="${gw}" height="${h + 80}"/></clipPath></defs>${gl}<g clip-path="url(#${id}k)">${ghosts}${body}</g>${bottom ? `<line x1="0" x2="${gw}" y1="${y0}" y2="${y0}" stroke="${K.line}" stroke-width="2"/>` : ''}${pl}</svg>`;
+  // 3. cresta: el borde de arriba de todos los encadenados juntos
+  const S = P.filter(p => !p.ghost);
+  if (S.length) {
+    const x0 = Math.floor(Math.min(0, ...S.map(p => p.x - p.hw))), x1 = Math.ceil(Math.max(gw, ...S.map(p => p.x + p.hw))), env = new Array(x1 - x0 + 1).fill(y0);
+    S.forEach(p => [true, false].forEach(left => { const pts = []; for (let k = 0; k <= 48; k++) pts.push(flank(p, k / 48, left)); pts.sort((a, b) => a[0] - b[0]);
+      for (let k = 1; k < pts.length; k++) { const [ax, ay] = pts[k - 1], [bx, by] = pts[k];
+        for (let c = Math.max(0, Math.floor(ax - x0)); c <= Math.min(env.length - 1, Math.ceil(bx - x0)); c++) { const X = x0 + c, tt = bx - ax > .001 ? Math.min(Math.max((X - ax) / (bx - ax), 0), 1) : 0, Y = ay + (by - ay) * tt; if (Y < env[c]) env[c] = Y; } } }));
+    let d = '', on = false;
+    env.forEach((Y, c) => { if (Y < y0 - .5) { d += `${on ? 'L' : 'M'}${x0 + c},${Y.toFixed(1)} `; on = true; } else on = false; });
+    const stops = S.map(p => `<stop offset="${(p.x / gw).toFixed(4)}" stop-color="${kmix(p.c, '#fff', .35)}"/>`).join('');
+    defs += `<linearGradient id="${id}cr" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${gw}" y2="0">${stops}</linearGradient>`;
+    crest = `<path d="${d}" fill="none" stroke="url(#${id}cr)" stroke-width="${2 * s}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+  // 4. etiqueta del más difícil encadenado (el primero si hay empate)
+  const hard = S.reduce((a, p) => !a || p.ht > a.ht ? p : a, null);
+  if (pill && hard) { const fs = 11 * s, pw = hard.g.length * fs * .72 + 14 * s, ph = fs + 6 * s, cx = Math.min(Math.max(hard.x, pw / 2), gw - pw / 2), cy = hard.top - 15 * s;
+    pl = `<g transform="translate(${cx - pw / 2},${cy - ph / 2})"><rect width="${pw}" height="${ph}" rx="${ph / 2}" fill="${hard.c}"/><text x="${pw / 2}" y="${ph / 2 + fs * .36}" text-anchor="middle" style="font:800 ${fs}px ID,sans-serif;fill:#fff">${ex(hard.g)}</text></g>`; }
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;overflow:visible"><defs>${defs}<clipPath id="${id}k"><rect x="0" y="-80" width="${gw}" height="${h + 80}"/></clipPath></defs>${gl}<g clip-path="url(#${id}k)">${ghosts}${body}${crest}</g>${bottom ? `<line x1="0" x2="${gw}" y1="${y0}" y2="${y0}" stroke="${K.line}" stroke-width="${Math.max(1, s * .5)}"/>` : ''}${pl}</svg>`;
 }
 const statCol = (lab, val, col, lead = false) => `<div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0">${lead ? `<div style="${F(800, 52, col, 'letter-spacing:-.02em')}">${ex(val)}</div><div style="${F(700, 20, K.lab, 'letter-spacing:.14em')}">${lab}</div>` : `<div style="${F(700, 20, K.lab, 'letter-spacing:.14em')}">${lab}</div><div style="${F(800, 52, col, 'letter-spacing:-.02em')}">${ex(val)}</div>`}</div>`;
 const card828 = (inner, { w = 828, pad = 36, bg = K.card, extra = '' } = {}) => `<div style="width:${w}px;box-sizing:border-box;background:${bg};border-radius:44px;padding:${pad}px;box-shadow:0 24px 60px -34px rgba(90,40,60,.35);${extra}">${inner}</div>`;
@@ -148,7 +177,7 @@ const REPLICAS = [
           <span style="display:inline-flex;align-items:center;gap:10px;height:58px;padding:0 22px;border-radius:29px;background:${sens[0]};${F(700, 26, sens[1])}">${ICON.gauge(28, sens[1])}${ex(p.sensacion)}</span>
           <span style="margin-left:18px">${ICON.dots(34, K.lab)}</span></div>
         <div style="display:flex;align-items:center;gap:16px;margin-top:22px;${F(500, 28, K.sub2)}">${ICON.gym(34, K.lab)}${ex(p.roco)}</div>
-        <div style="margin-top:96px">${ridgeSVG(b, 756, 98, { snow: p.nieve })}</div>
+        <div style="margin-top:4px">${ridgeSVG(b, 756, 225, { snow: p.nieve })}</div>
         <div style="display:flex;margin-top:30px">${statCol('TOPS', p.tops, K.ink)}<div style="width:2px;background:${K.line};margin:0 26px"></div>${statCol('FLASH', p.flash, K.gold)}<div style="width:2px;background:${K.line};margin:0 26px"></div>${statCol('MÁX', mx, K.pink)}</div>
         ${p.pie ? `${p.titulo ? `<div style="display:flex;align-items:center;gap:22px;margin-top:40px;${F(600, 30, K.ink)}"><span style="width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,#9B6BF2,#6A3FD6);box-shadow:0 0 0 6px #EFE8FB;display:grid;place-items:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12 3l9 5-9 5-9-5zM3 12l9 5 9-5v2.5l-9 5-9-5z"/></svg></span>${ex(p.titulo)}</div>` : ''}
         ${p.nota ? `<div style="${F(500, 31, K.ink, 'margin-top:28px')}">${ex(p.nota)}</div>` : ''}
@@ -167,7 +196,7 @@ const REPLICAS = [
     },
     render: p => { const b = parseBlocks(p.bloques), mx = p.max || maxOf(b);
       return card828(`<div style="display:flex;align-items:center;gap:16px;${F(500, 28, K.sub2)}">${ICON.gym(34, K.lab)}<span style="flex:1">${ex(p.roco)}</span>${ICON.clock(34, K.sub2)}<span style="color:${K.ink}">${ex(p.tiempo)}</span></div>
-        <div style="margin-top:60px">${ridgeSVG(b, 756, 166, { snow: p.nieve })}</div>
+        <div style="margin-top:0">${ridgeSVG(b, 756, 300, { snow: p.nieve })}</div>
         <div style="display:flex;margin-top:30px">${statCol('TOPS', p.tops, K.ink, true)}${statCol('FLASH', p.flash, K.gold, true)}${statCol('MÁX', mx, K.pink, true)}<div style="display:flex;flex-direction:column;gap:6px;flex:1.3"><div style="${F(800, 52, K.goldXp, 'letter-spacing:-.02em;white-space:nowrap')}">${ex(p.xp)}</div><div style="${F(700, 20, K.lab, 'letter-spacing:.14em')}">XP</div></div></div>`); } },
 
   { id: 'rp-perfil', name: 'Cabecera del perfil', w: 828,
@@ -341,7 +370,7 @@ const REPLICAS = [
   { id: 'rp-cordillera', name: 'Cordillera de sesión (suelta)', w: 828,
     props: {
       bloques: { label: 'Bloques en orden (6B? = proyecto, 6B* = ese pico con nieve)', area: true, def: '4 4+ 5 5+ 5+ 6A 6A 6A+ 6B 6A+ 6B 6B+ 6C 6B+ 6C+ 7A?' },
-      ancho: { label: 'Ancho', range: [300, 1080], def: 828 }, alto: { label: 'Alto', range: [80, 500], def: 200 },
+      ancho: { label: 'Ancho', range: [300, 1080], def: 828 }, alto: { label: 'Alto', range: [80, 600], def: 300 },
       nieve: { label: 'Nieve (además de los picos con *)', options: ['Ninguna', 'En el más alto', 'En todos los picos'], def: 'Ninguna' },
       grados: { label: 'Grados a la derecha', bool: true, def: true }, etiqueta: { label: 'Etiqueta del máximo', bool: true, def: true },
     },
