@@ -807,6 +807,77 @@ let planSel = null, igSlide = 0, igOnlyReal = false;
 function openPlanner() { save(); $('#plan').hidden = false; renderPlanner(); }
 $('#igBtn').onclick = openPlanner;
 $('#planClose').onclick = () => { $('#plan').hidden = true; };
+
+// ---------------- Exportar por semanas ----------------
+// Las imágenes no se guardan en ningún sitio (no gastan almacenamiento): se generan al momento desde los diseños.
+// ZIP: «Semana 44 · 26 oct – 1 nov/2026-10-26 lun · Nombre/01.png …» + texto.txt con el texto del post.
+let wkStatuses = new Set(['Listo', 'Programado']);
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], DIAS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const dOf = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
+const isoOf = dt => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+function weekOf(iso) {
+  const dt = dOf(iso), mon = new Date(dt); mon.setDate(dt.getDate() - (dt.getDay() + 6) % 7);
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const th = new Date(mon); th.setDate(mon.getDate() + 3); const y1 = new Date(th.getFullYear(), 0, 4);
+  const n = 1 + Math.round(((th - y1) / 864e5 - 3 + (y1.getDay() + 6) % 7) / 7);
+  const f = x => `${x.getDate()} ${MESES[x.getMonth()]}`;
+  return { key: isoOf(mon), n, label: `Semana ${n} · ${f(mon)} – ${f(sun)}`, mon, sun };
+}
+const safe = t => String(t || 'sin nombre').replace(/[\/\\:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim().slice(0, 80);
+function wkGroups() {
+  const ds = allDesigns().filter(d => wkStatuses.has(d.status || 'Borrador') && d.slides?.length);
+  const g = new Map();
+  ds.forEach(d => { const w = d.date ? weekOf(d.date) : { key: '9999', label: 'Sin fecha', n: 0 }; if (!g.has(w.key)) g.set(w.key, { ...w, items: [] }); g.get(w.key).items.push(d); });
+  return [...g.values()].sort((a, b) => a.key.localeCompare(b.key)).map(w => ({ ...w, items: w.items.sort((a, b) => (a.date || '').localeCompare(b.date || '')) }));
+}
+function renderWeeks() {
+  $('#wkStat').innerHTML = STATUSES.map(st => `<label><input type="checkbox" data-wkst="${st}" ${wkStatuses.has(st) ? 'checked' : ''}> ${st}</label>`).join('');
+  const gs = wkGroups(), nowKey = weekOf(isoOf(new Date())).key;
+  $('#wkList').innerHTML = gs.map(w => `<div class="wkrow${w.key === nowKey ? ' now' : ''}"><div class="wkn"><b>${esc(w.label)}${w.key === nowKey ? ' · esta semana' : ''}</b><small>${w.items.length} ${w.items.length === 1 ? 'publicación' : 'publicaciones'}: ${esc(w.items.map(d => d.name).join(' · '))}</small></div><button class="ghost sm" data-wkdl="${w.key}">Descargar</button></div>`).join('')
+    || '<p class="empty">No hay diseños con esos estados. Marca arriba qué estados incluir, o pon los diseños en «Listo» desde el tablero.</p>';
+  $('#wkAll').disabled = !gs.length;
+  $('#wkNote').textContent = gs.length ? `${gs.reduce((a, w) => a + w.items.reduce((b, d) => b + d.slides.length, 0), 0)} láminas en total` : '';
+}
+function postText(d) {
+  const when = d.date ? (() => { const x = dOf(d.date); return `${DIAS[x.getDay()]} ${x.getDate()} ${MESES[x.getMonth()]} ${x.getFullYear()}`; })() : 'sin fecha';
+  return `${d.name}\nPublicar: ${when}\nEstado: ${d.status || 'Borrador'}\nLáminas: ${d.slides.length} (${(FORMATS[d.format] || FORMATS.post).name || d.format})\n\n--- Texto del post ---\n${d.caption || '(sin texto todavía)'}\n`;
+}
+async function exportWeeks(keys) {
+  const gs = wkGroups().filter(w => keys.includes(w.key)); if (!gs.length) return;
+  await save(); clearTimeout(saveTimer);
+  const keep = doc, keepDirty = dirty, zip = new JSZip(), total = gs.reduce((a, w) => a + w.items.reduce((b, d) => b + d.slides.length, 0), 0);
+  let done = 0;
+  try {
+    for (const w of gs) {
+      const wf = zip.folder(safe(w.label));
+      for (const d of w.items) {
+        const x = d.date ? dOf(d.date) : null;
+        const pf = wf.folder(safe(`${d.date ? d.date + ' ' + DIAS[x.getDay()] + ' · ' : ''}${d.name}`));
+        pf.file('texto.txt', postText(d));
+        for (let i = 0; i < d.slides.length; i++) {
+          busy(true, `Lámina ${++done} de ${total} · ${d.name}`);
+          doc = d; const blob = await renderPNG(d.slides[i], i, d.slides.length); doc = keep;
+          pf.file(`${String(i + 1).padStart(2, '0')}.png`, blob);
+        }
+      }
+    }
+    busy(true, 'Comprimiendo…');
+    const z = await zip.generateAsync({ type: 'blob' });
+    busy(false); doc = keep;
+    const name = gs.length === 1 ? `kumbra-${safe(gs[0].label).toLowerCase().replace(/[^a-z0-9]+/g, '-')}` : `kumbra-semanas-${gs[0].n || 'x'}-a-${gs[gs.length - 1].n || 'x'}`;
+    await saveFile(name.replace(/-+$/, '') + '.zip', z);
+  } catch (e) { busy(false); toast('No se pudo exportar: ' + (e.message || e)); }
+  finally { doc = keep; dirty = keepDirty; }
+}
+$('#weekBtn').onclick = () => { $('#weeks').hidden = false; renderWeeks(); };
+$('#wkClose').onclick = () => { $('#weeks').hidden = true; };
+$('#weeks').addEventListener('click', e => {
+  if (e.target.id === 'weeks') { $('#weeks').hidden = true; return; }
+  const b = e.target.closest('[data-wkdl]'); if (b) exportWeeks([b.dataset.wkdl]);
+  if (e.target.id === 'wkAll') exportWeeks(wkGroups().map(w => w.key));
+});
+$('#weeks').addEventListener('change', e => { const st = e.target.dataset?.wkst; if (!st) return; e.target.checked ? wkStatuses.add(st) : wkStatuses.delete(st); renderWeeks(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#weeks').hidden) $('#weeks').hidden = true; });
 const allDesigns = () => { const list = designs.slice(); const i = list.findIndex(d => d.id === doc.id); if (i >= 0) list[i] = clone(doc); else if (dirty || lastSavedJson) list.unshift(clone(doc)); return list; };
 const fmtDay = s => s ? new Date(s + 'T12:00').toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' }) : 'Sin fecha';
 function thumbHTML(d, w) { const keep = doc; doc = d; const f = fmt(), k = w / 1080; const h = `<div class="minii" style="width:1080px;height:${f.h}px;transform:scale(${k})">${slideHTML(d.slides[0], 0, d.slides.length)}</div>`; doc = keep; return h; }
