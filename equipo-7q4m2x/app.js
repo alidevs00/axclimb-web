@@ -713,9 +713,11 @@ document.addEventListener('change', async e => { const id = e.target.dataset?.cm
 function renderOnline() {
   const box = $('#online'); if (!box) return;
   const others = Object.entries(online).filter(([id]) => id !== me);
-  box.innerHTML = others.map(([id, st]) => { const s0 = st[0] || {}; const where = s0.design === doc.id ? 'en este diseño' : s0.dname ? `en «${s0.dname}»` : 'en el Studio';
-    return `<span class="av0 on${s0.design === doc.id ? ' here' : ''}" style="background:${colOf(id)}" title="${esc(nameOf(id))} · ${esc(where)}">${esc(initials(nameOf(id)))}</span>`; }).join('');
-  box.hidden = !others.length;
+  // Siempre visible: tú primero; si no hay nadie más, «Solo tú» para que se entienda qué es.
+  const meChip = me ? `<span class="av0 on" style="background:${colOf(me)}" title="Tú">${esc(initials(profiles[me]?.name || 'Tú'))}</span>` : '';
+  box.innerHTML = meChip + (others.length ? '' : '<small class="onl">Solo tú</small>') + others.map(([id, st]) => { const s0 = st[0] || {}; const where = s0.design === doc.id ? 'en este diseño' : s0.dname ? `en «${s0.dname}»` : 'en el Studio';
+    return `<span class="av0 on${s0.design === doc.id ? ' here' : ''}" style="background:${colOf(id)}" title="${esc(nameOf(id))} · ${esc(where)}">${esc(initials(nameOf(id)))}</span>`; }).join('') + (others.length ? `<small class="onl">${others.length + 1} conectados</small>` : '');
+  box.hidden = !me;
 }
 let presT;
 function trackPresence() { clearTimeout(presT); presT = setTimeout(() => window.studioPresence?.track({ design: doc.id, dname: doc.name, slide: slideIx + 1, at: Date.now() }), 400); }
@@ -890,7 +892,10 @@ document.fonts.ready.then(() => renderAll());
     if (currentTab === 'disenos') renderLeft('disenos');
     if (!$('#plan').hidden) renderPlanner();
   }, err => { $('#saveState').textContent = 'Sin conexión con el guardado'; });
-  db.collection('comments').onSnapshot(async snap => { comments = snap.docs.map(x => x.data()); await loadProfiles(comments.map(c => c.by)); renderComments(); if (!$('#plan').hidden) renderPlanner(); }, () => {});
+  let cmSeen = null;
+  db.collection('comments').onSnapshot(async snap => { const prev = cmSeen; comments = snap.docs.map(x => x.data()); cmSeen = new Set(comments.map(c => c.id));
+    // aviso al momento cuando otra persona comenta (sin recargar)
+    if (prev) { const nuevo = comments.find(c => !prev.has(c.id) && c.by !== me); if (nuevo) { await loadProfiles([nuevo.by]); const d = designs.find(x => x.id === nuevo.design); toast(`${nameOf(nuevo.by)} ha comentado en «${d?.name || 'un diseño'}»`); } } await loadProfiles(comments.map(c => c.by)); renderComments(); if (!$('#plan').hidden) renderPlanner(); }, () => {});
   window.studioPresence?.onChange(async st => { online = st || {}; await loadProfiles(Object.keys(online)); renderOnline(); if (!$('#plan').hidden) renderPlanner(); });
   trackPresence();
   db.collection('activity').orderBy('at', 'desc').limit(80).onSnapshot(async snap => { activity = snap.docs.map(x => x.data()); await loadProfiles(activity.map(a => a.by)); if (!$('#plan').hidden) renderActivity(); }, () => {});
