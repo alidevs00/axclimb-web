@@ -29,8 +29,8 @@
 .tile{border-radius:22px;background:#2E2D31;display:grid;place-items:center;font:800 40px ID;position:relative}
 .cnt{position:absolute;top:-14px;right:-6px;font:800 20px I;color:#fff;padding:3px 10px;border-radius:999px}
 
-.h em,.grad{font-style:normal;background:linear-gradient(95deg,#F7CE89 0%,#EE888B 45%,#DF7DB8 72%,#B495F9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cream .h em,.cream .grad{background:linear-gradient(95deg,#F08A3C 0%,#E5484D 40%,#A7377B 72%,#533794 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h em,.grad{font-style:normal;background:linear-gradient(95deg,#F7CE89 0%,#EE888B 45%,#DF7DB8 72%,#B495F9 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .12em .14em 0;margin-right:-.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cream .h em,.cream .grad{background:linear-gradient(95deg,#F08A3C 0%,#E5484D 40%,#A7377B 72%,#533794 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .12em .14em 0;margin-right:-.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .k{color:#EE888B}.cream .k{color:#A7377B}
 .btn{background:linear-gradient(95deg,#F2B44A,#E5484D 50%,#A7377B)!important;color:#fff!important}
 .tag.g{background:linear-gradient(95deg,#F7CE89,#EE888B 50%,#DF7DB8)!important;color:#1B1719!important}

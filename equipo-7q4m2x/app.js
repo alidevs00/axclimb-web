@@ -66,8 +66,16 @@ const HL = {
   'Naranja Kumbra': '#E8622D', 'Coral': '#EE888B', 'Rosa': '#E0336F', 'Amarillo': '#F2B44A', 'Lima': '#C8FF00',
   'Verde Pro': '#14A085', 'Violeta': '#8C72FF', 'Azul': '#4A82F5', 'Blanco': '#FFFFFF', 'Negro': '#161416',
 };
+// Colores para el texto entero (titular, subtítulo…). «Automático» = el de siempre según el fondo.
+const TC = {
+  'Automático': null, 'Negro': '#161416', 'Gris oscuro': '#3D3833', 'Gris': '#6B655F', 'Blanco': '#FFFFFF', 'Crema': '#F4EFE7',
+  'Naranja Kumbra': '#E8622D', 'Coral': '#EE888B', 'Violeta': '#8C72FF',
+};
+// El degradado se recorta a la caja de la palabra: un poco de aire a la derecha y abajo para que no corte la última letra ni la q/g/p.
+const GRAD_PAD = 'padding:0 .12em .14em 0;margin-right:-.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone';
+function tcOf(l) { return l.tc === 'Personalizado' ? l.tcc || '#161416' : TC[l.tc] || ''; }
 function hlStyle(l) { const v = l.hl === 'Personalizado' ? l.hlc || '#E8622D' : HL[l.hl]; if (!v) return '';
-  return v.startsWith('linear') ? `background:${v};-webkit-background-clip:text;background-clip:text;color:transparent` : `background:none;-webkit-background-clip:border-box;background-clip:border-box;color:${v}`; }
+  return v.startsWith('linear') ? `background:${v};-webkit-background-clip:text;background-clip:text;color:transparent;${GRAD_PAD}` : `background:none;-webkit-background-clip:border-box;background-clip:border-box;color:${v}`; }
 function textHTML(l, ink) {
   const st = TEXT_STYLES[l.style] || TEXT_STYLES.sub;
   let t = esc(l.text || '').replace(/\*([^*]+)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
@@ -77,7 +85,8 @@ function textHTML(l, ink) {
   const w = l.w ? `width:${l.w}px;` : '';
   const al = l.align ? `text-align:${l.align};` : '';
   const hs = hlStyle(l); if (hs) t = t.replace(/<em( class="grad")?>/g, `<em style="${hs}">`);
-  return `<div class="${st.cls} t-${l.style}" style="position:relative;left:0;right:auto;top:0;${w}${size}${al}">${t}</div>`;
+  const tc = tcOf(l), col = tc ? `color:${tc};` : '';
+  return `<div class="${st.cls} t-${l.style}" style="position:relative;left:0;right:auto;top:0;${w}${size}${al}${col}">${t}</div>`;
 }
 function layerInner(l, ink) {
   if (l.t === 'text') return textHTML(l, ink);
@@ -388,6 +397,7 @@ function renderProps() {
     const st = TEXT_STYLES[l.style];
     h += `<h3>${esc(st.name)}</h3><label class="fld" for="txtIn">Texto <small>*palabra* = destacada</small></label><textarea id="txtIn" rows="${l.style === 'h' ? 4 : 3}">${esc(l.text)}</textarea>
       <label class="fld" for="hlIn">Color de la palabra destacada</label><div class="colrow"><select id="hlIn" style="flex:1">${[...Object.keys(HL), 'Personalizado'].map(k => `<option ${k === (l.hl || 'Automático') ? 'selected' : ''}>${k}</option>`).join('')}</select>${l.hl === 'Personalizado' ? `<input type="color" id="hlcIn" value="${esc(l.hlc || '#E8622D')}">` : ''}</div>
+      <label class="fld" for="tcIn">Color del texto</label><div class="colrow"><select id="tcIn" style="flex:1">${[...Object.keys(TC), 'Personalizado'].map(k => `<option ${k === (l.tc || 'Automático') ? 'selected' : ''}>${k}</option>`).join('')}</select>${l.tc === 'Personalizado' ? `<input type="color" id="tccIn" value="${esc(l.tcc || '#161416')}">` : ''}</div>
       <label class="fld">Estilo</label><select id="styleIn">${Object.entries(TEXT_STYLES).map(([k, v]) => `<option value="${k}" ${k === l.style ? 'selected' : ''}>${v.name}</option>`).join('')}</select>`;
     if (l.style === 'h') h += `<label class="fld">Tamaño</label><div class="seg" id="sizeSeg">${Object.keys(st.sizes).map(k => `<button data-size="${k}" aria-pressed="${(l.size || 'L') === k}">${k}</button>`).join('')}</div>`;
     h += `<label class="fld">Alineación</label><div class="seg" id="alignSeg">${[['left', 'Izquierda'], ['center', 'Centro'], ['right', 'Derecha']].map(([v, n]) => `<button data-align="${v}" aria-pressed="${(l.align || 'left') === v}">${n}</button>`).join('')}</div>
@@ -435,7 +445,8 @@ $('#props').addEventListener('input', e => {
   const v = e.target.value;
   if (id === 'txtIn') l.text = v;
   else if (id === 'hlcIn') l.hlc = v;
-  else if (id === 'hlIn') return;
+  else if (id === 'hlIn' || id === 'tcIn') return;
+  else if (id === 'tccIn') l.tcc = v;
   else if (id === 'wIn') l.w = +v;
   else if (id === 'scIn') l.s = +v / 100;
   else if (id === 'iwIn') l.w = +v;
@@ -459,6 +470,7 @@ $('#props').addEventListener('change', e => {
     renderAll(); changed(); return;
   }
   if (id === 'hlIn') { snapshot(); l.hl = e.target.value; renderCanvas(); renderProps(); changed(); return; }
+  if (id === 'tcIn') { snapshot(); l.tc = e.target.value; renderCanvas(); renderProps(); changed(); return; }
   if (id === 'styleIn') { snapshot(); l.style = e.target.value; const st = TEXT_STYLES[l.style]; l.w = st.w || undefined; renderCanvas(); renderProps(); changed(); }
   else if (e.target.dataset.prop && e.target.type === 'checkbox') { snapshot(); l.p = l.p || {}; l.p[e.target.dataset.prop] = e.target.checked; renderCanvas(); changed(); }
   else if (e.target.tagName === 'SELECT' && e.target.dataset.prop) {
@@ -623,7 +635,7 @@ function describeChanges(a, b) {
     for (const id in nl) { const l = nl[id], p = ol[id], kind = l.t === 'text' ? 'textos' : l.t === 'img' ? 'fotos' : (elById(l.el)?.name || 'elementos');
       if (!p) out.add('añadió ' + kind.toLowerCase());
       else if (l.t === 'text' && p.text !== l.text) out.add('textos');
-      else if (N(p.p) !== N(l.p) || p.style !== l.style || p.hl !== l.hl || p.size !== l.size) out.add(l.t === 'text' ? 'estilo de textos' : kind.toLowerCase());
+      else if (N(p.p) !== N(l.p) || p.style !== l.style || p.hl !== l.hl || p.hlc !== l.hlc || p.tc !== l.tc || p.tcc !== l.tcc || p.size !== l.size) out.add(l.t === 'text' ? 'estilo de textos' : kind.toLowerCase());
       else if (p.x !== l.x || p.y !== l.y || p.s !== l.s || p.r !== l.r || p.w !== l.w) out.add('posiciones'); }
     for (const id in ol) if (!nl[id]) out.add('quitó elementos'); });
   return [...out];
